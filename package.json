@@ -1,0 +1,27 @@
+{
+  "name": "qict",
+  "version": "1.0.0",
+  "description": "A pairwise test case generator implements from https://github.com/sylvainhalle/QICT",
+  "main": "index.js",
+  "scripts": {
+    "test": "npx jest"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/freddiefujiwara/node-qict.git"
+  },
+  "keywords": [
+    "qict",
+    "combinatorial-testing",
+    "testing-tools"
+  ],
+  "author": "Fumikazu Fujiwara <npm@ze.gs> (http://freddiefujiwara.com)",
+  "license": "SEE LICENSE IN LICENSE",
+  "bugs": {
+    "url": "https://github.com/freddiefujiwara/node-qict/issues"
+  },
+  "homepage": "https://github.com/freddiefujiwara/node-qict#readme",
+  "devDependencies": {
+    "jest": "^26.0.1"
+  }
+}
