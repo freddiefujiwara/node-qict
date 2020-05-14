@@ -5,9 +5,10 @@ describe('Qict', () => {
     const q = new Qict('testData.txt');
     expect(q).not.toBeNull();
     expect(q).toBeInstanceOf(Qict);
+    expect(q.poolSize).toBe(20);
   });
   it(' clean() : can clean all parameters', () => {
-    const q = new Qict('__tests__/testData.txt');
+    const q = new Qict();
     expect(q.allPairsDisplay.length).toBe(0);
     expect(q.parameters.length).toBe(0);
     expect(q.parameterValues.length).toBe(0);
@@ -21,7 +22,7 @@ describe('Qict', () => {
     expect(q.numberPairs).toBe(0);
 
     expect(q.clean).toBeInstanceOf(Function);
-    q.readFile();
+    q.readFile('__tests__/testData.txt');
     q.initialize();
     q.clean();
 
@@ -38,20 +39,20 @@ describe('Qict', () => {
     expect(q.numberPairs).toBe(0);
   });
   it(' readFile() : can read all strings from file', () => {
-    const q = new Qict('__tests__/testData.txt');
+    const q = new Qict();
     expect(q.readFile).toBeInstanceOf(Function);
-    q.readFile();
+    q.readFile('__tests__/testData.txt');
     expect(q.contents).not.toBe("");
     // no such file or directory
     const t = () => {
-      let qi = new Qict('__tests__/testData.csv');
-      qi.readFile();
+      let qi = new Qict();
+      qi.readFile('__tests__/testData.csv');
     };
     expect(t).toThrow(/no such file or directory/);
   });
   it(' initialize() : can initialize from this.contents', () => {
-    const q = new Qict('__tests__/testData.txt');
-    q.readFile();
+    const q = new Qict();
+    q.readFile('__tests__/testData.txt');
     expect(q.initialize).toBeInstanceOf(Function);
     q.initialize();
     expect(q.allPairsDisplay.length).toBe(44);
@@ -85,5 +86,14 @@ describe('Qict', () => {
      "0,0,0,0,0,0,0,0,0,0,0",
      "0,0,0,0,0,0,0,0,0,0,0"]);
     expect(q.unusedCounts).toStrictEqual([9,9,7,7,7,7,8,8,8,9,9])
+  });
+  it(' bestPair() : can bestPair testsets which capture all possible pairs', () => {
+    const q = new Qict();
+    expect(q.bestPair).toBeInstanceOf(Function);
+    q.readFile('__tests__/testData.txt');
+    q.initialize();
+    expect(q.bestPair()).toStrictEqual([
+      8,10
+    ]);
   });
 });

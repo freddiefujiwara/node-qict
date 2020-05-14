@@ -1,11 +1,11 @@
 class Qict {
   constructor(file){
-    this.file = file;
+    this.poolSize = 20;
     this.clean();
   }
-  readFile(){
+  readFile(file){
     const fs = require('fs');
-    this.contents = fs.readFileSync(this.file, 'utf8').trim();
+    this.contents = fs.readFileSync(file, 'utf8').trim();
   }
   initialize(){
     this.clean();
@@ -54,14 +54,14 @@ class Qict {
     }
     let k = 0;
     for (let i = 0; i < this.legalValues.length; ++i) {
-      for (let j = 0; j < this.legalValues[i].length; ++j) {
+      this.legalValues[i].forEach(()=>{
         this.parameterPositions[k++] = i;
-      }
+      })
     }
-    for (let i = 0; i < this.allPairsDisplay.length; ++i){
-      ++this.unusedCounts[this.allPairsDisplay[i][0]];
-      ++this.unusedCounts[this.allPairsDisplay[i][1]];
-    }
+    this.allPairsDisplay.forEach((a) => {
+      ++this.unusedCounts[a[0]];
+      ++this.unusedCounts[a[1]];
+    })
   }
   clean(){
     this.allPairsDisplay = new Array();
@@ -75,6 +75,17 @@ class Qict {
     this.numberParameters = 0;
     this.numberParameterValues = 0;
     this.numberPairs = 0;
+  }
+  bestPair(){
+    let bestWeight = 0;
+    let indexOfBestPair = 0;
+    this.unusedPairs.forEach((p,i) =>{
+      let weight = this.unusedCounts[p[0]] + this.unusedCounts[p[1]];
+      if(weight > bestWeight){
+        indexOfBestPair = i;
+      }
+    });
+    return this.unusedPairs[indexOfBestPair];
   }
 }
 
