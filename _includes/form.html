@@ -1,3 +1,9 @@
+<h1>Try it</h1>
+<h2>input</h2>
+<textarea id="input" width="100%"></textarea>
+<button id="go">Compute Test Sets</button>
+<h2>output</h2>
+<textarea id="output" width="100%"></textarea>
 <script type="text/javascript">
 //<![CDATA[
 let module = {};
@@ -7,19 +13,19 @@ let module = {};
 <script src="https://code.jquery.com/jquery-git.slim.min.js"></script>
 <script type="text/javascript">
 //<![CDATA[
+let output = new Array();
 $("#go").click(function(){
   const q = new Qict();
   q.contents = $("#input").val();
-  console.log(q);
   q.initialize();
-  console.log(q);
   const testSets = q.testSets();
+  const log = console.log;
+  console.log = function(line){
+     output.push(line);
+  }
   q.printResult(testSets);
+  console.log = log;
+  $("#output").val(output.join("\n"));
 });
 //]]>
 </script>
-<h1>input</h1>
-<textarea id="input"></textarea>
-<button id="go">Compute Test Sets</button>
-<h1>output</h1>
-<textarea id="output"></textarea>
