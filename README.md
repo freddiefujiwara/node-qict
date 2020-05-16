@@ -6,7 +6,7 @@ Try on your browser https://freddiefujiwara.github.io/node-qict/#go
 
 # install
 ``` shell
-$ npm i -g node-qict
+$ npm i -g qict
 ```
 
 # usage
