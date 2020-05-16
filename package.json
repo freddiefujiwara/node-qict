@@ -23,5 +23,8 @@
   "homepage": "https://github.com/freddiefujiwara/node-qict#readme",
   "devDependencies": {
     "jest": "^26.0.1"
+  },
+  "dependencies": {
+    "random-number-csprng": "^1.0.2"
   }
 }

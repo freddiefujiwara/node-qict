@@ -76,17 +76,142 @@ class Qict {
     this.numberParameterValues = 0;
     this.numberPairs = 0;
   }
-  bestPair(){
+  best(){
     let bestWeight = 0;
     let indexOfBestPair = 0;
-    this.unusedPairs.forEach((p,i) =>{
-      let weight = this.unusedCounts[p[0]] + this.unusedCounts[p[1]];
+    //console.log("unusedPairs.Count = " + this.unusedPairs.length);
+    this.unusedPairs.forEach((curr,i) =>{
+      let weight = this.unusedCounts[curr[0]] + this.unusedCounts[curr[1]];
       if(weight > bestWeight){
+        bestWeight = weight;
         indexOfBestPair = i;
       }
     });
     return this.unusedPairs[indexOfBestPair];
   }
+  ordering(best){
+    let ordering = new Array();
+    let firstPos = this.parameterPositions[best[0]];
+    let secondPos = this.parameterPositions[best[1]];
+    for(let i = 0 ; i < this.numberParameters; i++){
+      ordering.push(i);
+    }
+    ordering[0] = firstPos;
+    ordering[firstPos] = 0;
+    let t = ordering[1];
+    ordering[1] = secondPos;
+    ordering[secondPos] = t;
+    // Knuth ordering. start at i=2 because want first two slots left alone
+    for (let i = 2; i < ordering.length; i++){
+      let j = Math.floor(Math.random() * (ordering.length - i) + i);
+      let temp = ordering[j];
+      ordering[j] = ordering[i];
+      ordering[i] = temp;
+    }
+    return ordering;
+  }
+  testSet(best,ordering){
+    let testSet = new Array();
+    let firstPos = this.parameterPositions[best[0]];
+    let secondPos = this.parameterPositions[best[1]];
+    for(let i = 0 ; i < this.numberParamterValues ; i++){
+      testSet.push(0);
+    }
+    testSet[firstPos] = best[0];
+    testSet[secondPos] = best[1];
+    //console.log("Placed params " + best[0] + " " + best[1] + " at " + firstPos + " and " + secondPos);
+    for (let i = 2; i < this.numberParameters; ++i){
+      let currPos = ordering[i];
+      let possibleValues = this.legalValues[currPos];
+      let currentCount = 0;
+      let highestCount = 0;
+      let bestJ = 0;
+      for (let j = 0; j < possibleValues.length; ++j){
+        currentCount = 0;
+        for (let p = 0; p < i; ++p){
+          let candidatePair =  [possibleValues[j], testSet[ordering[p]] ]
+          //console.log(candidatePair);
+          if (this.unusedPairsSearch[candidatePair[0]][candidatePair[1]] == 1 ||
+            this.unusedPairsSearch[candidatePair[1]][candidatePair[0]] == 1){
+            //console.log("Found " + candidatePair[0] + "," + candidatePair[1] + " in this.unusedPairs");
+            ++currentCount;
+          } else {
+            //console.log("Did NOT find " + candidatePair[0] + "," + candidatePair[1] + " in this.unusedPairs");
+          }
+        }
+        if (currentCount > highestCount){
+          highestCount = currentCount;
+          bestJ = j;
+        }
+      }
+      //console.log("The best value is " + possibleValues[bestJ] + " with count = " + highestCount);
+      testSet[currPos] = possibleValues[bestJ];
+    }
+    return testSet;
+  }
+  candidateSets(){
+    let candidateSets = new Array();
+    for(let candidate = 0 ; candidate < this.poolSize ; candidate++){
+      const best = this.best();
+      const ordering = this.ordering(best);
+      const testSet = this.testSet(best,ordering);
+      candidateSets.push(testSet)
+    }
+    return candidateSets;
+  }
+  NumberPairsCaptured(ts){
+    let ans = 0;
+    for (let i = 0; i <= ts.length - 2; ++i){
+      for (let j = i + 1; j <= ts.length - 1; ++j){
+        if (this.unusedPairsSearch[ts[i]][ts[j]] == 1){
+          ++ans;
+        }
+      }
+    }
+    return ans;
+  }
+  bestCandidate(candidateSets){
+    let indexOfBestCandidate = 0;
+    let mostPairsCaptured = 0;
+    for (let i = 0; i < candidateSets.length; ++i){
+      let pairsCaptured = this.NumberPairsCaptured(candidateSets[i]);
+      if (pairsCaptured > mostPairsCaptured){
+        mostPairsCaptured = pairsCaptured;
+        indexOfBestCandidate = i;
+      }
+      //console.log(`Candidate ${i} captured ${mostPairsCaptured}`)
+    }
+    console.log("Candidate number " + indexOfBestCandidate + " is best");
+    return candidateSets[indexOfBestCandidate];
+  }
+  modifyUnused(bestTestSet){
+    for (let i = 0; i <= this.numberParameters - 2; ++i){
+      for (let j = i + 1; j <= this.numberParameters - 1; ++j){
+        let v1 = bestTestSet[i];
+        let v2 = bestTestSet[j];
+        //console.log("Decrementing the unused counts for " + v1 + " and " + v2);
+        --this.unusedCounts[v1];
+        --this.unusedCounts[v2];
+        //console.log("Setting unusedPairsSearch at " + v1 + " , " + v2 + " to 0");
+        this.unusedPairsSearch[v1][v2] = 0;
+        for (let p = 0; p < this.unusedPairs.length; ++p){
+          let curr = this.unusedPairs[p];
+          if (curr[0] == v1 && curr[1] == v2){
+            this.unusedPairs.splice(p,1);
+          }
+        }
+      }
+    }
+  }
+  testSets(){
+    let testSets = new Array();
+    while(this.unusedPairs.length > 0){
+      const candidateSets = this.candidateSets();
+      const bestCandidate = this.bestCandidate(candidateSets);
+      testSets.push(bestCandidate);
+      this.modifyUnused(bestCandidate);
+    }
+    return testSets;
+  }
 }
-
 module.exports = Qict;

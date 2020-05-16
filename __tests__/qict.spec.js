@@ -74,26 +74,148 @@ describe('Qict', () => {
       return v.join(",");
     })
     expect(u).toStrictEqual(
-    ["0,0,1,1,1,1,1,1,1,1,1",
-     "0,0,1,1,1,1,1,1,1,1,1",
-     "0,0,0,0,0,0,1,1,1,1,1",
-     "0,0,0,0,0,0,1,1,1,1,1",
-     "0,0,0,0,0,0,1,1,1,1,1",
-     "0,0,0,0,0,0,1,1,1,1,1",
-     "0,0,0,0,0,0,0,0,0,1,1",
-     "0,0,0,0,0,0,0,0,0,1,1",
-     "0,0,0,0,0,0,0,0,0,1,1",
-     "0,0,0,0,0,0,0,0,0,0,0",
-     "0,0,0,0,0,0,0,0,0,0,0"]);
+      ["0,0,1,1,1,1,1,1,1,1,1",
+        "0,0,1,1,1,1,1,1,1,1,1",
+        "0,0,0,0,0,0,1,1,1,1,1",
+        "0,0,0,0,0,0,1,1,1,1,1",
+        "0,0,0,0,0,0,1,1,1,1,1",
+        "0,0,0,0,0,0,1,1,1,1,1",
+        "0,0,0,0,0,0,0,0,0,1,1",
+        "0,0,0,0,0,0,0,0,0,1,1",
+        "0,0,0,0,0,0,0,0,0,1,1",
+        "0,0,0,0,0,0,0,0,0,0,0",
+        "0,0,0,0,0,0,0,0,0,0,0"]);
     expect(q.unusedCounts).toStrictEqual([9,9,7,7,7,7,8,8,8,9,9])
   });
-  it(' bestPair() : can bestPair testsets which capture all possible pairs', () => {
+  it(' best() : can bestPair testsets which capture all possible pairs', () => {
     const q = new Qict();
-    expect(q.bestPair).toBeInstanceOf(Function);
+    expect(q.best).toBeInstanceOf(Function);
     q.readFile('__tests__/testData.txt');
     q.initialize();
-    expect(q.bestPair()).toStrictEqual([
-      8,10
+    expect(q.best()).toStrictEqual([
+      0,9
     ]);
   });
+  it(' ordering() : can ordering testsets which capture all possible pairs', () => {
+    const q = new Qict();
+    expect(q.ordering).toBeInstanceOf(Function);
+    q.readFile('__tests__/testData.txt');
+    q.initialize();
+    const best = q.best();
+    const ordering = q.ordering(best);
+    expect(ordering.length).toBe(4);
+  });
+  it(' testSet() : can ordering testsets which capture all possible pairs', () => {
+    const q = new Qict();
+    expect(q.testSet).toBeInstanceOf(Function);
+    q.readFile('__tests__/testData.txt');
+    q.initialize();
+    const best = q.best();
+    const ordering = q.ordering(best);
+    const testSet = q.testSet(best,ordering);
+    expect(testSet).toStrictEqual(
+      [0,2,6,9]
+    );
+  });
+  it(' candidateSets() : can ordering testsets which capture all possible pairs', () => {
+    const q = new Qict();
+    expect(q.candidateSets).toBeInstanceOf(Function);
+    q.readFile('__tests__/testData.txt');
+    q.initialize();
+    const candidateSets = q.candidateSets();
+    expect(candidateSets).toStrictEqual([
+      [0,2,6,9],[0,2,6,9],
+      [0,2,6,9],[0,2,6,9],
+      [0,2,6,9],[0,2,6,9],
+      [0,2,6,9],[0,2,6,9],
+      [0,2,6,9],[0,2,6,9],
+      [0,2,6,9],[0,2,6,9],
+      [0,2,6,9],[0,2,6,9],
+      [0,2,6,9],[0,2,6,9],
+      [0,2,6,9],[0,2,6,9],
+      [0,2,6,9],[0,2,6,9]
+    ])
+  });
+  it(' bestCandidate() : can ordering testsets which capture all possible pairs', () => {
+    const q = new Qict();
+    expect(q.bestCandidate).toBeInstanceOf(Function);
+    q.readFile('__tests__/testData.txt');
+    q.initialize();
+    const candidateSets = q.candidateSets();
+    const bestCandidate = q.bestCandidate(candidateSets);
+    expect(bestCandidate).toStrictEqual(
+      [0,2,6,9]
+    );
+  });
+  it(' modifyUnused() : can ordering testsets which capture all possible pairs', () => {
+    const q = new Qict();
+    expect(q.bestCandidate).toBeInstanceOf(Function);
+    q.readFile('__tests__/testData.txt');
+    q.initialize();
+    const candidateSets = q.candidateSets();
+    const bestCandidate = q.bestCandidate(candidateSets);
+    q.modifyUnused(bestCandidate);
+    expect(q.unusedPairs).toStrictEqual([
+      [0,3],
+      [0,4],
+      [0,5],
+      [1,2],
+      [1,3],
+      [1,4],
+      [1,5],
+      [0,7],
+      [0,8],
+      [1,6],
+      [1,7],
+      [1,8],
+      [0,10],
+      [1,9],
+      [1,10],
+      [2,7],
+      [2,8],
+      [3,6],
+      [3,7],
+      [3,8],
+      [4,6],
+      [4,7],
+      [4,8],
+      [5,6],
+      [5,7],
+      [5,8],
+      [2,10],
+      [3,9],
+      [3,10],
+      [4,9],
+      [4,10],
+      [5,9],
+      [5,10],
+      [6,10],
+      [7,9],
+      [7,10],
+      [8,9],
+      [8,10]]);
+  });
+  it(' testSets() : can ordering testsets which capture all possible pairs', () => {
+    const q = new Qict();
+    expect(q.testSets).toBeInstanceOf(Function);
+    q.readFile('__tests__/testData.txt');
+    q.initialize();
+    const testSets = q.testSets();
+    console.log(testSets);
+    /*
+    expect(testSets).toStrictEqual([
+      [0,2,6,9],
+      [1,2,7,10],
+      [0,3,8,10],
+      [1,4,8,9],
+      [1,5,6,10],
+      [0,3,7,9],
+      [0,4,6,10],
+      [0,5,7,9],
+      [0,2,8,9],
+      [1,3,6,9],
+      [0,4,7,9],
+      [0,5,8,9]]);*/
+  });
+
 });
