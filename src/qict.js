@@ -1,14 +1,14 @@
 class Qict {
   constructor(file){
     this.poolSize = 20;
-    this.clean();
+    this._clean();
   }
   readFile(file){
     const fs = require('fs');
     this.contents = fs.readFileSync(file, 'utf8').trim();
   }
   initialize(){
-    this.clean();
+    this._clean();
     //readlines
     this.contents.split(/\r\n|\n|\r/).forEach((line) => {
       //create pairs parameters: values
@@ -46,7 +46,6 @@ class Qict {
             pair.push(this.legalValues[i][x]);
             pair.push(this.legalValues[j][y]);
             this.unusedPairs.push(pair);
-            this.allPairsDisplay.push(pair);
             this.unusedPairsSearch[this.legalValues[i][x]][this.legalValues[j][y]] = 1;
           }
         }
@@ -58,13 +57,44 @@ class Qict {
         this.parameterPositions[k++] = i;
       })
     }
-    this.allPairsDisplay.forEach((a) => {
+    this.unusedPairs.forEach((a) => {
       ++this.unusedCounts[a[0]];
       ++this.unusedCounts[a[1]];
     })
   }
-  clean(){
-    this.allPairsDisplay = new Array();
+  testSets(){
+    let testSets = new Array();
+    while(this.unusedPairs.length > 0){
+      const candidateSets = this._candidateSets();
+      const bestCandidate = this._bestCandidate(candidateSets);
+      testSets.push(bestCandidate);
+      this._modifyUnused(bestCandidate);
+    }
+    return testSets;
+  }
+  printResult(testSets){
+    console.log(`- There are ${this.numberParameters} parameters`);
+    console.log(`- There are ${this.numberParameterValues} parameter values`);
+    console.log(`- Parameter values:`);
+    console.log(`  ${this.parameterValues.join(" ")}`)
+    console.log(`- Legal values internal representation:`);
+    this.legalValues.forEach((v,i) => {
+      console.log(`  * Parameter${i}: ${v.join(' ')}`);
+    })
+    let num_results = testSets.length;
+    console.log(`- There are ${this.numberPairs} pairs`);
+    console.log("Result test sets: \n");
+    for (let i = 0; i < num_results; ++i){
+      let line = `${i}\t`.padStart(4);
+      let curr = testSets[i];
+      for (let j = 0; j < this.numberParameters; ++j){
+        line += `${this.parameterValues[curr[j]]}\t`.padStart(8);
+      }
+      console.log(line);
+    }
+    console.log("\nEnd");
+  }
+  _clean(){
     this.parameters = new Array();
     this.parameterValues = new Array();
     this.parameterPositions = new Array();
@@ -76,7 +106,7 @@ class Qict {
     this.numberParameterValues = 0;
     this.numberPairs = 0;
   }
-  best(){
+  _best(){
     let bestWeight = 0;
     let indexOfBestPair = 0;
     //console.log("unusedPairs.length = " + this.unusedPairs.length);
@@ -89,7 +119,7 @@ class Qict {
     });
     return this.unusedPairs[indexOfBestPair];
   }
-  ordering(best){
+  _ordering(best){
     let ordering = new Array();
     let firstPos = this.parameterPositions[best[0]];
     let secondPos = this.parameterPositions[best[1]];
@@ -110,7 +140,7 @@ class Qict {
     }
     return ordering;
   }
-  testSet(best,ordering){
+  _testSet(best,ordering){
     let testSet = new Array();
     let firstPos = this.parameterPositions[best[0]];
     let secondPos = this.parameterPositions[best[1]];
@@ -149,17 +179,17 @@ class Qict {
     }
     return testSet;
   }
-  candidateSets(){
+  _candidateSets(){
     let candidateSets = new Array();
     for(let candidate = 0 ; candidate < this.poolSize ; candidate++){
-      const best = this.best();
-      const ordering = this.ordering(best);
-      const testSet = this.testSet(best,ordering);
+      const best = this._best();
+      const ordering = this._ordering(best);
+      const testSet = this._testSet(best,ordering);
       candidateSets.push(testSet)
     }
     return candidateSets;
   }
-  NumberPairsCaptured(ts){
+  _NumberPairsCaptured(ts){
     let ans = 0;
     for (let i = 0; i <= ts.length - 2; ++i){
       for (let j = i + 1; j <= ts.length - 1; ++j){
@@ -170,11 +200,11 @@ class Qict {
     }
     return ans;
   }
-  bestCandidate(candidateSets){
+  _bestCandidate(candidateSets){
     let indexOfBestCandidate = 0;
     let mostPairsCaptured = 0;
     for (let i = 0; i < candidateSets.length; ++i){
-      let pairsCaptured = this.NumberPairsCaptured(candidateSets[i]);
+      let pairsCaptured = this._NumberPairsCaptured(candidateSets[i]);
       if (pairsCaptured > mostPairsCaptured){
         mostPairsCaptured = pairsCaptured;
         indexOfBestCandidate = i;
@@ -185,7 +215,7 @@ class Qict {
     //console.log(candidateSets[indexOfBestCandidate]);
     return candidateSets[indexOfBestCandidate];
   }
-  modifyUnused(bestTestSet){
+  _modifyUnused(bestTestSet){
     for (let i = 0; i <= this.numberParameters - 2; ++i){
       for (let j = i + 1; j <= this.numberParameters - 1; ++j){
         let v1 = bestTestSet[i];
@@ -203,38 +233,6 @@ class Qict {
         }
       }
     }
-  }
-  testSets(){
-    let testSets = new Array();
-    while(this.unusedPairs.length > 0){
-      const candidateSets = this.candidateSets();
-      const bestCandidate = this.bestCandidate(candidateSets);
-      testSets.push(bestCandidate);
-      this.modifyUnused(bestCandidate);
-    }
-    return testSets;
-  }
-  printResult(testSets){
-    console.log(`- There are ${this.numberParameters} parameters`);
-    console.log(`- There are ${this.numberParameterValues} parameter values`);
-    console.log(`- Parameter values:`);
-    console.log(`  ${this.parameterValues.join(" ")}`)
-    console.log(`- Legal values internal representation:`);
-    this.legalValues.forEach((v,i) => {
-      console.log(`  * Parameter${i}: ${v.join(' ')}`);
-    })
-    let num_results = testSets.length;
-    console.log(`- There are ${this.numberPairs} pairs`);
-    console.log("Result test sets: \n");
-    for (let i = 0; i < num_results; ++i){
-      let line = `${i}\t`.padStart(4);
-      let curr = testSets[i];
-      for (let j = 0; j < this.numberParameters; ++j){
-        line += `${this.parameterValues[curr[j]]}\t`.padStart(8);
-      }
-      console.log(line);
-    }
-    console.log("\nEnd");
   }
 }
 module.exports = Qict;
