@@ -1,0 +1,4 @@
+Switch: on, off
+Browser: Chrome, Firefox, Safari, Opera
+OS: Windows, Mac, Linux
+Membership: Member, Guest
