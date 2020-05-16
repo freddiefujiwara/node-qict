@@ -7,9 +7,9 @@ let module = {};
 <script src="https://code.jquery.com/jquery-git.slim.min.js"></script>
 <script type="text/javascript">
 //<![CDATA[
-$("go").click(function(){
+$("#go").click(function(){
   const q = new Qict();
-  q.contents = $("input").val();
+  q.contents = $("#input").val();
   console.log(q);
   q.initialize();
   console.log(q);
