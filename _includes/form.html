@@ -1,11 +1,25 @@
-<script src="https://freddiefujiwara.github.io/node-qict/src/qict.js"></script>
 <script type="text/javascript">
 //<![CDATA[
-console.log(Qict);
+let module = {};
+  //]]>
+</script>
+<script src="https://freddiefujiwara.github.io/node-qict/src/qict.js"></script>
+<script src="https://code.jquery.com/jquery-git.slim.min.js"></script>
+<script type="text/javascript">
+//<![CDATA[
+$("go").click(function(){
+  const q = new Qict();
+  q.contents = $("input").val();
+  console.log(q);
+  q.initialize();
+  console.log(q);
+  const testSets = q.testSets();
+  q.printResult(testSets);
+});
 //]]>
 </script>
 <h1>input</h1>
 <textarea id="input"></textarea>
-<button id="go">
+<button id="go">Compute Test Sets</button>
 <h1>output</h1>
 <textarea id="output"></textarea>
