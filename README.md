@@ -2,6 +2,8 @@
 # node-qict
 A pairwise test case generator implements from https://github.com/sylvainhalle/QICT
 
+Try on your browser https://freddiefujiwara.github.io/node-qict/
+
 # install
 ``` shell
 $ npm i -g node-qict
