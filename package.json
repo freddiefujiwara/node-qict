@@ -21,7 +21,7 @@
   "bugs": {
     "url": "https://github.com/freddiefujiwara/node-qict/issues"
   },
-  "homepage": "https://github.com/freddiefujiwara/node-qict#readme",
+  "homepage": "https://freddiefujiwara.github.io/node-qict/",
   "devDependencies": {
     "jest": "^26.0.1"
   },
