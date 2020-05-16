@@ -1,3 +1,4 @@
+![Node.js CI](https://github.com/freddiefujiwara/node-qict/workflows/Node.js%20CI/badge.svg)
 # node-qict
 A pairwise test case generator implements from https://github.com/sylvainhalle/QICT
 
