@@ -10,7 +10,7 @@ class Qict {
   initialize(){
     this.clean();
     //readlines
-    this.contents.split(/\r\n/).forEach((line) => {
+    this.contents.split(/\r\n|\n|\r/).forEach((line) => {
       //create pairs parameters: values
       const pair = line.split(/:/);
       //should be more than 2
