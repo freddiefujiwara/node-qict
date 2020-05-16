@@ -1,4 +1,4 @@
-<h1>Try it</h1>
+<h1 name="Try">Try it</h1>
 <h2>input</h2>
 <textarea id="input" style="margin: 0px; width: 100%; height: 135px;">
 Switch: on, off        
@@ -18,8 +18,8 @@ let module = {};
 <script src="https://code.jquery.com/jquery-git.slim.min.js"></script>
 <script type="text/javascript">
 //<![CDATA[
-let output = new Array();
 $("#go").click(function(){
+  let output = new Array();
   const q = new Qict();
   q.contents = $("#input").val();
   q.initialize();
