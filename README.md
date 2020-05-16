@@ -2,7 +2,7 @@
 # node-qict
 A pairwise test case generator implements from https://github.com/sylvainhalle/QICT
 
-Try on your browser https://freddiefujiwara.github.io/node-qict/
+Try on your browser https://freddiefujiwara.github.io/node-qict/#go
 
 # install
 ``` shell
