@@ -2,7 +2,8 @@
   "name": "qict",
   "version": "1.0.0",
   "description": "A pairwise test case generator implements from https://github.com/sylvainhalle/QICT",
-  "main": "index.js",
+  "main": "src/qict.js",
+  "bin": "bin/index.js",
   "scripts": {
     "test": "npx jest"
   },

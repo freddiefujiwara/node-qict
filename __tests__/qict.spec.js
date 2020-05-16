@@ -87,7 +87,7 @@ describe('Qict', () => {
         "0,0,0,0,0,0,0,0,0,0,0"]);
     expect(q.unusedCounts).toStrictEqual([9,9,7,7,7,7,8,8,8,9,9])
   });
-  it(' best() : can bestPair testsets which capture all possible pairs', () => {
+  it(' best() : can select bestPair from unusedPairs', () => {
     const q = new Qict();
     expect(q.best).toBeInstanceOf(Function);
     q.readFile('__tests__/testData.txt');
@@ -96,7 +96,7 @@ describe('Qict', () => {
       0,9
     ]);
   });
-  it(' ordering() : can ordering testsets which capture all possible pairs', () => {
+  it(' ordering() : can order parameters propery ', () => {
     const q = new Qict();
     expect(q.ordering).toBeInstanceOf(Function);
     q.readFile('__tests__/testData.txt');
@@ -105,7 +105,7 @@ describe('Qict', () => {
     const ordering = q.ordering(best);
     expect(ordering.length).toBe(4);
   });
-  it(' testSet() : can ordering testsets which capture all possible pairs', () => {
+  it(' testSet() : can select testSet', () => {
     const q = new Qict();
     expect(q.testSet).toBeInstanceOf(Function);
     q.readFile('__tests__/testData.txt');
@@ -117,7 +117,7 @@ describe('Qict', () => {
       [0,2,6,9]
     );
   });
-  it(' candidateSets() : can ordering testsets which capture all possible pairs', () => {
+  it(' candidateSets() : can select candidateSets', () => {
     const q = new Qict();
     expect(q.candidateSets).toBeInstanceOf(Function);
     q.readFile('__tests__/testData.txt');
@@ -136,7 +136,7 @@ describe('Qict', () => {
       [0,2,6,9],[0,2,6,9]
     ])
   });
-  it(' bestCandidate() : can ordering testsets which capture all possible pairs', () => {
+  it(' bestCandidate() : can select bestCandidate from candidateSets', () => {
     const q = new Qict();
     expect(q.bestCandidate).toBeInstanceOf(Function);
     q.readFile('__tests__/testData.txt');
@@ -147,7 +147,7 @@ describe('Qict', () => {
       [0,2,6,9]
     );
   });
-  it(' modifyUnused() : can ordering testsets which capture all possible pairs', () => {
+  it(' modifyUnused() : can eliminate some data from unusedPair and unusedCounts', () => {
     const q = new Qict();
     expect(q.bestCandidate).toBeInstanceOf(Function);
     q.readFile('__tests__/testData.txt');
@@ -195,7 +195,7 @@ describe('Qict', () => {
       [8,9],
       [8,10]]);
   });
-  it(' testSets() : can ordering testsets which capture all possible pairs', () => {
+  it(' testSets() : can get testSets', () => {
     const q = new Qict();
     expect(q.testSets).toBeInstanceOf(Function);
     q.readFile('__tests__/testData.txt');
@@ -217,12 +217,8 @@ describe('Qict', () => {
       [0,4,7,9],
       [0,5,8,9]]);*/
   });
-  it(' printResult() : can ordering testsets which capture all possible pairs', () => {
+  it(' printResult() : can print results', () => {
     const q = new Qict();
     expect(q.printResult).toBeInstanceOf(Function);
-    q.readFile('__tests__/testData.txt');
-    q.initialize();
-    const testSets = q.testSets();
-    q.printResult(testSets);
   });
 });
