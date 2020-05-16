@@ -201,7 +201,7 @@ describe('Qict', () => {
     q.readFile('__tests__/testData.txt');
     q.initialize();
     const testSets = q.testSets();
-    console.log(testSets);
+    expect(testSets.length).toBe(12);
     /*
     expect(testSets).toStrictEqual([
       [0,2,6,9],
@@ -217,5 +217,12 @@ describe('Qict', () => {
       [0,4,7,9],
       [0,5,8,9]]);*/
   });
-
+  it(' printResult() : can ordering testsets which capture all possible pairs', () => {
+    const q = new Qict();
+    expect(q.printResult).toBeInstanceOf(Function);
+    q.readFile('__tests__/testData.txt');
+    q.initialize();
+    const testSets = q.testSets();
+    q.printResult(testSets);
+  });
 });
