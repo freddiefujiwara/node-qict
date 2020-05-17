@@ -1,7 +1,21 @@
 <a name="Qict"></a>
 
 ## Qict
-<p>This is a node-qict class. It's a pairwise test case generator inspired by https://github.com/sylvainhalle/QICT</p>
+<p>This is a node-qict class. It's a pairwise test case generator inspired by https://github.com/sylvainhalle/QICT
+Overall flow is the following</p>
+<ul>
+<li>readFile(file)</li>
+<li>initialize()</li>
+<li>testSets()</li>
+<li>while(this.unusedPairs.length &gt; 0)
+<ul>
+<li>candidateSets = _candidateSets()</li>
+<li>bestCandidate = _bestCandidate(candidateSets)</li>
+<li>_modifyUnused(bestCandidate)</li>
+</ul>
+</li>
+<li>printResult(testSets)</li>
+</ul>
 
 **Kind**: global class  
 
@@ -18,7 +32,7 @@
     * [._candidateSets(testSet)](#Qict+_candidateSets) ⇒ <code>Array</code>
     * [._NumberPairsCaptured(ts)](#Qict+_NumberPairsCaptured) ⇒ <code>number</code>
     * [._bestCandidate(candidateSets)](#Qict+_bestCandidate) ⇒ <code>Array</code>
-    * [._modifyUnused(best)](#Qict+_modifyUnused)
+    * [._modifyUnused(bestCandidate)](#Qict+_modifyUnused)
 
 <a name="new_Qict_new"></a>
 
@@ -680,7 +694,7 @@ this.parameterPositions = [
 
 <a name="Qict+_modifyUnused"></a>
 
-### qict.\_modifyUnused(best)
+### qict.\_modifyUnused(bestCandidate)
 <p>For example.
 [&quot;on&quot;, &quot;Chrome&quot;, &quot;Windows&quot;, &quot;Member&quot; ]
 If so, I'd like to see the entire combination of</p>
@@ -712,5 +726,5 @@ If so, I'd like to see the entire combination of</p>
 
 | Param | Type | Description |
 | --- | --- | --- |
-| best | <code>Array</code> | <p>Best test set</p> |
+| bestCandidate | <code>Array</code> | <p>Best test set</p> |
 

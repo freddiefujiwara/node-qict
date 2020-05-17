@@ -1,5 +1,17 @@
 /**
- * @classdesc This is a node-qict class. It's a pairwise test case generator inspired by https://github.com/sylvainhalle/QICT
+ * @classdesc
+ * This is a node-qict class. It's a pairwise test case generator inspired by https://github.com/sylvainhalle/QICT
+ * Overall flow is the following
+ *
+ * - readFile(file)
+ * - initialize()
+ * - testSets()
+ *  - while(this.unusedPairs.length > 0)
+ *    - candidateSets = _candidateSets()
+ *    - bestCandidate = _bestCandidate(candidateSets)
+ *    - _modifyUnused(bestCandidate)
+ * - printResult(testSets)
+ *
  */
 class Qict {
   /**
@@ -472,12 +484,13 @@ class Qict {
   }
   /**
    * PRIVATE:remove the best from unusedParis and decrease unusedCOunts
-   * @param {Array} best Best test set
+   * @param {Array} bestCandidate Best test set
    * @desc
    *
    * For example.
    * ["on", "Chrome", "Windows", "Member" ]
    * If so, I'd like to see the entire combination of
+   *
    * - ["on", "Chrome"]
    * - ["on", "Windows"]
    * - ["on", "Member"]

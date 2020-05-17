@@ -176,7 +176,7 @@ describe('Qict', () => {
       [0,2,6,9]
     );
   });
-  it(' _modifyUnused(candidateSets) : can eliminate some data from unusedPair and unusedCounts', () => {
+  it(' _modifyUnused(bestCandidate) : can eliminate some data from unusedPair and unusedCounts', () => {
     const q = new Qict();
     expect(q._modifyUnused).toBeInstanceOf(Function);
     q.readFile('__tests__/testData.txt').initialize();
