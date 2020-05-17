@@ -1,4 +1,4 @@
-/*
+/**
  * @classdesc This is a node-qict class. It's a pairwise test case generator inspired by https://github.com/sylvainhalle/QICT
  */
 class Qict {
@@ -9,7 +9,7 @@ class Qict {
     this.poolSize = 20;
     this._clean();
   }
-  /*
+  /**
    * readFile - store content from file
    * @param {string} file - target File
    */
@@ -17,7 +17,7 @@ class Qict {
     const fs = require('fs');
     this.contents = fs.readFileSync(file, 'utf8').trim();
   }
-  /*
+  /**
    * initialize - initialize all parameters
    */
   initialize(){
@@ -75,7 +75,7 @@ class Qict {
       ++this.unusedCounts[a[1]];
     })
   }
-  /*
+  /**
    * testSets - compute test sets
    * @return {object} - generated test sets
    */
@@ -89,7 +89,7 @@ class Qict {
     }
     return testSets;
   }
-  /*
+  /**
    * printResult - print test sets to console
    * @param {object} testSets - generated test sets
    */
@@ -115,7 +115,7 @@ class Qict {
     }
     console.log("\nEnd");
   }
-  /*
+  /**
    * _clean - clean up all parameters
    */
   _clean(){
@@ -130,7 +130,7 @@ class Qict {
     this.numberParameterValues = 0;
     this.numberPairs = 0;
   }
-  /*
+  /**
    * _best - select best parameter pair
    * @return {object} best pair
    */
@@ -147,7 +147,7 @@ class Qict {
     });
     return this.unusedPairs[indexOfBestPair];
   }
-  /*
+  /**
    * _ordering - order parameters
    * @param {object} best pair
    */
@@ -172,7 +172,7 @@ class Qict {
     }
     return ordering;
   }
-  /*
+  /**
    * _testSet - select one test set
    * @param {object} best
    * @param {Array} ordering
@@ -216,7 +216,7 @@ class Qict {
     }
     return testSet;
   }
-  /*
+  /**
    * _candidateSets - select candidate test sets
    */
   _candidateSets(){
@@ -229,7 +229,7 @@ class Qict {
     }
     return candidateSets;
   }
-  /*
+  /**
    * _NumberPairsCaptured - sum unused count for ts
    * @param {object} ts
    */
@@ -244,7 +244,7 @@ class Qict {
     }
     return ans;
   }
-  /*
+  /**
    * _bestCandidate - select best candidate from candidateSets
    * @param {Array} candidateSets
    */
@@ -263,7 +263,7 @@ class Qict {
     //console.log(candidateSets[indexOfBestCandidate]);
     return candidateSets[indexOfBestCandidate];
   }
-  /*
+  /**
    * _modifyUnused - remove the best from unusedParis and decrease unusedCOunts
    * @param {object} bestTestSet
    */
