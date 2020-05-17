@@ -1,8 +1,22 @@
 /**
- * @classdesc This is a node-qict class. It's a pairwise test case generator inspired by https://github.com/sylvainhalle/QICT
+ * @classdesc
+ * This is a node-qict class. It's a pairwise test case generator inspired by https://github.com/sylvainhalle/QICT
+ * Overall flow is the following
+ *
+ * - readFile(file)
+ * - initialize()
+ * - testSets()
+ *  - while(this.unusedPairs.length > 0)
+ *    - candidateSets = _candidateSets()
+ *    - bestCandidate = _bestCandidate(candidateSets)
+ *    - _modifyUnused(bestCandidate)
+ * - printResult(testSets)
+ *
  */
 class Qict {
-  /*
+  /**
+   * set this.poolSize 20 and clean
+   * and clean
    * @constructor
    */
   constructor(file){
@@ -10,74 +24,199 @@ class Qict {
     this._clean();
   }
   /**
-   * readFile - store content from file
-   * @param {string} file - target File
+   * store content from file
+   * @param {string} file Target File
+   * @returns {Qict} this This object
+   * @desc
+   * When you want to output the pairwise of the folloing Parameters and Parameter Values
+   *
+   * The format of the input file should be as follows.
+   *
+   * |Parameter |Parameter Values             |
+   * |:--------:|:---------------------------:|
+   * |Switch    |        on,off               |
+   * |Browser   | Chrome, Firefox, Opera, Lynx|
+   * |OS        | Windows, Mac, Linux         |
+   * |Membership| Member, Guest               |
+   *
+   * ```shell
+   * $ cat   __tests__/testData.txt
+   * Switch: on, off
+   * Browser: Chrome, Firefox, Opera, Lynx
+   * OS: Windows, Mac, Linux
+   * Membership: Member, Guest
+   * ```
+   *
+   * The delimiter between Parameters and Parameter Values should be ":"
+   *
+   * and also Parameter Values is ","
+   *
+   * Logic is super simple. From argument "file" to this.contents
+   * - Step1: Use readFileSync to read the whole contents from "file"
+   * - Step2: Make it a string.
+   * - Step3: Do trim().
+   * - Step4: Fill all string in this.contents
+   *
+   * That's all
+   *
+   *
    */
   readFile(file){
     const fs = require('fs');
     this.contents = fs.readFileSync(file, 'utf8').trim();
+    return this;
   }
   /**
-   * initialize - initialize all parameters
+   * initialize all parameters
+   * @public
+   * @returns {Qict} this This object
+   * @desc
+   * This method can be divided into a first half and a second half.
+   * #### 1st Half
+   * 1st half recognizes contents to parameters,parameterValues,legalValues and parameterPositions
+   *
+   * so everything in this.legalValues has been replaced with numbers for ease of use.
+   *
+   * - Step1: Read line by line from this.contents
+   * - Step2: Create a pair by splitting a line with a ":"
+   * - Step3: Push pair[0]  to this.parameters
+   * - Step4: Create an array by splitting the pair with ","
+   * - Step5: Push all values to this.parameterValues
+   * - Step6: Create legalValues
+   * - Step7: Calculate parameterPositions
+   *
+   * As the result this.parameters,this.parameterValues,this.legalValues and this.parameterPositions are the following
+   *
+   * ```JavaScript
+   * this.parameters = ["Switch","Browser","OS","Membership"];
+   * this.parameterValues = ["on","off","Chrome","Firefox","Opera","Lynx","Windows","Mac","Linux","Member","Guest"];
+   * this.legalValues = [
+   *  [0,1],
+   *  [2,3,4,5],
+   *  [6,7,8],
+   *  [9,10]
+   * ];
+   * this.parameterPositions = [
+   *  0,0,
+   *  1,1,1,1,
+   *  2,2,2,
+   *  3,3
+   * ];
+   * ```
+   *
+   * #### 2nd Half
+   * 2nd half calculates combinations
+   *
+   * All possible combinations of Parameter Values are listed below
+   *
+   * |unusedPairs|on|off|Chrome|Firefox|Opera|Lynx|Windows|Mac|Linux|Member|Guest|
+   * |-----------|--|---|------|-------|-----|----|-------|---|-----|------|-----|
+   * |on         |0 |  0|     1|      1|    1|   1|      1|  1|    1|     1|    1|
+   * |off        |0 |  0|     1|      1|    1|   1|      1|  1|    1|     1|    1|
+   * |Chrome     |0 |  0|     0|      0|    0|   0|      1|  1|    1|     1|    1|
+   * |Firefox    |0 |  0|     0|      0|    0|   0|      1|  1|    1|     1|    1|
+   * |Opera      |0 |  0|     0|      0|    0|   0|      1|  1|    1|     1|    1|
+   * |Lynx       |0 |  0|     0|      0|    0|   0|      1|  1|    1|     1|    1|
+   * |Windows    |0 |  0|     0|      0|    0|   0|      0|  0|    0|     1|    1|
+   * |Mac        |0 |  0|     0|      0|    0|   0|      0|  0|    0|     1|    1|
+   * |Linux      |0 |  0|     0|      0|    0|   0|      0|  0|    0|     1|    1|
+   * |Member     |0 |  0|     0|      0|    0|   0|      0|  0|    0|     0|    0|
+   * |Guest      |0 |  0|     0|      0|    0|   0|      0|  0|    0|     0|    0|
+   *
+   * So as you can calculate easily. the number of times each Parameter Values appears is as follows
+   *
+   * |       |unusedCounts|
+   * |-------|------------|
+   * |on     |9           |
+   * |off    |9           |
+   * |Chrome |7           |
+   * |Firefox|7           |
+   * |Opera  |7           |
+   * |Lynx   |7           |
+   * |Windows|8           |
+   * |Mac    |8           |
+   * |Linux  |8           |
+   * |Member |9           |
+   * |Guest  |9           |
+   *
+   *
    */
   initialize(){
     this._clean();
-    //readlines
+    //
+    //1st half recognizes contents to parameters,parameterValues,legalValues and parameterPositions
+    //
+    let numberParameterValues = 0;
+    let p = 0;
     this.contents.split(/\r\n|\n|\r/).forEach((line) => {
-      //create pairs parameters: values
+      //simple validation of lines
       const pair = line.split(/:/);
-      //should be more than 2
+      //pair should be 2
       if(pair.length < 2){
         return;
       }
-      this.parameters.push(pair[0]);
+      //parameterValues should be more than 1
+      const parameterValues = pair[1].split(/,/);
+      if(parameterValues < 1){
+        return;
+      }
 
+      //parameter.ok
+      this.parameters.push(pair[0].trim());
       //values analysis
       let values = new Array();
-      pair[1].split(/,/).forEach((value) => {
-        values.push(this.numberParameterValues);
+      parameterValues.forEach((value) => {
+        values.push(numberParameterValues);
         this.parameterValues.push(value.trim());
-        this.numberParameterValues++;
+        this.parameterPositions[numberParameterValues] = p;
+        numberParameterValues++;
       });
       this.legalValues.push(values)
-      this.numberParameters ++;
+      p++;
     });
-    for (let i = 0; i < this.numberParameterValues; ++i){
+    //
+    //2nd half calculates combinations
+    //
+    // initialize this.unusedParisSearch and this.unusedCounts
+    for (let i = 0; i < this.parameterValues.length; ++i){
       let row = new Array();
-      for (let j = 0; j < this.numberParameterValues; ++j){
+      for (let j = 0; j < this.parameterValues.length; ++j){
         row.push(0);
       }
       this.unusedPairsSearch.push(row);
       this.unusedCounts.push(0);
     }
+    // calculate this.unusedPairs,this.unusedParisSearch and this.unusedCounts
     for (let i = 0; i <= this.legalValues.length - 2; ++i){
       for (let j = i + 1; j <= this.legalValues.length - 1; ++j){
-        this.numberPairs += (this.legalValues[i].length * this.legalValues[j].length);
         for (let x = 0; x < this.legalValues[i].length; ++x) {
           for (let y = 0; y < this.legalValues[j].length; ++y) {
-            let pair = new Array();
-            pair.push(this.legalValues[i][x]);
-            pair.push(this.legalValues[j][y]);
-            this.unusedPairs.push(pair);
+            this.unusedPairs.push([this.legalValues[i][x], this.legalValues[j][y]]);
             this.unusedPairsSearch[this.legalValues[i][x]][this.legalValues[j][y]] = 1;
+            ++this.unusedCounts[this.legalValues[i][x]];
+            ++this.unusedCounts[this.legalValues[j][y]];
           }
         }
       }
     }
-    let k = 0;
-    for (let i = 0; i < this.legalValues.length; ++i) {
-      this.legalValues[i].forEach(()=>{
-        this.parameterPositions[k++] = i;
-      })
-    }
-    this.unusedPairs.forEach((a) => {
-      ++this.unusedCounts[a[0]];
-      ++this.unusedCounts[a[1]];
-    })
+    this.numberPairs = this.unusedPairs.length;
+    return this;
   }
   /**
-   * testSets - compute test sets
-   * @return {object} - generated test sets
+   * compute test sets
+   * @returns {Array} testSets Generated test sets
+   * @public
+   * @desc
+   * this is all combination of _candidateSets,_bestCan and _modifyUnused
+   *
+   * while unusedPairs > 0
+   *
+   * - Step1: compute candidateSets
+   * - Step2: select bestCandidate
+   * - Step3: push Step2) to testSets
+   * - Step4: modify unusedPairs and unusedCounts
+   *
+   *
    */
   testSets(){
     let testSets = new Array();
@@ -90,12 +229,13 @@ class Qict {
     return testSets;
   }
   /**
-   * printResult - print test sets to console
-   * @param {object} testSets - generated test sets
+   * print test sets to console
+   * @param {Array} testSets Generated test sets
+   * @public
    */
   printResult(testSets){
-    console.log(`- There are ${this.numberParameters} parameters`);
-    console.log(`- There are ${this.numberParameterValues} parameter values`);
+    console.log(`- There are ${this.parameters.length} parameters`);
+    console.log(`- There are ${this.parameterValues.length} parameter values`);
     console.log(`- Parameter values:`);
     console.log(`  ${this.parameterValues.join(" ")}`)
     console.log(`- Legal values internal representation:`);
@@ -108,7 +248,7 @@ class Qict {
     for (let i = 0; i < num_results; ++i){
       let line = `${i}\t`.padStart(4);
       let curr = testSets[i];
-      for (let j = 0; j < this.numberParameters; ++j){
+      for (let j = 0; j < this.parameters.length; ++j){
         line += `${this.parameterValues[curr[j]]}\t`.padStart(8);
       }
       console.log(line);
@@ -116,7 +256,7 @@ class Qict {
     console.log("\nEnd");
   }
   /**
-   * _clean - clean up all parameters
+   * PRIVATE:clean up all parameters
    */
   _clean(){
     this.parameters = new Array();
@@ -126,20 +266,29 @@ class Qict {
     this.unusedCounts = new Array();
     this.unusedPairs = new Array();
     this.unusedPairsSearch = new Array();
-    this.numberParameters = 0;
-    this.numberParameterValues = 0;
     this.numberPairs = 0;
   }
   /**
-   * _best - select best parameter pair
-   * @return {object} best pair
+   * PRIVATE:select best parameter pair
+   * @returns {Array} best Best pair
+   * @desc
+   * compute the best pair of parametersValues
+   *
+   * This is an algorithm that sum the unusedCount of two Parameter Values.
+   *
+   * and the largest pair is selected.
+   *
+   * ```JavaScript
+   *  let weight = this.unusedCounts[pair[0]] + this.unusedCounts[pair[1]];
+   * ```
+   *
    */
   _best(){
     let bestWeight = 0;
     let indexOfBestPair = 0;
     //console.log("unusedPairs.length = " + this.unusedPairs.length);
-    this.unusedPairs.forEach((curr,i) =>{
-      let weight = this.unusedCounts[curr[0]] + this.unusedCounts[curr[1]];
+    this.unusedPairs.forEach((pair,i) =>{
+      let weight = this.unusedCounts[pair[0]] + this.unusedCounts[pair[1]];
       if(weight > bestWeight){
         bestWeight = weight;
         indexOfBestPair = i;
@@ -148,14 +297,35 @@ class Qict {
     return this.unusedPairs[indexOfBestPair];
   }
   /**
-   * _ordering - order parameters
-   * @param {object} best pair
+   * PRIVATE:order parameters
+   * @param {Array} best pair
+   * @returns {Array} ordering shuffled orders
+   * @desc
+   * Suppose that 0 and 9 of ParameterValues, that is, "on" and "Member", are selected.
+   *
+   * Look at this.ParameterPositions
+   *
+   * ```JavaScript
+   * this.parameterPositions = [
+   *  "0",0,
+   *  1,1,1,1,
+   *  2,2,2,
+   *  "3",3
+   * ];
+   * ```
+   *
+   * order should be [0,3,3rd,4th]
+   *
+   * The 1st and the 2nd will be 0,3.
+   *
+   * The 3rd and 4th of the second half will be chosen at random.
+   *
    */
   _ordering(best){
     let ordering = new Array();
     let firstPos = this.parameterPositions[best[0]];
     let secondPos = this.parameterPositions[best[1]];
-    for(let i = 0 ; i < this.numberParameters; i++){
+    for(let i = 0 ; i < this.parameters.length; i++){
       ordering.push(i);
     }
     ordering[0] = firstPos;
@@ -173,30 +343,67 @@ class Qict {
     return ordering;
   }
   /**
-   * _testSet - select one test set
-   * @param {object} best
-   * @param {Array} ordering
+   * PRIVATE:select one test set
+   * @param {Array} best
+   * @returns {Array} testSet one test set
+   * @desc
+   * The parameter value of the parameter  which selected by _best() is already determined.
+   *
+   * This means that the test set that is now being selected is the following.
+   *
+   * |          |Selected Value|
+   * |----------|--------------|
+   * |Switch    |            on|
+   * |Browser   |             ?|
+   * |OS        |             ?|
+   * |Membership|        Member|
+   *
+   * How can we select another parameter values from other parameters?
+   *
+   * The algorithm is as follows.
+   *
+   * for all for all unspecified parameter values.
+   *
+   * - Step 1: Create pair of candidates, [Parameter Value, already determined parameter value]
+   *    - So the first candidate should be ["Chrome", "on"]
+   * - Step2: Check unsusedCount for ["Chrome" ,"on"] or ["on" and "Chrome"] by using the unused matrix shown in the 2nd half of initialize()
+   * - Step3: As a result of Step2, the highest scored parameter value will be selected.
+   *
+   * |unusedPairs|on   |off|Chrome|Firefox|Opera|Lynx|Windows|Mac|Linux|Member|Guest|
+   * |-----------|-----|---|------|-------|-----|----|-------|---|-----|------|-----|
+   * |on         |0    |  0| **1**|      1|    1|   1|      1|  1|    1|     1|    1|
+   * |off        |0    |  0|     1|      1|    1|   1|      1|  1|    1|     1|    1|
+   * |Chrome     |**0**|  0|     0|      0|    0|   0|      1|  1|    1|     1|    1|
+   * |Firefox    |0    |  0|     0|      0|    0|   0|      1|  1|    1|     1|    1|
+   * |Opera      |0    |  0|     0|      0|    0|   0|      1|  1|    1|     1|    1|
+   * |Lynx       |0    |  0|     0|      0|    0|   0|      1|  1|    1|     1|    1|
+   * |Windows    |0    |  0|     0|      0|    0|   0|      0|  0|    0|     1|    1|
+   * |Mac        |0    |  0|     0|      0|    0|   0|      0|  0|    0|     1|    1|
+   * |Linux      |0    |  0|     0|      0|    0|   0|      0|  0|    0|     1|    1|
+   * |Member     |0    |  0|     0|      0|    0|   0|      0|  0|    0|     0|    0|
+   * |Guest      |0    |  0|     0|      0|    0|   0|      0|  0|    0|     0|    0|
+   *
    */
   _testSet(best,ordering){
+    // initialize testSet
     let testSet = new Array();
-    let firstPos = this.parameterPositions[best[0]];
-    let secondPos = this.parameterPositions[best[1]];
-    for(let i = 0 ; i < this.numberParamterValues ; i++){
+    for(let i = 0 ; i < this.parameters.length ; i++){
       testSet.push(0);
     }
-    testSet[firstPos] = best[0];
-    testSet[secondPos] = best[1];
-    //console.log("Placed params " + best[0] + " " + best[1] + " at " + firstPos + " and " + secondPos);
-    for (let i = 2; i < this.numberParameters; ++i){
-      let currPos = ordering[i];
-      let possibleValues = this.legalValues[currPos];
-      let currentCount = 0;
+    // already determined by _best()
+    // already determined by _best()
+    testSet[this.parameterPositions[best[0]]] = best[0];
+    testSet[this.parameterPositions[best[1]]] = best[1];
+    //console.log(testSet);
+    //console.log("Placed params " + best[0] + " " + best[1] + " at " + this.parameterPositions[best[0]] + " and " + this.parameterPositions[best[1]]);
+    for (let i = 2; i < ordering.length; ++i){
+      let possibleValues = this.legalValues[ordering[i]];
       let highestCount = 0;
       let bestJ = 0;
-      for (let j = 0; j < possibleValues.length; ++j){
-        currentCount = 0;
+      possibleValues.forEach((possibleValue,j) => {
+        let currentCount = 0;
         for (let p = 0; p < i; ++p){
-          let candidatePair =  [possibleValues[j], testSet[ordering[p]] ]
+          let candidatePair =  [possibleValue, testSet[ordering[p]]];
           //console.log(candidatePair);
           if (this.unusedPairsSearch[candidatePair[0]][candidatePair[1]] == 1 ||
             this.unusedPairsSearch[candidatePair[1]][candidatePair[0]] == 1){
@@ -210,14 +417,18 @@ class Qict {
           highestCount = currentCount;
           bestJ = j;
         }
-      }
+      })
       //console.log("The best value is " + possibleValues[bestJ] + " with count = " + highestCount);
-      testSet[currPos] = possibleValues[bestJ];
+      testSet[ordering[i]] = possibleValues[bestJ];
     }
     return testSet;
   }
   /**
-   * _candidateSets - select candidate test sets
+   * PRIVATE:select candidate test sets
+   * @param {Array} testSet one test set
+   * @returns {Array} candidateSets test sets for candidate
+   * @desc
+   * Create candidateSets from testSet created by _testSet() for size of this.pool
    */
   _candidateSets(){
     let candidateSets = new Array();
@@ -230,23 +441,31 @@ class Qict {
     return candidateSets;
   }
   /**
-   * _NumberPairsCaptured - sum unused count for ts
-   * @param {object} ts
+   * PRIVATE:sum unused count for ts
+   * @param {Array} ts Test Sets
+   * @returns {number} pairsCaptured
+   * @desc
+   * Count all unused combinations(nC2) in the testSet.
    */
   _NumberPairsCaptured(ts){
-    let ans = 0;
+    let pairsCaptured = 0;
     for (let i = 0; i <= ts.length - 2; ++i){
       for (let j = i + 1; j <= ts.length - 1; ++j){
         if (this.unusedPairsSearch[ts[i]][ts[j]] == 1){
-          ++ans;
+          ++pairsCaptured;
         }
       }
     }
-    return ans;
+    return pairsCaptured;
   }
   /**
-   * _bestCandidate - select best candidate from candidateSets
+   * PRIVATE:select best candidate from candidateSets
    * @param {Array} candidateSets
+   * @returns {Array} bestCandidate best candidate from candidateSets
+   * @desc
+   * Count all unused combinations in the testSet by using _NumberPairsCaptured()
+   *
+   * The candidate with the highest total will be chosen.
    */
   _bestCandidate(candidateSets){
     let indexOfBestCandidate = 0;
@@ -264,12 +483,30 @@ class Qict {
     return candidateSets[indexOfBestCandidate];
   }
   /**
-   * _modifyUnused - remove the best from unusedParis and decrease unusedCOunts
-   * @param {object} bestTestSet
+   * PRIVATE:remove the best from unusedParis and decrease unusedCOunts
+   * @param {Array} bestCandidate Best test set
+   * @desc
+   *
+   * For example.
+   * ["on", "Chrome", "Windows", "Member" ]
+   * If so, I'd like to see the entire combination of
+   *
+   * - ["on", "Chrome"]
+   * - ["on", "Windows"]
+   * - ["on", "Member"]
+   * - ["Chrome", "Windows"]
+   * - ["Chrome", "Member"]
+   * - ["Windows", "Member"]
+   *
+   *   The unusedCount is decremented
+   *
+   *   The relevant part of unusedPairsSearch is set to 0
+   *
+   *   Finally the relevant pair of unusedPairs will be removed.
    */
   _modifyUnused(bestTestSet){
-    for (let i = 0; i <= this.numberParameters - 2; ++i){
-      for (let j = i + 1; j <= this.numberParameters - 1; ++j){
+    for (let i = 0; i <= this.parameters.length - 2; ++i){
+      for (let j = i + 1; j <= this.parameters.length - 1; ++j){
         let v1 = bestTestSet[i];
         let v2 = bestTestSet[j];
         //console.log("Decrementing the unused counts for " + v1 + " and " + v2);
@@ -287,4 +524,9 @@ class Qict {
     }
   }
 }
-module.exports = Qict;
+
+if (typeof module !== 'undefined' && typeof module.exports !== 'undefined'){
+  module.exports = Qict;
+} else {
+  window.Qict = Qict;
+}

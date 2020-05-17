@@ -1,12 +1,12 @@
 {
   "name": "qict",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "A pairwise test case generator implements from https://github.com/sylvainhalle/QICT",
   "main": "src/qict.js",
   "bin": "bin/index.js",
   "scripts": {
     "test": "npx jest",
-    "docs": "npx jsdoc -d docs src/qict.js"
+    "docs": "npx jsdoc2md -c jsdoc.conf.json src/qict.js  > DOCS.md"
   },
   "repository": {
     "type": "git",
@@ -25,7 +25,7 @@
   "homepage": "https://freddiefujiwara.github.io/node-qict/",
   "devDependencies": {
     "jest": "^26.0.1",
-    "jsdoc": "^3.6.4"
+    "jsdoc-to-markdown": "^5.0.3"
   },
   "dependencies": {
     "commander": "^5.1.0"

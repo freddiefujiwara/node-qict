@@ -4,7 +4,7 @@ A pairwise test case generator implements from [QICT](https://github.com/sylvain
 
 Try it in your browser! [TRY IT NOW](https://freddiefujiwara.github.io/node-qict/#input)
 
-Document is [here](https://freddiefujiwara.github.io/node-qict/docs/Qict.html)
+Document is [here](https://github.com/freddiefujiwara/node-qict/blob/master/DOCS.md)
 
 # install
 ``` shell

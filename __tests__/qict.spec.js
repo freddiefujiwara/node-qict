@@ -10,7 +10,7 @@ describe('Qict', () => {
   it(' readFile(file) : can read all strings from file', () => {
     const q = new Qict();
     expect(q.readFile).toBeInstanceOf(Function);
-    q.readFile('__tests__/testData.txt');
+    expect(q.readFile('__tests__/testData.txt')).toBeInstanceOf(Qict);
     expect(q.contents).not.toBe("");
     // no such file or directory
     const t = () => {
@@ -23,44 +23,58 @@ describe('Qict', () => {
     const q = new Qict();
     q.readFile('__tests__/testData.txt');
     expect(q.initialize).toBeInstanceOf(Function);
-    q.initialize();
+    expect(q.initialize()).toBeInstanceOf(Qict);
     expect(q.parameters.length).toBe(4);
+    expect(q.parameters).toStrictEqual([
+      "Switch","Browser","OS","Membership"
+    ]);
     expect(q.parameterValues.length).toBe(11);
+    expect(q.parameterValues).toStrictEqual([
+      "on","off","Chrome","Firefox","Opera","Lynx","Windows","Mac","Linux","Member","Guest"
+    ]);
     expect(q.parameterPositions.length).toBe(11);
+    expect(q.parameterPositions).toStrictEqual([
+      0,0,
+      1,1,1,1,
+      2,2,2,
+      3,3
+    ]);
     expect(q.legalValues.length).toBe(4);
     expect(q.legalValues[0].length).toBe(2);
     expect(q.legalValues[1].length).toBe(4);
     expect(q.legalValues[2].length).toBe(3);
     expect(q.legalValues[3].length).toBe(2);
+    expect(q.legalValues).toStrictEqual([
+      [0,1],
+      [2,3,4,5],
+      [6,7,8],
+      [9,10]
+    ]);
     expect(q.unusedPairs.length).toBe(44);
+    expect(q.numberPairs).toBe(q.unusedPairs.length);
     expect(q.unusedPairsSearch.length).toBe(11);
-    expect(q.numberParameters).toBe(4);
-    expect(q.numberParameterValues).toBe(11);
-    expect(q.numberPairs).toBe(44);
-
-    const u = q.unusedPairsSearch.map((v) => {
-      return v.join(",");
-    })
-    expect(u).toStrictEqual(
-      ["0,0,1,1,1,1,1,1,1,1,1",
-        "0,0,1,1,1,1,1,1,1,1,1",
-        "0,0,0,0,0,0,1,1,1,1,1",
-        "0,0,0,0,0,0,1,1,1,1,1",
-        "0,0,0,0,0,0,1,1,1,1,1",
-        "0,0,0,0,0,0,1,1,1,1,1",
-        "0,0,0,0,0,0,0,0,0,1,1",
-        "0,0,0,0,0,0,0,0,0,1,1",
-        "0,0,0,0,0,0,0,0,0,1,1",
-        "0,0,0,0,0,0,0,0,0,0,0",
-        "0,0,0,0,0,0,0,0,0,0,0"]);
-    expect(q.unusedCounts).toStrictEqual([9,9,7,7,7,7,8,8,8,9,9])
+    expect(q.unusedPairsSearch).toStrictEqual([
+      [0,0,1,1,1,1,1,1,1,1,1],
+      [0,0,1,1,1,1,1,1,1,1,1],
+      [0,0,0,0,0,0,1,1,1,1,1],
+      [0,0,0,0,0,0,1,1,1,1,1],
+      [0,0,0,0,0,0,1,1,1,1,1],
+      [0,0,0,0,0,0,1,1,1,1,1],
+      [0,0,0,0,0,0,0,0,0,1,1],
+      [0,0,0,0,0,0,0,0,0,1,1],
+      [0,0,0,0,0,0,0,0,0,1,1],
+      [0,0,0,0,0,0,0,0,0,0,0],
+      [0,0,0,0,0,0,0,0,0,0,0]]);
+    expect(q.unusedCounts).toStrictEqual([
+      9,9,7,7,7,7,8,8,8,9,9
+    ])
   });
   it(' testSets() : can get testSets', () => {
     const q = new Qict();
     expect(q.testSets).toBeInstanceOf(Function);
-    q.readFile('__tests__/testData.txt');
-    q.initialize();
-    const testSets = q.testSets();
+    const testSets = q.readFile('__tests__/testData.txt')
+      .initialize()
+      .testSets();
     expect(testSets.length).toBe(12);
     /*
     expect(testSets).toStrictEqual([
@@ -84,8 +98,7 @@ describe('Qict', () => {
   it(' _best() : can select bestPair from unusedPairs', () => {
     const q = new Qict();
     expect(q._best).toBeInstanceOf(Function);
-    q.readFile('__tests__/testData.txt');
-    q.initialize();
+    q.readFile('__tests__/testData.txt').initialize();
     expect(q._best()).toStrictEqual([
       0,9
     ]);
@@ -99,13 +112,10 @@ describe('Qict', () => {
     expect(q.unusedCounts.length).toBe(0);
     expect(q.unusedPairs.length).toBe(0);
     expect(q.unusedPairsSearch.length).toBe(0);
-    expect(q.numberParameters).toBe(0);
-    expect(q.numberParameterValues).toBe(0);
     expect(q.numberPairs).toBe(0);
 
     expect(q._clean).toBeInstanceOf(Function);
-    q.readFile('__tests__/testData.txt');
-    q.initialize();
+    q.readFile('__tests__/testData.txt').initialize();
     q._clean();
 
     expect(q.parameters.length).toBe(0);
@@ -115,24 +125,22 @@ describe('Qict', () => {
     expect(q.unusedCounts.length).toBe(0);
     expect(q.unusedPairs.length).toBe(0);
     expect(q.unusedPairsSearch.length).toBe(0);
-    expect(q.numberParameters).toBe(0);
-    expect(q.numberParameterValues).toBe(0);
     expect(q.numberPairs).toBe(0);
   });
   it(' _ordering(best) : can order parameters propery ', () => {
     const q = new Qict();
     expect(q._ordering).toBeInstanceOf(Function);
-    q.readFile('__tests__/testData.txt');
-    q.initialize();
+    q.readFile('__tests__/testData.txt').initialize();
     const best = q._best();
     const ordering = q._ordering(best);
     expect(ordering.length).toBe(4);
+    expect(ordering[0]).toBe(0);
+    expect(ordering[1]).toBe(3);
   });
   it(' _testSet(best,ordering) : can select testSet', () => {
     const q = new Qict();
     expect(q._testSet).toBeInstanceOf(Function);
-    q.readFile('__tests__/testData.txt');
-    q.initialize();
+    q.readFile('__tests__/testData.txt').initialize();
     const best = q._best();
     const ordering = q._ordering(best);
     const testSet = q._testSet(best,ordering);
@@ -143,8 +151,7 @@ describe('Qict', () => {
   it(' _candidateSets() : can select candidateSets', () => {
     const q = new Qict();
     expect(q._candidateSets).toBeInstanceOf(Function);
-    q.readFile('__tests__/testData.txt');
-    q.initialize();
+    q.readFile('__tests__/testData.txt').initialize();
     const candidateSets = q._candidateSets();
     expect(candidateSets).toStrictEqual([
       [0,2,6,9],[0,2,6,9],
@@ -162,19 +169,17 @@ describe('Qict', () => {
   it(' _bestCandidate() : can select bestCandidate from candidateSets', () => {
     const q = new Qict();
     expect(q._bestCandidate).toBeInstanceOf(Function);
-    q.readFile('__tests__/testData.txt');
-    q.initialize();
+    q.readFile('__tests__/testData.txt').initialize();
     const candidateSets = q._candidateSets();
     const bestCandidate  = q._bestCandidate(candidateSets);
     expect(bestCandidate).toStrictEqual(
       [0,2,6,9]
     );
   });
-  it(' _modifyUnused(candidateSets) : can eliminate some data from unusedPair and unusedCounts', () => {
+  it(' _modifyUnused(bestCandidate) : can eliminate some data from unusedPair and unusedCounts', () => {
     const q = new Qict();
     expect(q._modifyUnused).toBeInstanceOf(Function);
-    q.readFile('__tests__/testData.txt');
-    q.initialize();
+    q.readFile('__tests__/testData.txt').initialize();
     const candidateSets = q._candidateSets();
     const bestCandidate = q._bestCandidate(candidateSets);
     q._modifyUnused(bestCandidate);
