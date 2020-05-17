@@ -4,7 +4,7 @@
 <p>This is a node-qict class. It's a pairwise test case generator inspired by https://github.com/sylvainhalle/QICT</p>
 
 **Kind**: global class  
-**Summary**: <p>set this.poolSize 20
+**Summary**: <p>set this.poolSize 20 and clean
 and clean</p>.  
 
 * [Qict](#Qict)
@@ -24,14 +24,14 @@ and clean</p>.
 <a name="new_Qict_new"></a>
 
 ### new Qict()
-<p>set this.poolSize 20
+<p>set this.poolSize 20 and clean
 and clean</p>
 
 <a name="Qict+readFile"></a>
 
 ### qict.readFile(file) ⇒ [<code>Qict</code>](#Qict)
-<p>When you want to output the pairwise of the folloing Parameters and Parameter Values
-The format of the input file should be as follows.</p>
+<p>When you want to output the pairwise of the folloing Parameters and Parameter Values</p>
+<p>The format of the input file should be as follows.</p>
 <table>
 <thead>
 <tr>
@@ -64,9 +64,9 @@ Browser: Chrome, Firefox, Opera, Lynx
 OS: Windows, Mac, Linux
 Membership: Member, Guest
 </code></pre>
-<p>The delimiter between Parameters and Parameter Values should be &quot;:&quot;
-and also Parameter Values is &quot;,&quot;
-Logic is super simple. From argument &quot;file&quot; to this.contents</p>
+<p>The delimiter between Parameters and Parameter Values should be &quot;:&quot;</p>
+<p>and also Parameter Values is &quot;,&quot;</p>
+<p>Logic is super simple. From argument &quot;file&quot; to this.contents</p>
 <ul>
 <li>Step1: Use readFileSync to read the whole contents from &quot;file&quot;</li>
 <li>Step2: Make it a string.</li>
@@ -76,8 +76,8 @@ Logic is super simple. From argument &quot;file&quot; to this.contents</p>
 <p>That's all</p>
 
 **Kind**: instance method of [<code>Qict</code>](#Qict)  
-**Summary**: <p>When you want to output the pairwise of the folloing Parameters and Parameter Values
-The format of the input file should be as follows.</p>  
+**Summary**: <p>When you want to output the pairwise of the folloing Parameters and Parameter Values</p>
+<p>The format of the input file should be as follows.</p>  
 **Returns**: [<code>Qict</code>](#Qict) - <p>this This object</p>  
 
 | Param | Type | Description |
@@ -87,10 +87,24 @@ The format of the input file should be as follows.</p>
 <a name="Qict+initialize"></a>
 
 ### qict.initialize() ⇒ [<code>Qict</code>](#Qict)
-<p>initialize all parameters</p>
+<p>This method can be divided into a first half and a second half.</p>
+<h4>1st Half</h4>
+<p>1st half recognizes contents to arameters and parameterValues</p>
+<ul>
+<li>Step1: Read line by line from this.contents</li>
+<li>Step2: Create a pair by splitting a line with a &quot;:&quot;</li>
+<li>Step3: Push pair[0]  to this.parameters</li>
+<li>Step4: Create an array by splitting the pair with &quot;,&quot;</li>
+<li>Step5: Push all values to this.parameterValues</li>
+</ul>
+<p>As the result this.parameters and this.parameterValues are the following</p>
+<pre class="prettyprint source lang-JavaScript"><code>this.parameters = [&quot;Switch&quot;,&quot;Browser&quot;,&quot;OS&quot;,&quot;Membership&quot;];
+this.parameterValues = [&quot;on&quot;,&quot;off&quot;,&quot;Chrome&quot;,&quot;Firefox&quot;,&quot;Opera&quot;,&quot;Lynx&quot;,&quot;Windows&quot;,&quot;Mac&quot;,&quot;Linux&quot;,&quot;Member&quot;,&quot;Guest&quot;];
+</code></pre>
+<h4>2nd Half</h4>
 
 **Kind**: instance method of [<code>Qict</code>](#Qict)  
-**Summary**: <p>initialize all parameters</p>.  
+**Summary**: This method can be divided into a first half and a second half.  
 **Returns**: [<code>Qict</code>](#Qict) - <p>this This object</p>  
 **Access**: public  
 <a name="Qict+testSets"></a>

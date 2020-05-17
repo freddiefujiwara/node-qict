@@ -3,7 +3,7 @@
  */
 class Qict {
   /**
-   * set this.poolSize 20
+   * set this.poolSize 20 and clean
    * and clean
    * @constructor
    */
@@ -17,6 +17,7 @@ class Qict {
    * @returns {Qict} this This object
    * @desc
    * When you want to output the pairwise of the folloing Parameters and Parameter Values
+   *
    * The format of the input file should be as follows.
    *
    * |Parameter |Parameter Values             |
@@ -35,7 +36,9 @@ class Qict {
    * ```
    *
    * The delimiter between Parameters and Parameter Values should be ":"
+   *
    * and also Parameter Values is ","
+   *
    * Logic is super simple. From argument "file" to this.contents
    * - Step1: Use readFileSync to read the whole contents from "file"
    * - Step2: Make it a string.
@@ -53,6 +56,24 @@ class Qict {
    * initialize all parameters
    * @public
    * @returns {Qict} this This object
+   * @desc
+   * This method can be divided into a first half and a second half.
+   * #### 1st Half
+   * 1st half recognizes contents to arameters and parameterValues
+   * - Step1: Read line by line from this.contents
+   * - Step2: Create a pair by splitting a line with a ":"
+   * - Step3: Push pair[0]  to this.parameters
+   * - Step4: Create an array by splitting the pair with ","
+   * - Step5: Push all values to this.parameterValues
+   *
+   * As the result this.parameters and this.parameterValues are the following
+   *
+   * ```JavaScript
+   * this.parameters = ["Switch","Browser","OS","Membership"];
+   * this.parameterValues = ["on","off","Chrome","Firefox","Opera","Lynx","Windows","Mac","Linux","Member","Guest"];
+   * ```
+   *
+   * #### 2nd Half
    */
   initialize(){
     this._clean();
