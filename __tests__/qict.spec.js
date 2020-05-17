@@ -7,36 +7,7 @@ describe('Qict', () => {
     expect(q).toBeInstanceOf(Qict);
     expect(q.poolSize).toBe(20);
   });
-  it(' _clean() : can clean all parameters', () => {
-    const q = new Qict();
-    expect(q.parameters.length).toBe(0);
-    expect(q.parameterValues.length).toBe(0);
-    expect(q.parameterPositions.length).toBe(0);
-    expect(q.legalValues.length).toBe(0);
-    expect(q.unusedCounts.length).toBe(0);
-    expect(q.unusedPairs.length).toBe(0);
-    expect(q.unusedPairsSearch.length).toBe(0);
-    expect(q.numberParameters).toBe(0);
-    expect(q.numberParameterValues).toBe(0);
-    expect(q.numberPairs).toBe(0);
-
-    expect(q._clean).toBeInstanceOf(Function);
-    q.readFile('__tests__/testData.txt');
-    q.initialize();
-    q._clean();
-
-    expect(q.parameters.length).toBe(0);
-    expect(q.parameterValues.length).toBe(0);
-    expect(q.parameterPositions.length).toBe(0);
-    expect(q.legalValues.length).toBe(0);
-    expect(q.unusedCounts.length).toBe(0);
-    expect(q.unusedPairs.length).toBe(0);
-    expect(q.unusedPairsSearch.length).toBe(0);
-    expect(q.numberParameters).toBe(0);
-    expect(q.numberParameterValues).toBe(0);
-    expect(q.numberPairs).toBe(0);
-  });
-  it(' readFile() : can read all strings from file', () => {
+  it(' readFile(file) : can read all strings from file', () => {
     const q = new Qict();
     expect(q.readFile).toBeInstanceOf(Function);
     q.readFile('__tests__/testData.txt');
@@ -119,7 +90,36 @@ describe('Qict', () => {
       0,9
     ]);
   });
-  it(' _ordering() : can order parameters propery ', () => {
+  it(' _clean() : can clean all parameters', () => {
+    const q = new Qict();
+    expect(q.parameters.length).toBe(0);
+    expect(q.parameterValues.length).toBe(0);
+    expect(q.parameterPositions.length).toBe(0);
+    expect(q.legalValues.length).toBe(0);
+    expect(q.unusedCounts.length).toBe(0);
+    expect(q.unusedPairs.length).toBe(0);
+    expect(q.unusedPairsSearch.length).toBe(0);
+    expect(q.numberParameters).toBe(0);
+    expect(q.numberParameterValues).toBe(0);
+    expect(q.numberPairs).toBe(0);
+
+    expect(q._clean).toBeInstanceOf(Function);
+    q.readFile('__tests__/testData.txt');
+    q.initialize();
+    q._clean();
+
+    expect(q.parameters.length).toBe(0);
+    expect(q.parameterValues.length).toBe(0);
+    expect(q.parameterPositions.length).toBe(0);
+    expect(q.legalValues.length).toBe(0);
+    expect(q.unusedCounts.length).toBe(0);
+    expect(q.unusedPairs.length).toBe(0);
+    expect(q.unusedPairsSearch.length).toBe(0);
+    expect(q.numberParameters).toBe(0);
+    expect(q.numberParameterValues).toBe(0);
+    expect(q.numberPairs).toBe(0);
+  });
+  it(' _ordering(best) : can order parameters propery ', () => {
     const q = new Qict();
     expect(q._ordering).toBeInstanceOf(Function);
     q.readFile('__tests__/testData.txt');
@@ -128,7 +128,7 @@ describe('Qict', () => {
     const ordering = q._ordering(best);
     expect(ordering.length).toBe(4);
   });
-  it(' _testSet() : can select testSet', () => {
+  it(' _testSet(best,ordering) : can select testSet', () => {
     const q = new Qict();
     expect(q._testSet).toBeInstanceOf(Function);
     q.readFile('__tests__/testData.txt');
@@ -170,7 +170,7 @@ describe('Qict', () => {
       [0,2,6,9]
     );
   });
-  it(' _modifyUnused() : can eliminate some data from unusedPair and unusedCounts', () => {
+  it(' _modifyUnused(candidateSets) : can eliminate some data from unusedPair and unusedCounts', () => {
     const q = new Qict();
     expect(q._modifyUnused).toBeInstanceOf(Function);
     q.readFile('__tests__/testData.txt');

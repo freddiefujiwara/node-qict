@@ -1,12 +1,25 @@
+/*
+ * @classdesc This is a node-qict class. It's a pairwise test case generator inspired by https://github.com/sylvainhalle/QICT
+ */
 class Qict {
+  /*
+   * @constructor
+   */
   constructor(file){
     this.poolSize = 20;
     this._clean();
   }
+  /*
+   * readFile - store content from file
+   * @param {string} file - target File
+   */
   readFile(file){
     const fs = require('fs');
     this.contents = fs.readFileSync(file, 'utf8').trim();
   }
+  /*
+   * initialize - initialize all parameters
+   */
   initialize(){
     this._clean();
     //readlines
@@ -62,6 +75,10 @@ class Qict {
       ++this.unusedCounts[a[1]];
     })
   }
+  /*
+   * testSets - compute test sets
+   * @return {object} - generated test sets
+   */
   testSets(){
     let testSets = new Array();
     while(this.unusedPairs.length > 0){
@@ -72,6 +89,10 @@ class Qict {
     }
     return testSets;
   }
+  /*
+   * printResult - print test sets to console
+   * @param {object} testSets - generated test sets
+   */
   printResult(testSets){
     console.log(`- There are ${this.numberParameters} parameters`);
     console.log(`- There are ${this.numberParameterValues} parameter values`);
@@ -94,6 +115,9 @@ class Qict {
     }
     console.log("\nEnd");
   }
+  /*
+   * _clean - clean up all parameters
+   */
   _clean(){
     this.parameters = new Array();
     this.parameterValues = new Array();
@@ -106,6 +130,10 @@ class Qict {
     this.numberParameterValues = 0;
     this.numberPairs = 0;
   }
+  /*
+   * _best - select best parameter pair
+   * @return {object} best pair
+   */
   _best(){
     let bestWeight = 0;
     let indexOfBestPair = 0;
@@ -119,6 +147,10 @@ class Qict {
     });
     return this.unusedPairs[indexOfBestPair];
   }
+  /*
+   * _ordering - order parameters
+   * @param {object} best pair
+   */
   _ordering(best){
     let ordering = new Array();
     let firstPos = this.parameterPositions[best[0]];
@@ -140,6 +172,11 @@ class Qict {
     }
     return ordering;
   }
+  /*
+   * _testSet - select one test set
+   * @param {object} best
+   * @param {Array} ordering
+   */
   _testSet(best,ordering){
     let testSet = new Array();
     let firstPos = this.parameterPositions[best[0]];
@@ -179,6 +216,9 @@ class Qict {
     }
     return testSet;
   }
+  /*
+   * _candidateSets - select candidate test sets
+   */
   _candidateSets(){
     let candidateSets = new Array();
     for(let candidate = 0 ; candidate < this.poolSize ; candidate++){
@@ -189,6 +229,10 @@ class Qict {
     }
     return candidateSets;
   }
+  /*
+   * _NumberPairsCaptured - sum unused count for ts
+   * @param {object} ts
+   */
   _NumberPairsCaptured(ts){
     let ans = 0;
     for (let i = 0; i <= ts.length - 2; ++i){
@@ -200,6 +244,10 @@ class Qict {
     }
     return ans;
   }
+  /*
+   * _bestCandidate - select best candidate from candidateSets
+   * @param {Array} candidateSets
+   */
   _bestCandidate(candidateSets){
     let indexOfBestCandidate = 0;
     let mostPairsCaptured = 0;
@@ -215,6 +263,10 @@ class Qict {
     //console.log(candidateSets[indexOfBestCandidate]);
     return candidateSets[indexOfBestCandidate];
   }
+  /*
+   * _modifyUnused - remove the best from unusedParis and decrease unusedCOunts
+   * @param {object} bestTestSet
+   */
   _modifyUnused(bestTestSet){
     for (let i = 0; i <= this.numberParameters - 2; ++i){
       for (let j = i + 1; j <= this.numberParameters - 1; ++j){

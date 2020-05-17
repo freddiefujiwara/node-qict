@@ -5,7 +5,8 @@
   "main": "src/qict.js",
   "bin": "bin/index.js",
   "scripts": {
-    "test": "npx jest"
+    "test": "npx jest",
+    "docs": "npx jsdoc -d docs src/qict.js"
   },
   "repository": {
     "type": "git",
@@ -23,7 +24,8 @@
   },
   "homepage": "https://freddiefujiwara.github.io/node-qict/",
   "devDependencies": {
-    "jest": "^26.0.1"
+    "jest": "^26.0.1",
+    "jsdoc": "^3.6.4"
   },
   "dependencies": {
     "commander": "^5.1.0"
