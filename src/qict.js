@@ -124,9 +124,9 @@ class Qict {
    * |Mac    |8           |
    * |Linux  |8           |
    * |Member |9           |
-  * |Guest  |9           |
-    *
-    */
+   * |Guest  |9           |
+   *
+   */
   initialize(){
     this._clean();
     //
@@ -192,6 +192,15 @@ class Qict {
    * compute test sets
    * @returns {Array} testSets Generated test sets
    * @public
+   * @desc
+   * this is all combination of _candidateSets,_bestCan and _modifyUnused
+   * while unusedPairs > 0
+   *
+   * - Step1: compute candidateSets
+   * - Step2: select bestCandidate
+   * - Step3: push Step2) to testSets
+   * - Step4: modify unusedPairs and unusedCounts
+   *
    */
   testSets(){
     let testSets = new Array();
