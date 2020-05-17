@@ -56,7 +56,7 @@ print test sets to console
 
 | Param | Type | Description |
 | --- | --- | --- |
-| testSets | <code>object</code> | Generated test sets |
+| testSets | <code>Array</code> | Generated test sets |
 
 <a name="Qict+_best"></a>
 
@@ -75,7 +75,7 @@ PRIVATE:order parameters
 
 | Param | Type | Description |
 | --- | --- | --- |
-| best | <code>object</code> | pair |
+| best | <code>Array</code> | pair |
 
 <a name="Qict+_testSet"></a>
 
@@ -87,7 +87,7 @@ PRIVATE:select one test set
 
 | Param | Type |
 | --- | --- |
-| best | <code>object</code> | 
+| best | <code>Array</code> | 
 
 <a name="Qict+_candidateSets"></a>
 
@@ -111,7 +111,7 @@ PRIVATE:sum unused count for ts
 
 | Param | Type | Description |
 | --- | --- | --- |
-| ts | <code>object</code> | Test Sets |
+| ts | <code>Array</code> | Test Sets |
 
 <a name="Qict+_bestCandidate"></a>
 
@@ -134,5 +134,5 @@ PRIVATE:remove the best from unusedParis and decrease unusedCOunts
 
 | Param | Type | Description |
 | --- | --- | --- |
-| best | <code>object</code> | Best test set |
+| best | <code>Array</code> | Best test set |
 

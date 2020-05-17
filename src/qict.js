@@ -98,7 +98,7 @@ class Qict {
   }
   /**
    * print test sets to console
-   * @param {object} testSets Generated test sets
+   * @param {Array} testSets Generated test sets
    * @public
    */
   printResult(testSets){
@@ -158,7 +158,7 @@ class Qict {
   }
   /**
    * PRIVATE:order parameters
-   * @param {object} best pair
+   * @param {Array} best pair
    * @returns {Array} ordering shuffled orders
    */
   _ordering(best){
@@ -184,7 +184,7 @@ class Qict {
   }
   /**
    * PRIVATE:select one test set
-   * @param {object} best
+   * @param {Array} best
    * @returns {Array} testSet one test set
    */
   _testSet(best,ordering){
@@ -243,7 +243,7 @@ class Qict {
   }
   /**
    * PRIVATE:sum unused count for ts
-   * @param {object} ts Test Sets
+   * @param {Array} ts Test Sets
    * @returns {number} ans
    */
   _NumberPairsCaptured(ts){
@@ -279,7 +279,7 @@ class Qict {
   }
   /**
    * PRIVATE:remove the best from unusedParis and decrease unusedCOunts
-   * @param {object} best Best test set
+   * @param {Array} best Best test set
    */
   _modifyUnused(bestTestSet){
     for (let i = 0; i <= this.numberParameters - 2; ++i){
