@@ -415,6 +415,8 @@ class Qict {
    * PRIVATE:select candidate test sets
    * @param {Array} testSet one test set
    * @returns {Array} candidateSets test sets for candidate
+   * @desc
+   * Create candidateSets from testSet created by _testSet() for size of this.pool
    */
   _candidateSets(){
     let candidateSets = new Array();
@@ -429,23 +431,29 @@ class Qict {
   /**
    * PRIVATE:sum unused count for ts
    * @param {Array} ts Test Sets
-   * @returns {number} ans
+   * @returns {number} pairsCaptured
+   * @desc
+   * Count all unused combinations(nC2) in the testSet.
    */
   _NumberPairsCaptured(ts){
-    let ans = 0;
+    let pairsCaptured = 0;
     for (let i = 0; i <= ts.length - 2; ++i){
       for (let j = i + 1; j <= ts.length - 1; ++j){
         if (this.unusedPairsSearch[ts[i]][ts[j]] == 1){
-          ++ans;
+          ++pairsCaptured;
         }
       }
     }
-    return ans;
+    return pairsCaptured;
   }
   /**
    * PRIVATE:select best candidate from candidateSets
    * @param {Array} candidateSets
    * @returns {Array} bestCandidate best candidate from candidateSets
+   * @desc
+   * Count all unused combinations in the testSet by using _NumberPairsCaptured()
+   *
+   * The candidate with the highest total will be chosen.
    */
   _bestCandidate(candidateSets){
     let indexOfBestCandidate = 0;
@@ -465,6 +473,23 @@ class Qict {
   /**
    * PRIVATE:remove the best from unusedParis and decrease unusedCOunts
    * @param {Array} best Best test set
+   * @desc
+   *
+   * For example.
+   * ["on", "Chrome", "Windows", "Member" ]
+   * If so, I'd like to see the entire combination of
+   * - ["on", "Chrome"]
+   * - ["on", "Windows"]
+   * - ["on", "Member"]
+   * - ["Chrome", "Windows"]
+   * - ["Chrome", "Member"]
+   * - ["Windows", "Member"]
+   *
+   *   The unusedCount is decremented
+   *
+   *   The relevant part of unusedPairsSearch is set to 0
+   *
+   *   Finally the relevant pair of unusedPairs will be removed.
    */
   _modifyUnused(bestTestSet){
     for (let i = 0; i <= this.parameters.length - 2; ++i){

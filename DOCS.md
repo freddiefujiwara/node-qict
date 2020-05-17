@@ -644,7 +644,7 @@ this.parameterPositions = [
 <a name="Qict+_candidateSets"></a>
 
 ### qict.\_candidateSets(testSet) ⇒ <code>Array</code>
-<p>PRIVATE:select candidate test sets</p>
+<p>Create candidateSets from testSet created by _testSet() for size of this.pool</p>
 
 **Kind**: instance method of [<code>Qict</code>](#Qict)  
 **Returns**: <code>Array</code> - <p>candidateSets test sets for candidate</p>  
@@ -656,10 +656,10 @@ this.parameterPositions = [
 <a name="Qict+_NumberPairsCaptured"></a>
 
 ### qict.\_NumberPairsCaptured(ts) ⇒ <code>number</code>
-<p>PRIVATE:sum unused count for ts</p>
+<p>Count all unused combinations(nC2) in the testSet.</p>
 
 **Kind**: instance method of [<code>Qict</code>](#Qict)  
-**Returns**: <code>number</code> - <p>ans</p>  
+**Returns**: <code>number</code> - <p>pairsCaptured</p>  
 
 | Param | Type | Description |
 | --- | --- | --- |
@@ -668,7 +668,8 @@ this.parameterPositions = [
 <a name="Qict+_bestCandidate"></a>
 
 ### qict.\_bestCandidate(candidateSets) ⇒ <code>Array</code>
-<p>PRIVATE:select best candidate from candidateSets</p>
+<p>Count all unused combinations in the testSet by using _NumberPairsCaptured()</p>
+<p>The candidate with the highest total will be chosen.</p>
 
 **Kind**: instance method of [<code>Qict</code>](#Qict)  
 **Returns**: <code>Array</code> - <p>bestCandidate best candidate from candidateSets</p>  
@@ -680,7 +681,32 @@ this.parameterPositions = [
 <a name="Qict+_modifyUnused"></a>
 
 ### qict.\_modifyUnused(best)
-<p>PRIVATE:remove the best from unusedParis and decrease unusedCOunts</p>
+<p>For example.
+[&quot;on&quot;, &quot;Chrome&quot;, &quot;Windows&quot;, &quot;Member&quot; ]
+If so, I'd like to see the entire combination of</p>
+<ul>
+<li>
+<p>[&quot;on&quot;, &quot;Chrome&quot;]</p>
+</li>
+<li>
+<p>[&quot;on&quot;, &quot;Windows&quot;]</p>
+</li>
+<li>
+<p>[&quot;on&quot;, &quot;Member&quot;]</p>
+</li>
+<li>
+<p>[&quot;Chrome&quot;, &quot;Windows&quot;]</p>
+</li>
+<li>
+<p>[&quot;Chrome&quot;, &quot;Member&quot;]</p>
+</li>
+<li>
+<p>[&quot;Windows&quot;, &quot;Member&quot;]</p>
+<p>The unusedCount is decremented</p>
+<p>The relevant part of unusedPairsSearch is set to 0</p>
+<p>Finally the relevant pair of unusedPairs will be removed.</p>
+</li>
+</ul>
 
 **Kind**: instance method of [<code>Qict</code>](#Qict)  
 
