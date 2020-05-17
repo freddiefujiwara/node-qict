@@ -83,7 +83,7 @@ class Qict {
   }
   /**
    * compute test sets
-   * @returns {object} testSets Generated test sets
+   * @returns {Array} testSets Generated test sets
    * @public
    */
   testSets(){
@@ -124,7 +124,7 @@ class Qict {
     console.log("\nEnd");
   }
   /**
-   * clean up all parameters
+   * PRIVATE:clean up all parameters
    * @private
    */
   _clean(){
@@ -140,9 +140,8 @@ class Qict {
     this.numberPairs = 0;
   }
   /**
-   * select best parameter pair
-   * @returns {object} best Best pair
-   * @private
+   * PRIVATE:select best parameter pair
+   * @returns {Array} best Best pair
    */
   _best(){
     let bestWeight = 0;
@@ -158,9 +157,9 @@ class Qict {
     return this.unusedPairs[indexOfBestPair];
   }
   /**
-   * order parameters
+   * PRIVATE:order parameters
    * @param {object} best pair
-   * @private
+   * @returns {Array} ordering shuffled orders
    */
   _ordering(best){
     let ordering = new Array();
@@ -184,10 +183,9 @@ class Qict {
     return ordering;
   }
   /**
-   * select one test set
+   * PRIVATE:select one test set
    * @param {object} best
-   * @param {Array} ordering
-   * @private
+   * @returns {Array} testSet one test set
    */
   _testSet(best,ordering){
     let testSet = new Array();
@@ -229,8 +227,9 @@ class Qict {
     return testSet;
   }
   /**
-   * select candidate test sets
-   * @private
+   * PRIVATE:select candidate test sets
+   * @param {Array} testSet one test set
+   * @returns {Array} candidateSets test sets for candidate
    */
   _candidateSets(){
     let candidateSets = new Array();
@@ -243,9 +242,9 @@ class Qict {
     return candidateSets;
   }
   /**
-   * sum unused count for ts
+   * PRIVATE:sum unused count for ts
    * @param {object} ts Test Sets
-   * @private
+   * @returns {number} ans
    */
   _NumberPairsCaptured(ts){
     let ans = 0;
@@ -259,9 +258,9 @@ class Qict {
     return ans;
   }
   /**
-   * select best candidate from candidateSets
+   * PRIVATE:select best candidate from candidateSets
    * @param {Array} candidateSets
-   * @private
+   * @returns {Array} bestCandidate best candidate from candidateSets
    */
   _bestCandidate(candidateSets){
     let indexOfBestCandidate = 0;
@@ -279,9 +278,8 @@ class Qict {
     return candidateSets[indexOfBestCandidate];
   }
   /**
-   * remove the best from unusedParis and decrease unusedCOunts
+   * PRIVATE:remove the best from unusedParis and decrease unusedCOunts
    * @param {object} best Best test set
-   * @private
    */
   _modifyUnused(bestTestSet){
     for (let i = 0; i <= this.numberParameters - 2; ++i){
