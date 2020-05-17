@@ -86,6 +86,7 @@ class Qict {
    * #### 2nd Half
    *
    * |       |on|off|Chrome|Firefox|Opera|Lynx|Windows|Mac|Linux|Member|Guest|
+   * |-------|--|---|------|-------|-----|----|-------|---|-----|------|-----|
    * |on     |0 |  0|     1|      1|    1|   1|      1|  1|    1|     1|    1|
    * |off    |0 |  0|     1|      1|    1|   1|      1|  1|    1|     1|    1|
    * |Chrome |0 |  0|     0|      0|    0|   0|      0|  1|    1|     1|    1|
@@ -97,7 +98,9 @@ class Qict {
    * |Linux  |0 |  0|     0|      0|    0|   0|      0|  0|    0|     1|    1|
    * |Member |0 |  0|     0|      0|    0|   0|      0|  0|    0|     0|    0|
    * |Guest  |0 |  0|     0|      0|    0|   0|      0|  0|    0|     0|    0|
+   *
    */
+
   initialize(){
     this._clean();
     //readlines
