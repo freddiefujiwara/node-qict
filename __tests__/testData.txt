@@ -1,4 +1,6 @@
-Switch: on, off
-Browser: Chrome, Firefox, Opera, Lynx
+#comment out
+ Switch: on, off
+Browser : Chrome, Firefox, Opera, Lynx
+Invalid:
 OS: Windows, Mac, Linux
 Membership: Member, Guest

@@ -60,7 +60,7 @@ class Qict {
    * @desc
    * This method can be divided into a first half and a second half.
    * #### 1st Half
-   * 1st half recognizes contents to parameters,parameterValues and legalValues
+   * 1st half recognizes contents to parameters,parameterValues,legalValues and parameterPositions
    *
    * so everything in this.legalValues has been replaced with numbers for ease of use.
    *
@@ -69,9 +69,10 @@ class Qict {
    * - Step3: Push pair[0]  to this.parameters
    * - Step4: Create an array by splitting the pair with ","
    * - Step5: Push all values to this.parameterValues
-   * - Step6: create legalValues
+   * - Step6: Create legalValues
+   * - Step7: Calculate parameterPositions
    *
-   * As the result this.parameters,this.parameterValues and this.legalValues are the following
+   * As the result this.parameters,this.parameterValues,this.legalValues and this.parameterPositions are the following
    *
    * ```JavaScript
    * this.parameters = ["Switch","Browser","OS","Membership"];
@@ -82,6 +83,12 @@ class Qict {
    *  [6,7,8],
    *  [9,10]
    * ];
+   * this.parameterPositions = [
+   *  0,0,
+   *  1,1,1,1,
+   *  2,2,2,
+   *  3,3
+   * ];
    * ```
    *
    * #### 2nd Half
@@ -89,21 +96,21 @@ class Qict {
    *
    * All possible combinations of Parameter Values are listed below
    *
-   * |       |on|off|Chrome|Firefox|Opera|Lynx|Windows|Mac|Linux|Member|Guest|
-   * |-------|--|---|------|-------|-----|----|-------|---|-----|------|-----|
-   * |on     |0 |  0|     1|      1|    1|   1|      1|  1|    1|     1|    1|
-   * |off    |0 |  0|     1|      1|    1|   1|      1|  1|    1|     1|    1|
-   * |Chrome |0 |  0|     0|      0|    0|   0|      1|  1|    1|     1|    1|
-   * |Firefox|0 |  0|     0|      0|    0|   0|      1|  1|    1|     1|    1|
-   * |Opera  |0 |  0|     0|      0|    0|   0|      1|  1|    1|     1|    1|
-   * |Lynx   |0 |  0|     0|      0|    0|   0|      1|  1|    1|     1|    1|
-   * |Windows|0 |  0|     0|      0|    0|   0|      1|  1|    1|     1|    1|
-   * |Mac    |0 |  0|     0|      0|    0|   0|      0|  0|    0|     1|    1|
-   * |Linux  |0 |  0|     0|      0|    0|   0|      0|  0|    0|     1|    1|
-   * |Member |0 |  0|     0|      0|    0|   0|      0|  0|    0|     0|    0|
-   * |Guest  |0 |  0|     0|      0|    0|   0|      0|  0|    0|     0|    0|
+   * |unusedPairs|on|off|Chrome|Firefox|Opera|Lynx|Windows|Mac|Linux|Member|Guest|
+   * |-----------|--|---|------|-------|-----|----|-------|---|-----|------|-----|
+   * |on         |0 |  0|     1|      1|    1|   1|      1|  1|    1|     1|    1|
+   * |off        |0 |  0|     1|      1|    1|   1|      1|  1|    1|     1|    1|
+   * |Chrome     |0 |  0|     0|      0|    0|   0|      1|  1|    1|     1|    1|
+   * |Firefox    |0 |  0|     0|      0|    0|   0|      1|  1|    1|     1|    1|
+   * |Opera      |0 |  0|     0|      0|    0|   0|      1|  1|    1|     1|    1|
+   * |Lynx       |0 |  0|     0|      0|    0|   0|      1|  1|    1|     1|    1|
+   * |Windows    |0 |  0|     0|      0|    0|   0|      0|  0|    0|     1|    1|
+   * |Mac        |0 |  0|     0|      0|    0|   0|      0|  0|    0|     1|    1|
+   * |Linux      |0 |  0|     0|      0|    0|   0|      0|  0|    0|     1|    1|
+   * |Member     |0 |  0|     0|      0|    0|   0|      0|  0|    0|     0|    0|
+   * |Guest      |0 |  0|     0|      0|    0|   0|      0|  0|    0|     0|    0|
    *
-   * So conclusion, the number of times each Parameter Values appears is as follows
+   * So as you can calculate easily. the number of times each Parameter Values appears is as follows
    *
    * |       |unusedCounts|
    * |-------|------------|
@@ -117,31 +124,46 @@ class Qict {
    * |Mac    |8           |
    * |Linux  |8           |
    * |Member |9           |
-   * |Guest  |9           |
-   *
-   */
+  * |Guest  |9           |
+    *
+    */
   initialize(){
     this._clean();
-    //readlines
+    //
+    //1st half recognizes contents to parameters,parameterValues,legalValues and parameterPositions
+    //
     let numberParameterValues = 0;
+    let p = 0;
     this.contents.split(/\r\n|\n|\r/).forEach((line) => {
-      //create pairs parameters: values
+      //simple validation of lines
       const pair = line.split(/:/);
-      //should be more than 2
+      //pair should be 2
       if(pair.length < 2){
         return;
       }
-      this.parameters.push(pair[0]);
+      //parameterValues should be more than 1
+      const parameterValues = pair[1].split(/,/);
+      if(parameterValues < 1){
+        return;
+      }
 
+      //parameter.ok
+      this.parameters.push(pair[0].trim());
       //values analysis
       let values = new Array();
-      pair[1].split(/,/).forEach((value) => {
+      parameterValues.forEach((value) => {
         values.push(numberParameterValues);
         this.parameterValues.push(value.trim());
+        this.parameterPositions[numberParameterValues] = p;
         numberParameterValues++;
       });
       this.legalValues.push(values)
+      p++;
     });
+    //
+    //2nd half calculates combinations
+    //
+    // initialize this.unusedParisSearch and this.unusedCounts
     for (let i = 0; i < this.parameterValues.length; ++i){
       let row = new Array();
       for (let j = 0; j < this.parameterValues.length; ++j){
@@ -150,30 +172,20 @@ class Qict {
       this.unusedPairsSearch.push(row);
       this.unusedCounts.push(0);
     }
+    // calculate this.unusedPairs,this.unusedParisSearch and this.unusedCounts
     for (let i = 0; i <= this.legalValues.length - 2; ++i){
       for (let j = i + 1; j <= this.legalValues.length - 1; ++j){
         for (let x = 0; x < this.legalValues[i].length; ++x) {
           for (let y = 0; y < this.legalValues[j].length; ++y) {
-            let pair = new Array();
-            pair.push(this.legalValues[i][x]);
-            pair.push(this.legalValues[j][y]);
-            this.unusedPairs.push(pair);
+            this.unusedPairs.push([this.legalValues[i][x], this.legalValues[j][y]]);
             this.unusedPairsSearch[this.legalValues[i][x]][this.legalValues[j][y]] = 1;
+            ++this.unusedCounts[this.legalValues[i][x]];
+            ++this.unusedCounts[this.legalValues[j][y]];
           }
         }
       }
     }
     this.numberPairs = this.unusedPairs.length;
-    let k = 0;
-    for (let i = 0; i < this.legalValues.length; ++i) {
-      this.legalValues[i].forEach(()=>{
-        this.parameterPositions[k++] = i;
-      })
-    }
-    this.unusedPairs.forEach((a) => {
-      ++this.unusedCounts[a[0]];
-      ++this.unusedCounts[a[1]];
-    })
     return this;
   }
   /**

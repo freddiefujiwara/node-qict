@@ -25,33 +25,49 @@ describe('Qict', () => {
     expect(q.initialize).toBeInstanceOf(Function);
     expect(q.initialize()).toBeInstanceOf(Qict);
     expect(q.parameters.length).toBe(4);
+    expect(q.parameters).toStrictEqual([
+      "Switch","Browser","OS","Membership"
+    ]);
     expect(q.parameterValues.length).toBe(11);
+    expect(q.parameterValues).toStrictEqual([
+      "on","off","Chrome","Firefox","Opera","Lynx","Windows","Mac","Linux","Member","Guest"
+    ]);
     expect(q.parameterPositions.length).toBe(11);
+    expect(q.parameterPositions).toStrictEqual([
+      0,0,
+      1,1,1,1,
+      2,2,2,
+      3,3
+    ]);
     expect(q.legalValues.length).toBe(4);
     expect(q.legalValues[0].length).toBe(2);
     expect(q.legalValues[1].length).toBe(4);
     expect(q.legalValues[2].length).toBe(3);
     expect(q.legalValues[3].length).toBe(2);
+    expect(q.legalValues).toStrictEqual([
+      [0,1],
+      [2,3,4,5],
+      [6,7,8],
+      [9,10]
+    ]);
     expect(q.unusedPairs.length).toBe(44);
+    expect(q.numberPairs).toBe(q.unusedPairs.length);
     expect(q.unusedPairsSearch.length).toBe(11);
-    expect(q.numberPairs).toBe(44);
-
-    const u = q.unusedPairsSearch.map((v) => {
-      return v.join(",");
-    })
-    expect(u).toStrictEqual(
-      ["0,0,1,1,1,1,1,1,1,1,1",
-        "0,0,1,1,1,1,1,1,1,1,1",
-        "0,0,0,0,0,0,1,1,1,1,1",
-        "0,0,0,0,0,0,1,1,1,1,1",
-        "0,0,0,0,0,0,1,1,1,1,1",
-        "0,0,0,0,0,0,1,1,1,1,1",
-        "0,0,0,0,0,0,0,0,0,1,1",
-        "0,0,0,0,0,0,0,0,0,1,1",
-        "0,0,0,0,0,0,0,0,0,1,1",
-        "0,0,0,0,0,0,0,0,0,0,0",
-        "0,0,0,0,0,0,0,0,0,0,0"]);
-    expect(q.unusedCounts).toStrictEqual([9,9,7,7,7,7,8,8,8,9,9])
+    expect(q.unusedPairsSearch).toStrictEqual([
+      [0,0,1,1,1,1,1,1,1,1,1],
+      [0,0,1,1,1,1,1,1,1,1,1],
+      [0,0,0,0,0,0,1,1,1,1,1],
+      [0,0,0,0,0,0,1,1,1,1,1],
+      [0,0,0,0,0,0,1,1,1,1,1],
+      [0,0,0,0,0,0,1,1,1,1,1],
+      [0,0,0,0,0,0,0,0,0,1,1],
+      [0,0,0,0,0,0,0,0,0,1,1],
+      [0,0,0,0,0,0,0,0,0,1,1],
+      [0,0,0,0,0,0,0,0,0,0,0],
+      [0,0,0,0,0,0,0,0,0,0,0]]);
+    expect(q.unusedCounts).toStrictEqual([
+      9,9,7,7,7,7,8,8,8,9,9
+    ])
   });
   it(' testSets() : can get testSets', () => {
     const q = new Qict();

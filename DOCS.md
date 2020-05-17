@@ -115,7 +115,7 @@ this.legalValues = [
 <table>
 <thead>
 <tr>
-<th></th>
+<th>unusedPairs</th>
 <th>on</th>
 <th>off</th>
 <th>Chrome</th>
@@ -222,9 +222,9 @@ this.legalValues = [
 <td>0</td>
 <td>0</td>
 <td>0</td>
-<td>1</td>
-<td>1</td>
-<td>1</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
 <td>1</td>
 <td>1</td>
 </tr>
@@ -286,7 +286,7 @@ this.legalValues = [
 </tr>
 </tbody>
 </table>
-<p>So conclusion, the number of times each Parameter Values appears is as follows</p>
+<p>So as you can calculate easily. the number of times each Parameter Values appears is as follows</p>
 <table>
 <thead>
 <tr>
