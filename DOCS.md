@@ -90,7 +90,7 @@ Membership: Member, Guest
 <p>This method can be divided into a first half and a second half.</p>
 <h4>1st Half</h4>
 <p>1st half recognizes contents to parameters,parameterValues and legalValues</p>
-<p>so everything has been replaced with numbers for ease of use.</p>
+<p>so everything in this.legalValues has been replaced with numbers for ease of use.</p>
 <ul>
 <li>Step1: Read line by line from this.contents</li>
 <li>Step2: Create a pair by splitting a line with a &quot;:&quot;</li>
@@ -110,6 +110,18 @@ this.legalValues = [
 ];
 </code></pre>
 <h4>2nd Half</h4>
+<p>|       |on|off|Chrome|Firefox|Opera|Lynx|Windows|Mac|Linux|Member|Guest|
+|on     |0 |  0|     1|      1|    1|   1|      1|  1|    1|     1|    1|
+|off    |0 |  0|     1|      1|    1|   1|      1|  1|    1|     1|    1|
+|Chrome |0 |  0|     0|      0|    0|   0|      0|  1|    1|     1|    1|
+|Firefox|0 |  0|     0|      0|    0|   0|      0|  1|    1|     1|    1|
+|Opera  |0 |  0|     0|      0|    0|   0|      0|  1|    1|     1|    1|
+|Lynx   |0 |  0|     0|      0|    0|   0|      0|  1|    1|     1|    1|
+|Windows|0 |  0|     0|      0|    0|   0|      0|  1|    1|     1|    1|
+|Mac    |0 |  0|     0|      0|    0|   0|      0|  0|    0|     1|    1|
+|Linux  |0 |  0|     0|      0|    0|   0|      0|  0|    0|     1|    1|
+|Member |0 |  0|     0|      0|    0|   0|      0|  0|    0|     0|    0|
+|Guest  |0 |  0|     0|      0|    0|   0|      0|  0|    0|     0|    0|</p>
 
 **Kind**: instance method of [<code>Qict</code>](#Qict)  
 **Summary**: This method can be divided into a first half and a second half.  
