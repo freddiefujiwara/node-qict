@@ -14,7 +14,7 @@ $ npm i -g qict
 ```shell
 $ cat   __tests__/testData.txt
 Switch: on, off
-Browser: Chrome, Firefox, Safari, Opera
+Browser: Chrome, Firefox, Opera, Lynx
 OS: Windows, Mac, Linux
 Membership: Member, Guest
 ```
@@ -23,8 +23,8 @@ Membership: Member, Guest
 $ qict __tests__/testData.txt
 - There are 4 parameters
 - There are 11 parameter values
-- Parameter values
-  on off Chrome Firefox Safari Opera Windows Mac Linux Member Guest
+- Parameter values:
+  on off Chrome Firefox Opera Lynx Windows Mac Linux Member Guest
 - Legal values internal representation:
   * Parameter0: 0 1
   * Parameter1: 2 3 4 5
@@ -32,18 +32,20 @@ $ qict __tests__/testData.txt
   * Parameter3: 9 10
 - There are 44 pairs
 Result test sets:
-  0          on  Chrome Windows  Member
-  1         off  Chrome     Mac   Guest
-  2          on Firefox   Linux   Guest
-  3         off  Safari   Linux  Member
-  4         off   Opera Windows   Guest
-  5          on Firefox     Mac  Member
-  6          on  Safari Windows   Guest
-  7          on   Opera     Mac  Member
-  8          on  Chrome   Linux  Member
-  9         off Firefox Windows  Member
- 10          on  Safari     Mac  Member
- 11          on   Opera   Linux  Member
+
+  0     on  Chrome Windows  Member
+  1    off Firefox Windows   Guest
+  2    off   Opera     Mac  Member
+  3     on    Lynx   Linux   Guest
+  4     on  Chrome     Mac   Guest
+  5     on Firefox   Linux  Member
+  6    off    Lynx Windows  Member
+  7     on   Opera   Linux   Guest
+  8     on Firefox     Mac  Member
+  9    off  Chrome   Linux  Member
+ 10     on   Opera Windows  Member
+ 11     on    Lynx     Mac  Member
+
 End
 ```
 

@@ -1,4 +1,4 @@
 Switch: on, off
-Browser: Chrome, Firefox, Safari, Opera
+Browser: Chrome, Firefox, Opera, Lynx
 OS: Windows, Mac, Linux
 Membership: Member, Guest
