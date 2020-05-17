@@ -2,8 +2,9 @@
  * @classdesc This is a node-qict class. It's a pairwise test case generator inspired by https://github.com/sylvainhalle/QICT
  */
 class Qict {
-  /* set this.poolSize 20
-  /* and clean
+  /**
+   * set this.poolSize 20
+   * and clean
    * @constructor
    */
   constructor(file){
@@ -14,6 +15,15 @@ class Qict {
    * store content from file
    * @param {string} file Target File
    * @returns {Qict} this This object
+   * @desc
+   * It's simple. From argument "file" to this.contents
+   *
+   * - Step1: Use readFileSync to read the whole contents from "file"
+   * - Step2: Make it a string.
+   * - Step3: Do trim().
+   * - Step4: Fill all string in this.contents
+   *
+   *   That's all
    */
   readFile(file){
     const fs = require('fs');
