@@ -89,17 +89,25 @@ Membership: Member, Guest
 ### qict.initialize() ⇒ [<code>Qict</code>](#Qict)
 <p>This method can be divided into a first half and a second half.</p>
 <h4>1st Half</h4>
-<p>1st half recognizes contents to arameters and parameterValues</p>
+<p>1st half recognizes contents to parameters,parameterValues and legalValues</p>
+<p>so everything has been replaced with numbers for ease of use.</p>
 <ul>
 <li>Step1: Read line by line from this.contents</li>
 <li>Step2: Create a pair by splitting a line with a &quot;:&quot;</li>
 <li>Step3: Push pair[0]  to this.parameters</li>
 <li>Step4: Create an array by splitting the pair with &quot;,&quot;</li>
 <li>Step5: Push all values to this.parameterValues</li>
+<li>Step6: create legalValues</li>
 </ul>
-<p>As the result this.parameters and this.parameterValues are the following</p>
+<p>As the result this.parameters,this.parameterValues and this.legalValues are the following</p>
 <pre class="prettyprint source lang-JavaScript"><code>this.parameters = [&quot;Switch&quot;,&quot;Browser&quot;,&quot;OS&quot;,&quot;Membership&quot;];
 this.parameterValues = [&quot;on&quot;,&quot;off&quot;,&quot;Chrome&quot;,&quot;Firefox&quot;,&quot;Opera&quot;,&quot;Lynx&quot;,&quot;Windows&quot;,&quot;Mac&quot;,&quot;Linux&quot;,&quot;Member&quot;,&quot;Guest&quot;];
+this.legalValues = [
+ [0,1],
+ [2,3,4,5],
+ [6,7,8],
+ [9,10]
+];
 </code></pre>
 <h4>2nd Half</h4>
 
