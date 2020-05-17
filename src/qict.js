@@ -357,19 +357,19 @@ class Qict {
    * - Step2: Check unsusedCount for ["Chrome" ,"on"] or ["on" and "Chrome"] by using the unused matrix shown in the 2nd half of initialize()
    * - Step3: As a result of Step2, the highest scored parameter value will be selected.
    *
-   * |unusedPairs|on |off|Chrome|Firefox|Opera|Lynx|Windows|Mac|Linux|Member|Guest|
-   * |-----------|---|---|------|-------|-----|----|-------|---|-----|------|-----|
-   * |on         |0  |  0|   *1*|      1|    1|   1|      1|  1|    1|     1|    1|
-   * |off        |0  |  0|     1|      1|    1|   1|      1|  1|    1|     1|    1|
-   * |Chrome     |*0*|  0|     0|      0|    0|   0|      1|  1|    1|     1|    1|
-   * |Firefox    |0  |  0|     0|      0|    0|   0|      1|  1|    1|     1|    1|
-   * |Opera      |0  |  0|     0|      0|    0|   0|      1|  1|    1|     1|    1|
-   * |Lynx       |0  |  0|     0|      0|    0|   0|      1|  1|    1|     1|    1|
-   * |Windows    |0  |  0|     0|      0|    0|   0|      0|  0|    0|     1|    1|
-   * |Mac        |0  |  0|     0|      0|    0|   0|      0|  0|    0|     1|    1|
-   * |Linux      |0  |  0|     0|      0|    0|   0|      0|  0|    0|     1|    1|
-   * |Member     |0  |  0|     0|      0|    0|   0|      0|  0|    0|     0|    0|
-   * |Guest      |0  |  0|     0|      0|    0|   0|      0|  0|    0|     0|    0|
+   * |unusedPairs|on   |off|Chrome|Firefox|Opera|Lynx|Windows|Mac|Linux|Member|Guest|
+   * |-----------|-----|---|------|-------|-----|----|-------|---|-----|------|-----|
+   * |on         |0    |  0| **1**|      1|    1|   1|      1|  1|    1|     1|    1|
+   * |off        |0    |  0|     1|      1|    1|   1|      1|  1|    1|     1|    1|
+   * |Chrome     |**0**|  0|     0|      0|    0|   0|      1|  1|    1|     1|    1|
+   * |Firefox    |0    |  0|     0|      0|    0|   0|      1|  1|    1|     1|    1|
+   * |Opera      |0    |  0|     0|      0|    0|   0|      1|  1|    1|     1|    1|
+   * |Lynx       |0    |  0|     0|      0|    0|   0|      1|  1|    1|     1|    1|
+   * |Windows    |0    |  0|     0|      0|    0|   0|      0|  0|    0|     1|    1|
+   * |Mac        |0    |  0|     0|      0|    0|   0|      0|  0|    0|     1|    1|
+   * |Linux      |0    |  0|     0|      0|    0|   0|      0|  0|    0|     1|    1|
+   * |Member     |0    |  0|     0|      0|    0|   0|      0|  0|    0|     0|    0|
+   * |Guest      |0    |  0|     0|      0|    0|   0|      0|  0|    0|     0|    0|
    *
    */
   _testSet(best,ordering){

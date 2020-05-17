@@ -481,7 +481,7 @@ this.parameterPositions = [
 <td>on</td>
 <td>0</td>
 <td>0</td>
-<td><em>1</em></td>
+<td><strong>1</strong></td>
 <td>1</td>
 <td>1</td>
 <td>1</td>
@@ -507,7 +507,7 @@ this.parameterPositions = [
 </tr>
 <tr>
 <td>Chrome</td>
-<td><em>0</em></td>
+<td><strong>0</strong></td>
 <td>0</td>
 <td>0</td>
 <td>0</td>
