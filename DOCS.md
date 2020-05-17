@@ -356,10 +356,24 @@ this.parameterPositions = [
 <a name="Qict+testSets"></a>
 
 ### qict.testSets() ⇒ <code>Array</code>
-<p>compute test sets</p>
+<p>this is all combination of _candidateSets,_bestCan and _modifyUnused
+while unusedPairs &gt; 0</p>
+<ul>
+<li>Step1: compute candidateSets</li>
+<li>Step2: select bestCandidate</li>
+<li>Step3: push Step2) to testSets</li>
+<li>Step4: modify unusedPairs and unusedCounts</li>
+</ul>
 
 **Kind**: instance method of [<code>Qict</code>](#Qict)  
-**Summary**: <p>compute test sets</p>.  
+**Summary**: <p>this is all combination of _candidateSets,_bestCan and _modifyUnused
+while unusedPairs &gt; 0</p>
+<ul>
+<li>Step1: compute candidateSets</li>
+<li>Step2: select bestCandidate</li>
+<li>Step3: push Step2) to testSets</li>
+<li>Step4: modify unusedPairs and unusedCounts</li>
+</ul>.  
 **Returns**: <code>Array</code> - <p>testSets Generated test sets</p>  
 **Access**: public  
 <a name="Qict+printResult"></a>
