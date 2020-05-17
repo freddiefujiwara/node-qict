@@ -1,8 +1,8 @@
 [![npm version](https://badge.fury.io/js/qict.svg)](https://badge.fury.io/js/qict) ![Node.js CI](https://github.com/freddiefujiwara/node-qict/workflows/Node.js%20CI/badge.svg)
 # node-qict
-A pairwise test case generator implements from https://github.com/sylvainhalle/QICT
+A pairwise test case generator implements from [QICT](https://github.com/sylvainhalle/QICT)
 
-Try on your browser https://freddiefujiwara.github.io/node-qict/#go
+Try it in your browser! [TRY IT NOW](https://freddiefujiwara.github.io/node-qict/#input)
 
 Document is [here](https://freddiefujiwara.github.io/node-qict/docs/Qict.html)
 
