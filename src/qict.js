@@ -334,27 +334,64 @@ class Qict {
    * PRIVATE:select one test set
    * @param {Array} best
    * @returns {Array} testSet one test set
+   * @desc
+   * The parameter value of the parameter  which selected by _best() is already determined.
+   *
+   * This means that the test set that is now being selected is the following.
+   *
+   * |          |Selected Value|
+   * |----------|--------------|
+   * |Switch    |            on|
+   * |Browser   |             ?|
+   * |OS        |             ?|
+   * |Membership|        Member|
+   *
+   * How can we select another parameter values from other parameters?
+   *
+   * The algorithm is as follows.
+   *
+   * for all for all unspecified parameter values.
+   *
+   * - Step 1: Create pair of candidates, [Parameter Value, already determined parameter value]
+   *    - So the first candidate should be ["Chrome", "on"]
+   * - Step2: Check unsusedCount for ["Chrome" ,"on"] or ["on" and "Chrome"] by using the unused matrix shown in the 2nd half of initialize()
+   * - Step3: As a result of Step2, the highest scored parameter value will be selected.
+   *
+   * |unusedPairs|on |off|Chrome|Firefox|Opera|Lynx|Windows|Mac|Linux|Member|Guest|
+   * |-----------|---|---|------|-------|-----|----|-------|---|-----|------|-----|
+   * |on         |0  |  0|   *1*|      1|    1|   1|      1|  1|    1|     1|    1|
+   * |off        |0  |  0|     1|      1|    1|   1|      1|  1|    1|     1|    1|
+   * |Chrome     |*0*|  0|     0|      0|    0|   0|      1|  1|    1|     1|    1|
+   * |Firefox    |0  |  0|     0|      0|    0|   0|      1|  1|    1|     1|    1|
+   * |Opera      |0  |  0|     0|      0|    0|   0|      1|  1|    1|     1|    1|
+   * |Lynx       |0  |  0|     0|      0|    0|   0|      1|  1|    1|     1|    1|
+   * |Windows    |0  |  0|     0|      0|    0|   0|      0|  0|    0|     1|    1|
+   * |Mac        |0  |  0|     0|      0|    0|   0|      0|  0|    0|     1|    1|
+   * |Linux      |0  |  0|     0|      0|    0|   0|      0|  0|    0|     1|    1|
+   * |Member     |0  |  0|     0|      0|    0|   0|      0|  0|    0|     0|    0|
+   * |Guest      |0  |  0|     0|      0|    0|   0|      0|  0|    0|     0|    0|
+   *
    */
   _testSet(best,ordering){
+    // initialize testSet
     let testSet = new Array();
-    let firstPos = this.parameterPositions[best[0]];
-    let secondPos = this.parameterPositions[best[1]];
-    for(let i = 0 ; i < this.numberParamterValues ; i++){
+    for(let i = 0 ; i < this.parameters.length ; i++){
       testSet.push(0);
     }
-    testSet[firstPos] = best[0];
-    testSet[secondPos] = best[1];
-    //console.log("Placed params " + best[0] + " " + best[1] + " at " + firstPos + " and " + secondPos);
-    for (let i = 2; i < this.parameters.length; ++i){
-      let currPos = ordering[i];
-      let possibleValues = this.legalValues[currPos];
-      let currentCount = 0;
+    // already determined by _best()
+    // already determined by _best()
+    testSet[this.parameterPositions[best[0]]] = best[0];
+    testSet[this.parameterPositions[best[1]]] = best[1];
+    //console.log(testSet);
+    //console.log("Placed params " + best[0] + " " + best[1] + " at " + this.parameterPositions[best[0]] + " and " + this.parameterPositions[best[1]]);
+    for (let i = 2; i < ordering.length; ++i){
+      let possibleValues = this.legalValues[ordering[i]];
       let highestCount = 0;
       let bestJ = 0;
-      for (let j = 0; j < possibleValues.length; ++j){
-        currentCount = 0;
+      possibleValues.forEach((possibleValue,j) => {
+        let currentCount = 0;
         for (let p = 0; p < i; ++p){
-          let candidatePair =  [possibleValues[j], testSet[ordering[p]] ]
+          let candidatePair =  [possibleValue, testSet[ordering[p]]];
           //console.log(candidatePair);
           if (this.unusedPairsSearch[candidatePair[0]][candidatePair[1]] == 1 ||
             this.unusedPairsSearch[candidatePair[1]][candidatePair[0]] == 1){
@@ -368,9 +405,9 @@ class Qict {
           highestCount = currentCount;
           bestJ = j;
         }
-      }
+      })
       //console.log("The best value is " + possibleValues[bestJ] + " with count = " + highestCount);
-      testSet[currPos] = possibleValues[bestJ];
+      testSet[ordering[i]] = possibleValues[bestJ];
     }
     return testSet;
   }
