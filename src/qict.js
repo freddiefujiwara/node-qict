@@ -59,18 +59,28 @@ class Qict {
    * @desc
    * This method can be divided into a first half and a second half.
    * #### 1st Half
-   * 1st half recognizes contents to arameters and parameterValues
+   * 1st half recognizes contents to parameters,parameterValues and legalValues
+   *
+   * so everything has been replaced with numbers for ease of use.
+   *
    * - Step1: Read line by line from this.contents
    * - Step2: Create a pair by splitting a line with a ":"
    * - Step3: Push pair[0]  to this.parameters
    * - Step4: Create an array by splitting the pair with ","
    * - Step5: Push all values to this.parameterValues
+   * - Step6: create legalValues
    *
-   * As the result this.parameters and this.parameterValues are the following
+   * As the result this.parameters,this.parameterValues and this.legalValues are the following
    *
    * ```JavaScript
    * this.parameters = ["Switch","Browser","OS","Membership"];
    * this.parameterValues = ["on","off","Chrome","Firefox","Opera","Lynx","Windows","Mac","Linux","Member","Guest"];
+   * this.legalValues = [
+   *  [0,1],
+   *  [2,3,4,5],
+   *  [6,7,8],
+   *  [9,10]
+   * ];
    * ```
    *
    * #### 2nd Half
