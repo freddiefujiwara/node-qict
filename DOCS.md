@@ -356,8 +356,8 @@ this.parameterPositions = [
 <a name="Qict+testSets"></a>
 
 ### qict.testSets() ⇒ <code>Array</code>
-<p>this is all combination of _candidateSets,_bestCan and _modifyUnused
-while unusedPairs &gt; 0</p>
+<p>this is all combination of _candidateSets,_bestCan and _modifyUnused</p>
+<p>while unusedPairs &gt; 0</p>
 <ul>
 <li>Step1: compute candidateSets</li>
 <li>Step2: select bestCandidate</li>
@@ -366,8 +366,8 @@ while unusedPairs &gt; 0</p>
 </ul>
 
 **Kind**: instance method of [<code>Qict</code>](#Qict)  
-**Summary**: <p>this is all combination of _candidateSets,_bestCan and _modifyUnused
-while unusedPairs &gt; 0</p>
+**Summary**: <p>this is all combination of _candidateSets,_bestCan and _modifyUnused</p>
+<p>while unusedPairs &gt; 0</p>
 <ul>
 <li>Step1: compute candidateSets</li>
 <li>Step2: select bestCandidate</li>

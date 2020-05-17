@@ -194,6 +194,7 @@ class Qict {
    * @public
    * @desc
    * this is all combination of _candidateSets,_bestCan and _modifyUnused
+   *
    * while unusedPairs > 0
    *
    * - Step1: compute candidateSets
