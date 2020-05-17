@@ -4,6 +4,8 @@ A pairwise test case generator implements from https://github.com/sylvainhalle/Q
 
 Try on your browser https://freddiefujiwara.github.io/node-qict/#go
 
+Document is [here](https://freddiefujiwara.github.io/node-qict/docs/Qict.html)
+
 # install
 ``` shell
 $ npm i -g qict
