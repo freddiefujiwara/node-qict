@@ -388,13 +388,26 @@ this.parameterPositions = [
 <p>compute the best pair of parametersValues</p>
 <p>This is an algorithm that sum the unusedCount of two Parameter Values.</p>
 <p>and the largest pair is selected.</p>
+<pre class="prettyprint source lang-JavaScript"><code> let weight = this.unusedCounts[pair[0]] + this.unusedCounts[pair[1]];
+</code></pre>
 
 **Kind**: instance method of [<code>Qict</code>](#Qict)  
 **Returns**: <code>Array</code> - <p>best Best pair</p>  
 <a name="Qict+_ordering"></a>
 
 ### qict.\_ordering(best) ⇒ <code>Array</code>
-<p>PRIVATE:order parameters</p>
+<p>Suppose that 0 and 9 of ParameterValues, that is, &quot;on&quot; and &quot;Member&quot;, are selected.</p>
+<p>Look at this.ParameterPositions</p>
+<pre class="prettyprint source lang-JavaScript"><code>this.parameterPositions = [
+ &quot;0&quot;,0,
+ 1,1,1,1,
+ 2,2,2,
+ &quot;3&quot;,3
+];
+</code></pre>
+<p>order should be [0,3,3rd,4th]</p>
+<p>The 1st and the 2nd will be 0,3.</p>
+<p>The 3rd and 4th of the second half will be chosen at random.</p>
 
 **Kind**: instance method of [<code>Qict</code>](#Qict)  
 **Returns**: <code>Array</code> - <p>ordering shuffled orders</p>  

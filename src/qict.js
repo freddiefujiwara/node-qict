@@ -266,13 +266,17 @@ class Qict {
    *
    * and the largest pair is selected.
    *
+   * ```JavaScript
+   *  let weight = this.unusedCounts[pair[0]] + this.unusedCounts[pair[1]];
+   * ```
+   *
    */
   _best(){
     let bestWeight = 0;
     let indexOfBestPair = 0;
     //console.log("unusedPairs.length = " + this.unusedPairs.length);
-    this.unusedPairs.forEach((curr,i) =>{
-      let weight = this.unusedCounts[curr[0]] + this.unusedCounts[curr[1]];
+    this.unusedPairs.forEach((pair,i) =>{
+      let weight = this.unusedCounts[pair[0]] + this.unusedCounts[pair[1]];
       if(weight > bestWeight){
         bestWeight = weight;
         indexOfBestPair = i;
@@ -284,6 +288,26 @@ class Qict {
    * PRIVATE:order parameters
    * @param {Array} best pair
    * @returns {Array} ordering shuffled orders
+   * @desc
+   * Suppose that 0 and 9 of ParameterValues, that is, "on" and "Member", are selected.
+   *
+   * Look at this.ParameterPositions
+   *
+   * ```JavaScript
+   * this.parameterPositions = [
+   *  "0",0,
+   *  1,1,1,1,
+   *  2,2,2,
+   *  "3",3
+   * ];
+   * ```
+   *
+   * order should be [0,3,3rd,4th]
+   *
+   * The 1st and the 2nd will be 0,3.
+   *
+   * The 3rd and 4th of the second half will be chosen at random.
+   *
    */
   _ordering(best){
     let ordering = new Array();

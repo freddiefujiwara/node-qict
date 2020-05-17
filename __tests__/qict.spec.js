@@ -134,6 +134,8 @@ describe('Qict', () => {
     const best = q._best();
     const ordering = q._ordering(best);
     expect(ordering.length).toBe(4);
+    expect(ordering[0]).toBe(0);
+    expect(ordering[1]).toBe(3);
   });
   it(' _testSet(best,ordering) : can select testSet', () => {
     const q = new Qict();
