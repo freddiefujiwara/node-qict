@@ -78,6 +78,7 @@ class Qict {
   initialize(){
     this._clean();
     //readlines
+    let numberParameterValues = 0;
     this.contents.split(/\r\n|\n|\r/).forEach((line) => {
       //create pairs parameters: values
       const pair = line.split(/:/);
@@ -90,16 +91,15 @@ class Qict {
       //values analysis
       let values = new Array();
       pair[1].split(/,/).forEach((value) => {
-        values.push(this.numberParameterValues);
+        values.push(numberParameterValues);
         this.parameterValues.push(value.trim());
-        this.numberParameterValues++;
+        numberParameterValues++;
       });
       this.legalValues.push(values)
-      this.numberParameters ++;
     });
-    for (let i = 0; i < this.numberParameterValues; ++i){
+    for (let i = 0; i < this.parameterValues.length; ++i){
       let row = new Array();
-      for (let j = 0; j < this.numberParameterValues; ++j){
+      for (let j = 0; j < this.parameterValues.length; ++j){
         row.push(0);
       }
       this.unusedPairsSearch.push(row);
@@ -152,8 +152,8 @@ class Qict {
    * @public
    */
   printResult(testSets){
-    console.log(`- There are ${this.numberParameters} parameters`);
-    console.log(`- There are ${this.numberParameterValues} parameter values`);
+    console.log(`- There are ${this.parameters.length} parameters`);
+    console.log(`- There are ${this.parameterValues.length} parameter values`);
     console.log(`- Parameter values:`);
     console.log(`  ${this.parameterValues.join(" ")}`)
     console.log(`- Legal values internal representation:`);
@@ -166,7 +166,7 @@ class Qict {
     for (let i = 0; i < num_results; ++i){
       let line = `${i}\t`.padStart(4);
       let curr = testSets[i];
-      for (let j = 0; j < this.numberParameters; ++j){
+      for (let j = 0; j < this.parameters.length; ++j){
         line += `${this.parameterValues[curr[j]]}\t`.padStart(8);
       }
       console.log(line);
@@ -185,8 +185,6 @@ class Qict {
     this.unusedCounts = new Array();
     this.unusedPairs = new Array();
     this.unusedPairsSearch = new Array();
-    this.numberParameters = 0;
-    this.numberParameterValues = 0;
     this.numberPairs = 0;
   }
   /**
@@ -215,7 +213,7 @@ class Qict {
     let ordering = new Array();
     let firstPos = this.parameterPositions[best[0]];
     let secondPos = this.parameterPositions[best[1]];
-    for(let i = 0 ; i < this.numberParameters; i++){
+    for(let i = 0 ; i < this.parameters.length; i++){
       ordering.push(i);
     }
     ordering[0] = firstPos;
@@ -247,7 +245,7 @@ class Qict {
     testSet[firstPos] = best[0];
     testSet[secondPos] = best[1];
     //console.log("Placed params " + best[0] + " " + best[1] + " at " + firstPos + " and " + secondPos);
-    for (let i = 2; i < this.numberParameters; ++i){
+    for (let i = 2; i < this.parameters.length; ++i){
       let currPos = ordering[i];
       let possibleValues = this.legalValues[currPos];
       let currentCount = 0;
@@ -332,8 +330,8 @@ class Qict {
    * @param {Array} best Best test set
    */
   _modifyUnused(bestTestSet){
-    for (let i = 0; i <= this.numberParameters - 2; ++i){
-      for (let j = i + 1; j <= this.numberParameters - 1; ++j){
+    for (let i = 0; i <= this.parameters.length - 2; ++i){
+      for (let j = i + 1; j <= this.parameters.length - 1; ++j){
         let v1 = bestTestSet[i];
         let v2 = bestTestSet[j];
         //console.log("Decrementing the unused counts for " + v1 + " and " + v2);

@@ -34,8 +34,6 @@ describe('Qict', () => {
     expect(q.legalValues[3].length).toBe(2);
     expect(q.unusedPairs.length).toBe(44);
     expect(q.unusedPairsSearch.length).toBe(11);
-    expect(q.numberParameters).toBe(4);
-    expect(q.numberParameterValues).toBe(11);
     expect(q.numberPairs).toBe(44);
 
     const u = q.unusedPairsSearch.map((v) => {
@@ -98,8 +96,6 @@ describe('Qict', () => {
     expect(q.unusedCounts.length).toBe(0);
     expect(q.unusedPairs.length).toBe(0);
     expect(q.unusedPairsSearch.length).toBe(0);
-    expect(q.numberParameters).toBe(0);
-    expect(q.numberParameterValues).toBe(0);
     expect(q.numberPairs).toBe(0);
 
     expect(q._clean).toBeInstanceOf(Function);
@@ -113,8 +109,6 @@ describe('Qict', () => {
     expect(q.unusedCounts.length).toBe(0);
     expect(q.unusedPairs.length).toBe(0);
     expect(q.unusedPairsSearch.length).toBe(0);
-    expect(q.numberParameters).toBe(0);
-    expect(q.numberParameterValues).toBe(0);
     expect(q.numberPairs).toBe(0);
   });
   it(' _ordering(best) : can order parameters propery ', () => {
