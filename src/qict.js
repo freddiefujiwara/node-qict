@@ -16,14 +16,33 @@ class Qict {
    * @param {string} file Target File
    * @returns {Qict} this This object
    * @desc
-   * It's simple. From argument "file" to this.contents
+   * When you want to output the pairwise of the folloing Parameters and Parameter Values
+   * The format of the input file should be as follows.
    *
+   * |Parameter |Parameter Values             |
+   * |:--------:|:---------------------------:|
+   * |Switch    |        on,off               |
+   * |Browser   | Chrome, Firefox, Opera, Lynx|
+   * |OS        | Windows, Mac, Linux         |
+   * |Membership| Member, Guest               |
+   *
+   * ```shell
+   * $ cat   __tests__/testData.txt
+   * Switch: on, off
+   * Browser: Chrome, Firefox, Opera, Lynx
+   * OS: Windows, Mac, Linux
+   * Membership: Member, Guest
+   * ```
+   *
+   * The delimiter between Parameters and Parameter Values should be ":"
+   * and also Parameter Values is ","
+   * Logic is super simple. From argument "file" to this.contents
    * - Step1: Use readFileSync to read the whole contents from "file"
    * - Step2: Make it a string.
    * - Step3: Do trim().
    * - Step4: Fill all string in this.contents
    *
-   *   That's all
+   * That's all
    */
   readFile(file){
     const fs = require('fs');

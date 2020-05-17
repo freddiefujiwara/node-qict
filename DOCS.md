@@ -30,25 +30,54 @@ and clean</p>
 <a name="Qict+readFile"></a>
 
 ### qict.readFile(file) ⇒ [<code>Qict</code>](#Qict)
-<p>It's simple. From argument &quot;file&quot; to this.contents</p>
+<p>When you want to output the pairwise of the folloing Parameters and Parameter Values
+The format of the input file should be as follows.</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">Parameter</th>
+<th style="text-align:center">Parameter Values</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">Switch</td>
+<td style="text-align:center">on,off</td>
+</tr>
+<tr>
+<td style="text-align:center">Browser</td>
+<td style="text-align:center">Chrome, Firefox, Opera, Lynx</td>
+</tr>
+<tr>
+<td style="text-align:center">OS</td>
+<td style="text-align:center">Windows, Mac, Linux</td>
+</tr>
+<tr>
+<td style="text-align:center">Membership</td>
+<td style="text-align:center">Member, Guest</td>
+</tr>
+</tbody>
+</table>
+<pre class="prettyprint source lang-shell"><code>$ cat   __tests__/testData.txt
+Switch: on, off
+Browser: Chrome, Firefox, Opera, Lynx
+OS: Windows, Mac, Linux
+Membership: Member, Guest
+</code></pre>
+<p>The delimiter between Parameters and Parameter Values should be &quot;:&quot;
+and also Parameter Values is &quot;,&quot;
+Logic is super simple. From argument &quot;file&quot; to this.contents</p>
 <ul>
-<li>
-<p>Step1: Use readFileSync to read the whole contents from &quot;file&quot;</p>
-</li>
-<li>
-<p>Step2: Make it a string.</p>
-</li>
-<li>
-<p>Step3: Do trim().</p>
-</li>
-<li>
-<p>Step4: Fill all string in this.contents</p>
-<p>That's all</p>
-</li>
+<li>Step1: Use readFileSync to read the whole contents from &quot;file&quot;</li>
+<li>Step2: Make it a string.</li>
+<li>Step3: Do trim().</li>
+<li>Step4: Fill all string in this.contents</li>
 </ul>
+<p>That's all</p>
 
 **Kind**: instance method of [<code>Qict</code>](#Qict)  
-**Summary**: It's simple.  
+**Summary**: <p>When you want to output the pairwise of the folloing Parameters and Parameter Values
+The format of the input file should be as follows.</p>  
 **Returns**: [<code>Qict</code>](#Qict) - <p>this This object</p>  
 
 | Param | Type | Description |
