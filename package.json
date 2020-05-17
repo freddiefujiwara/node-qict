@@ -1,6 +1,6 @@
 {
   "name": "qict",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "A pairwise test case generator implements from https://github.com/sylvainhalle/QICT",
   "main": "src/qict.js",
   "bin": "bin/index.js",
