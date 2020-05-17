@@ -2,7 +2,8 @@
  * @classdesc This is a node-qict class. It's a pairwise test case generator inspired by https://github.com/sylvainhalle/QICT
  */
 class Qict {
-  /*
+  /* set this.poolSize 20
+  /* and clean
    * @constructor
    */
   constructor(file){
@@ -10,15 +11,19 @@ class Qict {
     this._clean();
   }
   /**
-   * readFile - store content from file
-   * @param {string} file - target File
+   * store content from file
+   * @param {string} file Target File
+   * @returns {Qict} this This object
    */
   readFile(file){
     const fs = require('fs');
     this.contents = fs.readFileSync(file, 'utf8').trim();
+    return this;
   }
   /**
-   * initialize - initialize all parameters
+   * initialize all parameters
+   * @public
+   * @returns {Qict} this This object
    */
   initialize(){
     this._clean();
@@ -74,10 +79,12 @@ class Qict {
       ++this.unusedCounts[a[0]];
       ++this.unusedCounts[a[1]];
     })
+    return this;
   }
   /**
-   * testSets - compute test sets
-   * @return {object} - generated test sets
+   * compute test sets
+   * @returns {object} testSets Generated test sets
+   * @public
    */
   testSets(){
     let testSets = new Array();
@@ -90,8 +97,9 @@ class Qict {
     return testSets;
   }
   /**
-   * printResult - print test sets to console
-   * @param {object} testSets - generated test sets
+   * print test sets to console
+   * @param {object} testSets Generated test sets
+   * @public
    */
   printResult(testSets){
     console.log(`- There are ${this.numberParameters} parameters`);
@@ -116,7 +124,8 @@ class Qict {
     console.log("\nEnd");
   }
   /**
-   * _clean - clean up all parameters
+   * clean up all parameters
+   * @private
    */
   _clean(){
     this.parameters = new Array();
@@ -131,8 +140,9 @@ class Qict {
     this.numberPairs = 0;
   }
   /**
-   * _best - select best parameter pair
-   * @return {object} best pair
+   * select best parameter pair
+   * @returns {object} best Best pair
+   * @private
    */
   _best(){
     let bestWeight = 0;
@@ -148,8 +158,9 @@ class Qict {
     return this.unusedPairs[indexOfBestPair];
   }
   /**
-   * _ordering - order parameters
+   * order parameters
    * @param {object} best pair
+   * @private
    */
   _ordering(best){
     let ordering = new Array();
@@ -173,9 +184,10 @@ class Qict {
     return ordering;
   }
   /**
-   * _testSet - select one test set
+   * select one test set
    * @param {object} best
    * @param {Array} ordering
+   * @private
    */
   _testSet(best,ordering){
     let testSet = new Array();
@@ -217,7 +229,8 @@ class Qict {
     return testSet;
   }
   /**
-   * _candidateSets - select candidate test sets
+   * select candidate test sets
+   * @private
    */
   _candidateSets(){
     let candidateSets = new Array();
@@ -230,8 +243,9 @@ class Qict {
     return candidateSets;
   }
   /**
-   * _NumberPairsCaptured - sum unused count for ts
-   * @param {object} ts
+   * sum unused count for ts
+   * @param {object} ts Test Sets
+   * @private
    */
   _NumberPairsCaptured(ts){
     let ans = 0;
@@ -245,8 +259,9 @@ class Qict {
     return ans;
   }
   /**
-   * _bestCandidate - select best candidate from candidateSets
+   * select best candidate from candidateSets
    * @param {Array} candidateSets
+   * @private
    */
   _bestCandidate(candidateSets){
     let indexOfBestCandidate = 0;
@@ -264,8 +279,9 @@ class Qict {
     return candidateSets[indexOfBestCandidate];
   }
   /**
-   * _modifyUnused - remove the best from unusedParis and decrease unusedCOunts
-   * @param {object} bestTestSet
+   * remove the best from unusedParis and decrease unusedCOunts
+   * @param {object} best Best test set
+   * @private
    */
   _modifyUnused(bestTestSet){
     for (let i = 0; i <= this.numberParameters - 2; ++i){
@@ -287,4 +303,9 @@ class Qict {
     }
   }
 }
-module.exports = Qict;
+
+if (typeof module !== 'undefined' && typeof module.exports !== 'undefined'){
+  module.exports = Qict;
+} else {
+  window.Qict = Qict;
+}

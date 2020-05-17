@@ -10,7 +10,7 @@ describe('Qict', () => {
   it(' readFile(file) : can read all strings from file', () => {
     const q = new Qict();
     expect(q.readFile).toBeInstanceOf(Function);
-    q.readFile('__tests__/testData.txt');
+    expect(q.readFile('__tests__/testData.txt')).toBeInstanceOf(Qict);
     expect(q.contents).not.toBe("");
     // no such file or directory
     const t = () => {
@@ -23,7 +23,7 @@ describe('Qict', () => {
     const q = new Qict();
     q.readFile('__tests__/testData.txt');
     expect(q.initialize).toBeInstanceOf(Function);
-    q.initialize();
+    expect(q.initialize()).toBeInstanceOf(Qict);
     expect(q.parameters.length).toBe(4);
     expect(q.parameterValues.length).toBe(11);
     expect(q.parameterPositions.length).toBe(11);
@@ -58,9 +58,9 @@ describe('Qict', () => {
   it(' testSets() : can get testSets', () => {
     const q = new Qict();
     expect(q.testSets).toBeInstanceOf(Function);
-    q.readFile('__tests__/testData.txt');
-    q.initialize();
-    const testSets = q.testSets();
+    const testSets = q.readFile('__tests__/testData.txt')
+      .initialize()
+      .testSets();
     expect(testSets.length).toBe(12);
     /*
     expect(testSets).toStrictEqual([
@@ -84,8 +84,7 @@ describe('Qict', () => {
   it(' _best() : can select bestPair from unusedPairs', () => {
     const q = new Qict();
     expect(q._best).toBeInstanceOf(Function);
-    q.readFile('__tests__/testData.txt');
-    q.initialize();
+    q.readFile('__tests__/testData.txt').initialize();
     expect(q._best()).toStrictEqual([
       0,9
     ]);
@@ -104,8 +103,7 @@ describe('Qict', () => {
     expect(q.numberPairs).toBe(0);
 
     expect(q._clean).toBeInstanceOf(Function);
-    q.readFile('__tests__/testData.txt');
-    q.initialize();
+    q.readFile('__tests__/testData.txt').initialize();
     q._clean();
 
     expect(q.parameters.length).toBe(0);
@@ -122,8 +120,7 @@ describe('Qict', () => {
   it(' _ordering(best) : can order parameters propery ', () => {
     const q = new Qict();
     expect(q._ordering).toBeInstanceOf(Function);
-    q.readFile('__tests__/testData.txt');
-    q.initialize();
+    q.readFile('__tests__/testData.txt').initialize();
     const best = q._best();
     const ordering = q._ordering(best);
     expect(ordering.length).toBe(4);
@@ -131,8 +128,7 @@ describe('Qict', () => {
   it(' _testSet(best,ordering) : can select testSet', () => {
     const q = new Qict();
     expect(q._testSet).toBeInstanceOf(Function);
-    q.readFile('__tests__/testData.txt');
-    q.initialize();
+    q.readFile('__tests__/testData.txt').initialize();
     const best = q._best();
     const ordering = q._ordering(best);
     const testSet = q._testSet(best,ordering);
@@ -143,8 +139,7 @@ describe('Qict', () => {
   it(' _candidateSets() : can select candidateSets', () => {
     const q = new Qict();
     expect(q._candidateSets).toBeInstanceOf(Function);
-    q.readFile('__tests__/testData.txt');
-    q.initialize();
+    q.readFile('__tests__/testData.txt').initialize();
     const candidateSets = q._candidateSets();
     expect(candidateSets).toStrictEqual([
       [0,2,6,9],[0,2,6,9],
@@ -162,8 +157,7 @@ describe('Qict', () => {
   it(' _bestCandidate() : can select bestCandidate from candidateSets', () => {
     const q = new Qict();
     expect(q._bestCandidate).toBeInstanceOf(Function);
-    q.readFile('__tests__/testData.txt');
-    q.initialize();
+    q.readFile('__tests__/testData.txt').initialize();
     const candidateSets = q._candidateSets();
     const bestCandidate  = q._bestCandidate(candidateSets);
     expect(bestCandidate).toStrictEqual(
@@ -173,8 +167,7 @@ describe('Qict', () => {
   it(' _modifyUnused(candidateSets) : can eliminate some data from unusedPair and unusedCounts', () => {
     const q = new Qict();
     expect(q._modifyUnused).toBeInstanceOf(Function);
-    q.readFile('__tests__/testData.txt');
-    q.initialize();
+    q.readFile('__tests__/testData.txt').initialize();
     const candidateSets = q._candidateSets();
     const bestCandidate = q._bestCandidate(candidateSets);
     q._modifyUnused(bestCandidate);

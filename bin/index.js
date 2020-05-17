@@ -21,7 +21,8 @@ if (typeof fileValue === 'undefined'){
 
 const Qict = require('../src/qict');
 const q = new Qict();
-q.readFile(fileValue);
-q.initialize();
-const testSets = q.testSets();
-q.printResult(testSets);
+q.printResult(
+  q.readFile(fileValue)
+  .initialize()
+  .testSets()
+);
