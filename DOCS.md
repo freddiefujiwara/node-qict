@@ -11,6 +11,7 @@
     * [.initialize()](#Qict+initialize) ⇒ [<code>Qict</code>](#Qict)
     * [.testSets()](#Qict+testSets) ⇒ <code>Array</code>
     * [.printResult(testSets)](#Qict+printResult)
+    * [._clean()](#Qict+_clean)
     * [._best()](#Qict+_best) ⇒ <code>Array</code>
     * [._ordering(best)](#Qict+_ordering) ⇒ <code>Array</code>
     * [._testSet(best)](#Qict+_testSet) ⇒ <code>Array</code>
@@ -375,10 +376,18 @@ this.parameterPositions = [
 | --- | --- | --- |
 | testSets | <code>Array</code> | <p>Generated test sets</p> |
 
+<a name="Qict+_clean"></a>
+
+### qict.\_clean()
+<p>PRIVATE:clean up all parameters</p>
+
+**Kind**: instance method of [<code>Qict</code>](#Qict)  
 <a name="Qict+_best"></a>
 
 ### qict.\_best() ⇒ <code>Array</code>
-<p>PRIVATE:select best parameter pair</p>
+<p>compute the best pair of parametersValues</p>
+<p>This is an algorithm that sum the unusedCount of two Parameter Values.</p>
+<p>and the largest pair is selected.</p>
 
 **Kind**: instance method of [<code>Qict</code>](#Qict)  
 **Returns**: <code>Array</code> - <p>best Best pair</p>  

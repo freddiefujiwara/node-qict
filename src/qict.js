@@ -245,7 +245,6 @@ class Qict {
   }
   /**
    * PRIVATE:clean up all parameters
-   * @private
    */
   _clean(){
     this.parameters = new Array();
@@ -260,6 +259,13 @@ class Qict {
   /**
    * PRIVATE:select best parameter pair
    * @returns {Array} best Best pair
+   * @desc
+   * compute the best pair of parametersValues
+   *
+   * This is an algorithm that sum the unusedCount of two Parameter Values.
+   *
+   * and the largest pair is selected.
+   *
    */
   _best(){
     let bestWeight = 0;
