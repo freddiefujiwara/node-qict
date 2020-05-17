@@ -110,6 +110,8 @@ this.legalValues = [
 ];
 </code></pre>
 <h4>2nd Half</h4>
+<p>2nd half calculates combinations</p>
+<p>All possible combinations of Parameter Values are listed below</p>
 <table>
 <thead>
 <tr>
@@ -164,7 +166,7 @@ this.legalValues = [
 <td>0</td>
 <td>0</td>
 <td>0</td>
-<td>0</td>
+<td>1</td>
 <td>1</td>
 <td>1</td>
 <td>1</td>
@@ -178,7 +180,7 @@ this.legalValues = [
 <td>0</td>
 <td>0</td>
 <td>0</td>
-<td>0</td>
+<td>1</td>
 <td>1</td>
 <td>1</td>
 <td>1</td>
@@ -192,7 +194,7 @@ this.legalValues = [
 <td>0</td>
 <td>0</td>
 <td>0</td>
-<td>0</td>
+<td>1</td>
 <td>1</td>
 <td>1</td>
 <td>1</td>
@@ -206,7 +208,7 @@ this.legalValues = [
 <td>0</td>
 <td>0</td>
 <td>0</td>
-<td>0</td>
+<td>1</td>
 <td>1</td>
 <td>1</td>
 <td>1</td>
@@ -220,7 +222,7 @@ this.legalValues = [
 <td>0</td>
 <td>0</td>
 <td>0</td>
-<td>0</td>
+<td>1</td>
 <td>1</td>
 <td>1</td>
 <td>1</td>
@@ -281,6 +283,61 @@ this.legalValues = [
 <td>0</td>
 <td>0</td>
 <td>0</td>
+</tr>
+</tbody>
+</table>
+<p>So conclusion, the number of times each Parameter Values appears is as follows</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>unusedCounts</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>on</td>
+<td>9</td>
+</tr>
+<tr>
+<td>off</td>
+<td>9</td>
+</tr>
+<tr>
+<td>Chrome</td>
+<td>7</td>
+</tr>
+<tr>
+<td>Firefox</td>
+<td>7</td>
+</tr>
+<tr>
+<td>Opera</td>
+<td>7</td>
+</tr>
+<tr>
+<td>Lynx</td>
+<td>7</td>
+</tr>
+<tr>
+<td>Windows</td>
+<td>8</td>
+</tr>
+<tr>
+<td>Mac</td>
+<td>8</td>
+</tr>
+<tr>
+<td>Linux</td>
+<td>8</td>
+</tr>
+<tr>
+<td>Member</td>
+<td>9</td>
+</tr>
+<tr>
+<td>Guest</td>
+<td>9</td>
 </tr>
 </tbody>
 </table>

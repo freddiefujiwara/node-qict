@@ -46,6 +46,7 @@ class Qict {
    * - Step4: Fill all string in this.contents
    *
    * That's all
+   *
    */
   readFile(file){
     const fs = require('fs');
@@ -84,23 +85,41 @@ class Qict {
    * ```
    *
    * #### 2nd Half
+   * 2nd half calculates combinations
+   *
+   * All possible combinations of Parameter Values are listed below
    *
    * |       |on|off|Chrome|Firefox|Opera|Lynx|Windows|Mac|Linux|Member|Guest|
    * |-------|--|---|------|-------|-----|----|-------|---|-----|------|-----|
    * |on     |0 |  0|     1|      1|    1|   1|      1|  1|    1|     1|    1|
    * |off    |0 |  0|     1|      1|    1|   1|      1|  1|    1|     1|    1|
-   * |Chrome |0 |  0|     0|      0|    0|   0|      0|  1|    1|     1|    1|
-   * |Firefox|0 |  0|     0|      0|    0|   0|      0|  1|    1|     1|    1|
-   * |Opera  |0 |  0|     0|      0|    0|   0|      0|  1|    1|     1|    1|
-   * |Lynx   |0 |  0|     0|      0|    0|   0|      0|  1|    1|     1|    1|
-   * |Windows|0 |  0|     0|      0|    0|   0|      0|  1|    1|     1|    1|
+   * |Chrome |0 |  0|     0|      0|    0|   0|      1|  1|    1|     1|    1|
+   * |Firefox|0 |  0|     0|      0|    0|   0|      1|  1|    1|     1|    1|
+   * |Opera  |0 |  0|     0|      0|    0|   0|      1|  1|    1|     1|    1|
+   * |Lynx   |0 |  0|     0|      0|    0|   0|      1|  1|    1|     1|    1|
+   * |Windows|0 |  0|     0|      0|    0|   0|      1|  1|    1|     1|    1|
    * |Mac    |0 |  0|     0|      0|    0|   0|      0|  0|    0|     1|    1|
    * |Linux  |0 |  0|     0|      0|    0|   0|      0|  0|    0|     1|    1|
    * |Member |0 |  0|     0|      0|    0|   0|      0|  0|    0|     0|    0|
    * |Guest  |0 |  0|     0|      0|    0|   0|      0|  0|    0|     0|    0|
    *
+   * So conclusion, the number of times each Parameter Values appears is as follows
+   *
+   * |       |unusedCounts|
+   * |-------|------------|
+   * |on     |9           |
+   * |off    |9           |
+   * |Chrome |7           |
+   * |Firefox|7           |
+   * |Opera  |7           |
+   * |Lynx   |7           |
+   * |Windows|8           |
+   * |Mac    |8           |
+   * |Linux  |8           |
+   * |Member |9           |
+   * |Guest  |9           |
+   *
    */
-
   initialize(){
     this._clean();
     //readlines
@@ -133,7 +152,6 @@ class Qict {
     }
     for (let i = 0; i <= this.legalValues.length - 2; ++i){
       for (let j = i + 1; j <= this.legalValues.length - 1; ++j){
-        this.numberPairs += (this.legalValues[i].length * this.legalValues[j].length);
         for (let x = 0; x < this.legalValues[i].length; ++x) {
           for (let y = 0; y < this.legalValues[j].length; ++y) {
             let pair = new Array();
@@ -145,6 +163,7 @@ class Qict {
         }
       }
     }
+    this.numberPairs = this.unusedPairs.length;
     let k = 0;
     for (let i = 0; i < this.legalValues.length; ++i) {
       this.legalValues[i].forEach(()=>{
