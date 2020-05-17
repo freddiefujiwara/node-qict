@@ -4,8 +4,6 @@
 <p>This is a node-qict class. It's a pairwise test case generator inspired by https://github.com/sylvainhalle/QICT</p>
 
 **Kind**: global class  
-**Summary**: <p>set this.poolSize 20 and clean
-and clean</p>.  
 
 * [Qict](#Qict)
     * [new Qict()](#new_Qict_new)
@@ -76,8 +74,6 @@ Membership: Member, Guest
 <p>That's all</p>
 
 **Kind**: instance method of [<code>Qict</code>](#Qict)  
-**Summary**: <p>When you want to output the pairwise of the folloing Parameters and Parameter Values</p>
-<p>The format of the input file should be as follows.</p>  
 **Returns**: [<code>Qict</code>](#Qict) - <p>this This object</p>  
 
 | Param | Type | Description |
@@ -350,7 +346,6 @@ this.parameterPositions = [
 </table>
 
 **Kind**: instance method of [<code>Qict</code>](#Qict)  
-**Summary**: This method can be divided into a first half and a second half.  
 **Returns**: [<code>Qict</code>](#Qict) - <p>this This object</p>  
 **Access**: public  
 <a name="Qict+testSets"></a>
@@ -366,14 +361,6 @@ this.parameterPositions = [
 </ul>
 
 **Kind**: instance method of [<code>Qict</code>](#Qict)  
-**Summary**: <p>this is all combination of _candidateSets,_bestCan and _modifyUnused</p>
-<p>while unusedPairs &gt; 0</p>
-<ul>
-<li>Step1: compute candidateSets</li>
-<li>Step2: select bestCandidate</li>
-<li>Step3: push Step2) to testSets</li>
-<li>Step4: modify unusedPairs and unusedCounts</li>
-</ul>.  
 **Returns**: <code>Array</code> - <p>testSets Generated test sets</p>  
 **Access**: public  
 <a name="Qict+printResult"></a>
@@ -382,7 +369,6 @@ this.parameterPositions = [
 <p>print test sets to console</p>
 
 **Kind**: instance method of [<code>Qict</code>](#Qict)  
-**Summary**: <p>print test sets to console</p>.  
 **Access**: public  
 
 | Param | Type | Description |
@@ -395,7 +381,6 @@ this.parameterPositions = [
 <p>PRIVATE:select best parameter pair</p>
 
 **Kind**: instance method of [<code>Qict</code>](#Qict)  
-**Summary**: <p>PRIVATE:select best parameter pair</p>.  
 **Returns**: <code>Array</code> - <p>best Best pair</p>  
 <a name="Qict+_ordering"></a>
 
@@ -403,7 +388,6 @@ this.parameterPositions = [
 <p>PRIVATE:order parameters</p>
 
 **Kind**: instance method of [<code>Qict</code>](#Qict)  
-**Summary**: <p>PRIVATE:order parameters</p>.  
 **Returns**: <code>Array</code> - <p>ordering shuffled orders</p>  
 
 | Param | Type | Description |
@@ -416,7 +400,6 @@ this.parameterPositions = [
 <p>PRIVATE:select one test set</p>
 
 **Kind**: instance method of [<code>Qict</code>](#Qict)  
-**Summary**: <p>PRIVATE:select one test set</p>.  
 **Returns**: <code>Array</code> - <p>testSet one test set</p>  
 
 | Param | Type |
@@ -429,7 +412,6 @@ this.parameterPositions = [
 <p>PRIVATE:select candidate test sets</p>
 
 **Kind**: instance method of [<code>Qict</code>](#Qict)  
-**Summary**: <p>PRIVATE:select candidate test sets</p>.  
 **Returns**: <code>Array</code> - <p>candidateSets test sets for candidate</p>  
 
 | Param | Type | Description |
@@ -442,7 +424,6 @@ this.parameterPositions = [
 <p>PRIVATE:sum unused count for ts</p>
 
 **Kind**: instance method of [<code>Qict</code>](#Qict)  
-**Summary**: <p>PRIVATE:sum unused count for ts</p>.  
 **Returns**: <code>number</code> - <p>ans</p>  
 
 | Param | Type | Description |
@@ -455,7 +436,6 @@ this.parameterPositions = [
 <p>PRIVATE:select best candidate from candidateSets</p>
 
 **Kind**: instance method of [<code>Qict</code>](#Qict)  
-**Summary**: <p>PRIVATE:select best candidate from candidateSets</p>.  
 **Returns**: <code>Array</code> - <p>bestCandidate best candidate from candidateSets</p>  
 
 | Param | Type |
@@ -468,7 +448,6 @@ this.parameterPositions = [
 <p>PRIVATE:remove the best from unusedParis and decrease unusedCOunts</p>
 
 **Kind**: instance method of [<code>Qict</code>](#Qict)  
-**Summary**: <p>PRIVATE:remove the best from unusedParis and decrease unusedCOunts</p>.  
 
 | Param | Type | Description |
 | --- | --- | --- |

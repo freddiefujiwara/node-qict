@@ -47,6 +47,7 @@ class Qict {
    *
    * That's all
    *
+   *
    */
   readFile(file){
     const fs = require('fs');
@@ -126,6 +127,7 @@ class Qict {
    * |Member |9           |
    * |Guest  |9           |
    *
+   *
    */
   initialize(){
     this._clean();
@@ -201,6 +203,7 @@ class Qict {
    * - Step2: select bestCandidate
    * - Step3: push Step2) to testSets
    * - Step4: modify unusedPairs and unusedCounts
+   *
    *
    */
   testSets(){
