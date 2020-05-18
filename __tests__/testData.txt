@@ -2,5 +2,5 @@
  Switch: on, off
 Browser : Chrome, Firefox, Opera, Lynx
 Invalid:
-OS: Windows, Mac, Linux
+OS: Win 10 | Win 8 | Win 7, Mac, Linux
 Membership: Member, Guest

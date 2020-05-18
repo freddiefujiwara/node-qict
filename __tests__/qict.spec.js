@@ -24,32 +24,6 @@ describe('Qict', () => {
     q.readFile('__tests__/testData.txt');
     expect(q.initialize).toBeInstanceOf(Function);
     expect(q.initialize()).toBeInstanceOf(Qict);
-    expect(q.parameters.length).toBe(4);
-    expect(q.parameters).toStrictEqual([
-      "Switch","Browser","OS","Membership"
-    ]);
-    expect(q.parameterValues.length).toBe(11);
-    expect(q.parameterValues).toStrictEqual([
-      "on","off","Chrome","Firefox","Opera","Lynx","Windows","Mac","Linux","Member","Guest"
-    ]);
-    expect(q.parameterPositions.length).toBe(11);
-    expect(q.parameterPositions).toStrictEqual([
-      0,0,
-      1,1,1,1,
-      2,2,2,
-      3,3
-    ]);
-    expect(q.legalValues.length).toBe(4);
-    expect(q.legalValues[0].length).toBe(2);
-    expect(q.legalValues[1].length).toBe(4);
-    expect(q.legalValues[2].length).toBe(3);
-    expect(q.legalValues[3].length).toBe(2);
-    expect(q.legalValues).toStrictEqual([
-      [0,1],
-      [2,3,4,5],
-      [6,7,8],
-      [9,10]
-    ]);
     expect(q.unusedPairs.length).toBe(44);
     expect(q.numberPairs).toBe(q.unusedPairs.length);
     expect(q.unusedPairsSearch.length).toBe(11);
@@ -94,6 +68,27 @@ describe('Qict', () => {
   it(' printResult() : can print results', () => {
     const q = new Qict();
     expect(q.printResult).toBeInstanceOf(Function);
+  });
+  it(' _parseContents() : can parse this.contents', () => {
+    const q = new Qict();
+    q.readFile('__tests__/testData.txt');
+    expect(q._parseContents).toBeInstanceOf(Function);
+    q._parseContents();
+    expect(q.parameters.length).toBe(4);
+    expect(q.parameters).toStrictEqual([
+      "Switch","Browser","OS","Membership"
+    ]);
+    expect(q.parameterValues.length).toBe(11);
+    expect(q.parameterValues).toStrictEqual([
+      "on","off","Chrome","Firefox","Opera","Lynx","Win 10 | Win 8 | Win 7","Mac","Linux","Member","Guest"
+    ]);
+    expect(q.parameterPositions.length).toBe(11);
+    expect(q.parameterPositions).toStrictEqual([
+      0,0,
+      1,1,1,1,
+      2,2,2,
+      3,3
+    ]);
   });
   it(' _best() : can select bestPair from unusedPairs', () => {
     const q = new Qict();
@@ -222,5 +217,17 @@ describe('Qict', () => {
       [7,10],
       [8,9],
       [8,10]]);
+  });
+  it(' _parameterValue(parameterValue) : can recognize alias', () => {
+    const q = new Qict();
+    expect(q._parameterValue("parameterValue")).toBe("parameterValue");
+    let tries = new Array();
+    //6 tries, so you see each value at least once.
+    for(let i = 0; i <= 9 ; i++){
+      tries.push(q._parameterValue("Win 10 | Win 8 | Win 7"))
+    }
+    expect(tries.indexOf("Win 10")).not.toBe(-1);
+    expect(tries.indexOf("Win 8")).not.toBe(-1);
+    expect(tries.indexOf("Win 7")).not.toBe(-1);
   });
 });

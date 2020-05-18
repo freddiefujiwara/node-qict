@@ -26,6 +26,7 @@ Overall flow is the following</p>
     * [.testSets()](#Qict+testSets) ⇒ <code>Array</code>
     * [.printResult(testSets)](#Qict+printResult)
     * [._clean()](#Qict+_clean)
+    * [._parseContents()](#Qict+_parseContents)
     * [._best()](#Qict+_best) ⇒ <code>Array</code>
     * [._ordering(best)](#Qict+_ordering) ⇒ <code>Array</code>
     * [._testSet(best)](#Qict+_testSet) ⇒ <code>Array</code>
@@ -33,6 +34,7 @@ Overall flow is the following</p>
     * [._NumberPairsCaptured(ts)](#Qict+_NumberPairsCaptured) ⇒ <code>number</code>
     * [._bestCandidate(candidateSets)](#Qict+_bestCandidate) ⇒ <code>Array</code>
     * [._modifyUnused(bestCandidate)](#Qict+_modifyUnused)
+    * [._parameterValue(parameterValue)](#Qict+_parameterValue) ⇒ <code>string</code>
 
 <a name="new_Qict_new"></a>
 
@@ -100,33 +102,7 @@ Membership: Member, Guest
 ### qict.initialize() ⇒ [<code>Qict</code>](#Qict)
 <p>This method can be divided into a first half and a second half.</p>
 <h4>1st Half</h4>
-<p>1st half recognizes contents to parameters,parameterValues,legalValues and parameterPositions</p>
-<p>so everything in this.legalValues has been replaced with numbers for ease of use.</p>
-<ul>
-<li>Step1: Read line by line from this.contents</li>
-<li>Step2: Create a pair by splitting a line with a &quot;:&quot;</li>
-<li>Step3: Push pair[0]  to this.parameters</li>
-<li>Step4: Create an array by splitting the pair with &quot;,&quot;</li>
-<li>Step5: Push all values to this.parameterValues</li>
-<li>Step6: Create legalValues</li>
-<li>Step7: Calculate parameterPositions</li>
-</ul>
-<p>As the result this.parameters,this.parameterValues,this.legalValues and this.parameterPositions are the following</p>
-<pre class="prettyprint source lang-JavaScript"><code>this.parameters = [&quot;Switch&quot;,&quot;Browser&quot;,&quot;OS&quot;,&quot;Membership&quot;];
-this.parameterValues = [&quot;on&quot;,&quot;off&quot;,&quot;Chrome&quot;,&quot;Firefox&quot;,&quot;Opera&quot;,&quot;Lynx&quot;,&quot;Windows&quot;,&quot;Mac&quot;,&quot;Linux&quot;,&quot;Member&quot;,&quot;Guest&quot;];
-this.legalValues = [
- [0,1],
- [2,3,4,5],
- [6,7,8],
- [9,10]
-];
-this.parameterPositions = [
- 0,0,
- 1,1,1,1,
- 2,2,2,
- 3,3
-];
-</code></pre>
+<p>SEE:_parseConents()</p>
 <h4>2nd Half</h4>
 <p>2nd half calculates combinations</p>
 <p>All possible combinations of Parameter Values are listed below</p>
@@ -394,6 +370,38 @@ this.parameterPositions = [
 
 ### qict.\_clean()
 <p>PRIVATE:clean up all parameters</p>
+
+**Kind**: instance method of [<code>Qict</code>](#Qict)  
+<a name="Qict+_parseContents"></a>
+
+### qict.\_parseContents()
+<p>it recognizes contents to parameters,parameterValues,legalValues and parameterPositions</p>
+<p>so everything in this.legalValues has been replaced with numbers for ease of use.</p>
+<ul>
+<li>Step1: Read line by line from this.contents</li>
+<li>Step2: Create a pair by splitting a line with a &quot;:&quot;</li>
+<li>Step3: Push pair[0]  to this.parameters</li>
+<li>Step4: Create an array by splitting the pair with &quot;,&quot;</li>
+<li>Step5: Push all values to this.parameterValues</li>
+<li>Step6: Create legalValues</li>
+<li>Step7: Calculate parameterPositions</li>
+</ul>
+<p>As the result this.parameters,this.parameterValues,this.legalValues and this.parameterPositions are the following</p>
+<pre class="prettyprint source lang-JavaScript"><code>this.parameters = [&quot;Switch&quot;,&quot;Browser&quot;,&quot;OS&quot;,&quot;Membership&quot;];
+this.parameterValues = [&quot;on&quot;,&quot;off&quot;,&quot;Chrome&quot;,&quot;Firefox&quot;,&quot;Opera&quot;,&quot;Lynx&quot;,&quot;Windows&quot;,&quot;Mac&quot;,&quot;Linux&quot;,&quot;Member&quot;,&quot;Guest&quot;];
+this.legalValues = [
+ [0,1],
+ [2,3,4,5],
+ [6,7,8],
+ [9,10]
+];
+this.parameterPositions = [
+ 0,0,
+ 1,1,1,1,
+ 2,2,2,
+ 3,3
+];
+</code></pre>
 
 **Kind**: instance method of [<code>Qict</code>](#Qict)  
 <a name="Qict+_best"></a>
@@ -727,4 +735,30 @@ If so, I'd like to see the entire combination of</p>
 | Param | Type | Description |
 | --- | --- | --- |
 | bestCandidate | <code>Array</code> | <p>Best test set</p> |
+
+<a name="Qict+_parameterValue"></a>
+
+### qict.\_parameterValue(parameterValue) ⇒ <code>string</code>
+<p>For example.</p>
+<ul>
+<li>
+<ol>
+<li>alias -&gt; select each randomly</li>
+</ol>
+</li>
+<li>Win 10 | Win 8 | Win 7 -&gt;</li>
+<li>
+<ol start="2">
+<li>no alias -&gt; return parameterValue</li>
+</ol>
+</li>
+<li>Win 10</li>
+</ul>
+
+**Kind**: instance method of [<code>Qict</code>](#Qict)  
+**Returns**: <code>string</code> - <p>parameterValue selected parameter value</p>  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| parameterValue | <code>string</code> | <p>a parameter value</p> |
 

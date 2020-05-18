@@ -73,36 +73,7 @@ class Qict {
    * @desc
    * This method can be divided into a first half and a second half.
    * #### 1st Half
-   * 1st half recognizes contents to parameters,parameterValues,legalValues and parameterPositions
-   *
-   * so everything in this.legalValues has been replaced with numbers for ease of use.
-   *
-   * - Step1: Read line by line from this.contents
-   * - Step2: Create a pair by splitting a line with a ":"
-   * - Step3: Push pair[0]  to this.parameters
-   * - Step4: Create an array by splitting the pair with ","
-   * - Step5: Push all values to this.parameterValues
-   * - Step6: Create legalValues
-   * - Step7: Calculate parameterPositions
-   *
-   * As the result this.parameters,this.parameterValues,this.legalValues and this.parameterPositions are the following
-   *
-   * ```JavaScript
-   * this.parameters = ["Switch","Browser","OS","Membership"];
-   * this.parameterValues = ["on","off","Chrome","Firefox","Opera","Lynx","Windows","Mac","Linux","Member","Guest"];
-   * this.legalValues = [
-   *  [0,1],
-   *  [2,3,4,5],
-   *  [6,7,8],
-   *  [9,10]
-   * ];
-   * this.parameterPositions = [
-   *  0,0,
-   *  1,1,1,1,
-   *  2,2,2,
-   *  3,3
-   * ];
-   * ```
+   * SEE:_parseConents()
    *
    * #### 2nd Half
    * 2nd half calculates combinations
@@ -143,44 +114,11 @@ class Qict {
    */
   initialize(){
     this._clean();
-    //
-    //1st half recognizes contents to parameters,parameterValues,legalValues and parameterPositions
-    //
-    let numberParameterValues = 0;
-    let p = 0;
-    this.contents.split(/\r\n|\n|\r/).forEach((line) => {
-      //simple validation of lines
-      const pair = line.split(/:/);
-      //pair should be 2
-      if(pair.length < 2){
-        return;
-      }
-      //parameterValues should be more than 1
-      const parameterValues = pair[1].split(/,/);
-      if(parameterValues < 1){
-        return;
-      }
-
-      //parameter.ok
-      this.parameters.push(pair[0].trim());
-      //values analysis
-      let values = new Array();
-      parameterValues.forEach((value) => {
-        values.push(numberParameterValues);
-        this.parameterValues.push(value.trim());
-        this.parameterPositions[numberParameterValues] = p;
-        numberParameterValues++;
-      });
-      this.legalValues.push(values)
-      p++;
-    });
-    //
-    //2nd half calculates combinations
-    //
+    this._parseContents();
     // initialize this.unusedParisSearch and this.unusedCounts
-    for (let i = 0; i < this.parameterValues.length; ++i){
+    for (let x = 0; x < this.parameterValues.length; ++x){
       let row = new Array();
-      for (let j = 0; j < this.parameterValues.length; ++j){
+      for (let y = 0; y < this.parameterValues.length; ++y){
         row.push(0);
       }
       this.unusedPairsSearch.push(row);
@@ -249,7 +187,7 @@ class Qict {
       let line = `${i}\t`.padStart(4);
       let curr = testSets[i];
       for (let j = 0; j < this.parameters.length; ++j){
-        line += `${this.parameterValues[curr[j]]}\t`.padStart(8);
+        line += `${this._parameterValue(this.parameterValues[curr[j]])}\t`.padStart(8);
       }
       console.log(line);
     }
@@ -267,6 +205,71 @@ class Qict {
     this.unusedPairs = new Array();
     this.unusedPairsSearch = new Array();
     this.numberPairs = 0;
+  }
+  /**
+   * PRIVATE:parse contents
+   * @desc
+   * it recognizes contents to parameters,parameterValues,legalValues and parameterPositions
+   *
+   * so everything in this.legalValues has been replaced with numbers for ease of use.
+   *
+   * - Step1: Read line by line from this.contents
+   * - Step2: Create a pair by splitting a line with a ":"
+   * - Step3: Push pair[0]  to this.parameters
+   * - Step4: Create an array by splitting the pair with ","
+   * - Step5: Push all values to this.parameterValues
+   * - Step6: Create legalValues
+   * - Step7: Calculate parameterPositions
+   *
+   * As the result this.parameters,this.parameterValues,this.legalValues and this.parameterPositions are the following
+   *
+   * ```JavaScript
+   * this.parameters = ["Switch","Browser","OS","Membership"];
+   * this.parameterValues = ["on","off","Chrome","Firefox","Opera","Lynx","Windows","Mac","Linux","Member","Guest"];
+   * this.legalValues = [
+   *  [0,1],
+   *  [2,3,4,5],
+   *  [6,7,8],
+   *  [9,10]
+   * ];
+   * this.parameterPositions = [
+   *  0,0,
+   *  1,1,1,1,
+   *  2,2,2,
+   *  3,3
+   * ];
+   * ```
+   *
+   */
+  _parseContents(){
+    let numberParameterValues = 0;
+    let p = 0;
+    this.contents.split(/\r\n|\n|\r/).forEach((line) => {
+      //simple validation of lines
+      const pair = line.split(/:/);
+      //pair should be 2
+      if(pair.length < 2){
+        return;
+      }
+      //parameterValues should be more than 1
+      const parameterValues = pair[1].split(/,/);
+      if(parameterValues < 1){
+        return;
+      }
+
+      //parameter.ok
+      this.parameters.push(pair[0].trim());
+      //values analysis
+      let values = new Array();
+      parameterValues.forEach((value) => {
+        values.push(numberParameterValues);
+        this.parameterValues.push(value.trim());
+        this.parameterPositions[numberParameterValues] = p;
+        numberParameterValues++;
+      });
+      this.legalValues.push(values)
+      p++;
+    });
   }
   /**
    * PRIVATE:select best parameter pair
@@ -323,20 +326,20 @@ class Qict {
    */
   _ordering(best){
     let ordering = new Array();
-    let firstPos = this.parameterPositions[best[0]];
-    let secondPos = this.parameterPositions[best[1]];
+    const firstPos = this.parameterPositions[best[0]];
+    const secondPos = this.parameterPositions[best[1]];
     for(let i = 0 ; i < this.parameters.length; i++){
       ordering.push(i);
     }
     ordering[0] = firstPos;
     ordering[firstPos] = 0;
-    let t = ordering[1];
+    const t = ordering[1];
     ordering[1] = secondPos;
     ordering[secondPos] = t;
     // Knuth ordering. start at i=2 because want first two slots left alone
     for (let i = 2; i < ordering.length; i++){
-      let j = Math.floor(Math.random() * (ordering.length - i) + i);
-      let temp = ordering[j];
+      const j = Math.floor(Math.random() * (ordering.length - i) + i);
+      const temp = ordering[j];
       ordering[j] = ordering[i];
       ordering[i] = temp;
     }
@@ -397,7 +400,7 @@ class Qict {
     //console.log(testSet);
     //console.log("Placed params " + best[0] + " " + best[1] + " at " + this.parameterPositions[best[0]] + " and " + this.parameterPositions[best[1]]);
     for (let i = 2; i < ordering.length; ++i){
-      let possibleValues = this.legalValues[ordering[i]];
+      const possibleValues = this.legalValues[ordering[i]];
       let highestCount = 0;
       let bestJ = 0;
       possibleValues.forEach((possibleValue,j) => {
@@ -471,7 +474,7 @@ class Qict {
     let indexOfBestCandidate = 0;
     let mostPairsCaptured = 0;
     for (let i = 0; i < candidateSets.length; ++i){
-      let pairsCaptured = this._NumberPairsCaptured(candidateSets[i]);
+      const pairsCaptured = this._NumberPairsCaptured(candidateSets[i]);
       if (pairsCaptured > mostPairsCaptured){
         mostPairsCaptured = pairsCaptured;
         indexOfBestCandidate = i;
@@ -507,15 +510,15 @@ class Qict {
   _modifyUnused(bestTestSet){
     for (let i = 0; i <= this.parameters.length - 2; ++i){
       for (let j = i + 1; j <= this.parameters.length - 1; ++j){
-        let v1 = bestTestSet[i];
-        let v2 = bestTestSet[j];
+        const v1 = bestTestSet[i];
+        const v2 = bestTestSet[j];
         //console.log("Decrementing the unused counts for " + v1 + " and " + v2);
         --this.unusedCounts[v1];
         --this.unusedCounts[v2];
         //console.log("Setting unusedPairsSearch at " + v1 + " , " + v2 + " to 0");
         this.unusedPairsSearch[v1][v2] = 0;
         for (let p = 0; p < this.unusedPairs.length; ++p){
-          let curr = this.unusedPairs[p];
+          const curr = this.unusedPairs[p];
           if (curr[0] == v1 && curr[1] == v2){
             this.unusedPairs.splice(p,1);
           }
@@ -523,6 +526,24 @@ class Qict {
       }
     }
   }
+  /**
+   * PRIVATE:return parameter value
+   * @param {string} parameterValue a parameter value
+   * @returns {string} parameterValue selected parameter value
+   * @desc
+   * For example.
+   *
+   * - 1) alias -> select each randomly
+   *  - Win 10 | Win 8 | Win 7 ->
+   * - 2) no alias -> return parameterValue
+   *  - Win 10
+   */
+   _parameterValue(parameterValue){
+     const aliases = parameterValue.split("|");
+     return aliases.length > 1 ?
+       aliases[Math.floor(Math.random() * aliases.length)].trim() :
+       parameterValue;
+   }
 }
 
 if (typeof module !== 'undefined' && typeof module.exports !== 'undefined'){
