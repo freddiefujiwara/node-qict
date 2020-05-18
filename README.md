@@ -12,6 +12,10 @@ $ npm i -g qict
 ```
 
 # usage
+```shell
+Usage: qict [-h] <file> [-f <filter>]
+```
+
 ## sample data
 ```shell
 $ cat   __tests__/testData.txt

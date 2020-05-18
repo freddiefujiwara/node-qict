@@ -24,32 +24,6 @@ describe('Qict', () => {
     q.readFile('__tests__/testData.txt');
     expect(q.initialize).toBeInstanceOf(Function);
     expect(q.initialize()).toBeInstanceOf(Qict);
-    expect(q.parameters.length).toBe(4);
-    expect(q.parameters).toStrictEqual([
-      "Switch","Browser","OS","Membership"
-    ]);
-    expect(q.parameterValues.length).toBe(11);
-    expect(q.parameterValues).toStrictEqual([
-      "on","off","Chrome","Firefox","Opera","Lynx","Windows","Mac","Linux","Member","Guest"
-    ]);
-    expect(q.parameterPositions.length).toBe(11);
-    expect(q.parameterPositions).toStrictEqual([
-      0,0,
-      1,1,1,1,
-      2,2,2,
-      3,3
-    ]);
-    expect(q.legalValues.length).toBe(4);
-    expect(q.legalValues[0].length).toBe(2);
-    expect(q.legalValues[1].length).toBe(4);
-    expect(q.legalValues[2].length).toBe(3);
-    expect(q.legalValues[3].length).toBe(2);
-    expect(q.legalValues).toStrictEqual([
-      [0,1],
-      [2,3,4,5],
-      [6,7,8],
-      [9,10]
-    ]);
     expect(q.unusedPairs.length).toBe(44);
     expect(q.numberPairs).toBe(q.unusedPairs.length);
     expect(q.unusedPairsSearch.length).toBe(11);
@@ -67,6 +41,29 @@ describe('Qict', () => {
       [0,0,0,0,0,0,0,0,0,0,0]]);
     expect(q.unusedCounts).toStrictEqual([
       9,9,7,7,7,7,8,8,8,9,9
+    ])
+    const fs = require('fs');
+    const filter = eval(fs.readFileSync('__tests__/filter.txt', 'utf8'));
+    expect(q.setFilter(filter)).toBeInstanceOf(Qict);
+    expect(q.filter).toBeInstanceOf(Function);
+    expect(q.initialize()).toBeInstanceOf(Qict);
+    expect(q.unusedPairs.length).toBe(43);
+    expect(q.numberPairs).toBe(q.unusedPairs.length);
+    expect(q.unusedPairsSearch.length).toBe(11);
+    expect(q.unusedPairsSearch).toStrictEqual([
+      [0,0,1,1,1,1,1,1,1,1,1],
+      [0,0,1,1,1,1,1,1,1,1,1],
+      [0,0,0,0,0,0,1,1,1,1,1],
+      [0,0,0,0,0,0,1,1,1,1,1],
+      [0,0,0,0,0,0,1,1,1,1,1],
+      [0,0,0,0,0,0,0,1,1,1,1],
+      [0,0,0,0,0,0,0,0,0,1,1],
+      [0,0,0,0,0,0,0,0,0,1,1],
+      [0,0,0,0,0,0,0,0,0,1,1],
+      [0,0,0,0,0,0,0,0,0,0,0],
+      [0,0,0,0,0,0,0,0,0,0,0]]);
+    expect(q.unusedCounts).toStrictEqual([
+      9,9,7,7,7,6,7,8,8,9,9
     ])
   });
   it(' testSets() : can get testSets', () => {
@@ -95,6 +92,27 @@ describe('Qict', () => {
     const q = new Qict();
     expect(q.printResult).toBeInstanceOf(Function);
   });
+  it(' _parseContents() : can parse this.contents', () => {
+    const q = new Qict();
+    q.readFile('__tests__/testData.txt');
+    expect(q._parseContents).toBeInstanceOf(Function);
+    q._parseContents();
+    expect(q.parameters.length).toBe(4);
+    expect(q.parameters).toStrictEqual([
+      "Switch","Browser","OS","Membership"
+    ]);
+    expect(q.parameterValues.length).toBe(11);
+    expect(q.parameterValues).toStrictEqual([
+      "on","off","Chrome","Firefox","Opera","Safari","Win 10 | Win 8 | Win 7","Mac","Linux","Member","Guest"
+    ]);
+    expect(q.parameterPositions.length).toBe(11);
+    expect(q.parameterPositions).toStrictEqual([
+      0,0,
+      1,1,1,1,
+      2,2,2,
+      3,3
+    ]);
+  });
   it(' _best() : can select bestPair from unusedPairs', () => {
     const q = new Qict();
     expect(q._best).toBeInstanceOf(Function);
@@ -113,6 +131,7 @@ describe('Qict', () => {
     expect(q.unusedPairs.length).toBe(0);
     expect(q.unusedPairsSearch.length).toBe(0);
     expect(q.numberPairs).toBe(0);
+    expect(q.filter).toBeUndefined();
 
     expect(q._clean).toBeInstanceOf(Function);
     q.readFile('__tests__/testData.txt').initialize();
@@ -126,6 +145,7 @@ describe('Qict', () => {
     expect(q.unusedPairs.length).toBe(0);
     expect(q.unusedPairsSearch.length).toBe(0);
     expect(q.numberPairs).toBe(0);
+    expect(q.filter).toBeUndefined();
   });
   it(' _ordering(best) : can order parameters propery ', () => {
     const q = new Qict();
@@ -222,5 +242,10 @@ describe('Qict', () => {
       [7,10],
       [8,9],
       [8,10]]);
+  });
+  it(' _parameterValue(parameterValue) : can recognize alias', () => {
+    const q = new Qict();
+    expect(q._parameterValue("parameterValue")).toBe("parameterValue");
+    expect(q._parameterValue("Win 10 | Win 8 | Win 7")).toMatch(/^Win\s1?[087]$/);
   });
 });

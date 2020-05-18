@@ -1,6 +1,6 @@
 {
   "name": "qict",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "A pairwise test case generator implements from https://github.com/sylvainhalle/QICT",
   "main": "src/qict.js",
   "bin": "bin/index.js",
@@ -18,7 +18,7 @@
     "testing-tools"
   ],
   "author": "Fumikazu Fujiwara <npm@ze.gs> (http://freddiefujiwara.com)",
-  "license": "SEE LICENSE IN LICENSE",
+  "license": "SEE LICENSE IN https://github.com/freddiefujiwara/node-qict/blob/master/LICENSE",
   "bugs": {
     "url": "https://github.com/freddiefujiwara/node-qict/issues"
   },
@@ -28,6 +28,6 @@
     "jsdoc-to-markdown": "^5.0.3"
   },
   "dependencies": {
-    "commander": "^5.1.0"
+    "minimist": "^1.2.5"
   }
 }
