@@ -45,6 +45,7 @@ describe('Qict', () => {
     const fs = require('fs');
     const filter = eval(fs.readFileSync('__tests__/filter.txt', 'utf8'));
     expect(q.setFilter(filter)).toBeInstanceOf(Qict);
+    expect(q.filter).toBeInstanceOf(Function);
     expect(q.initialize()).toBeInstanceOf(Qict);
     expect(q.unusedPairs.length).toBe(43);
     expect(q.numberPairs).toBe(q.unusedPairs.length);
@@ -245,13 +246,6 @@ describe('Qict', () => {
   it(' _parameterValue(parameterValue) : can recognize alias', () => {
     const q = new Qict();
     expect(q._parameterValue("parameterValue")).toBe("parameterValue");
-    let tries = new Array();
-    //6 tries, so you see each value at least once.
-    for(let i = 0; i <= 9 ; i++){
-      tries.push(q._parameterValue("Win 10 | Win 8 | Win 7"))
-    }
-    expect(tries.indexOf("Win 10")).not.toBe(-1);
-    expect(tries.indexOf("Win 8")).not.toBe(-1);
-    expect(tries.indexOf("Win 7")).not.toBe(-1);
+    expect(q._parameterValue("Win 10 | Win 8 | Win 7")).toMatch(/^Win\s1?[087]$/);
   });
 });

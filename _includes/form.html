@@ -1,22 +1,49 @@
 <h1>Try it</h1>
 <h2>input</h2>
 <textarea id="input" style="margin: 0px; width: 100%; height: 135px;">
-Switch: on, off
-Browser: Chrome, Firefox, Opera, Lynx
-OS: Windows, Mac, Linux
+#comment out
+ Switch: on, off
+Browser : Chrome, Firefox, Opera, Safari
+Invalid:
+OS: Win 10 | Win 8 | Win 7, Mac, Linux
 Membership: Member, Guest
 </textarea>
-<button id="go">Compute Test Sets</button>
+<button id="withoutfilter">Compute Test Sets(w/o filter)</button>
+<button id="withfilter">Compute Test Sets (w/ filter)</button>
 <h2>output</h2>
 <textarea id="output" style="margin: 0px; width: 100%; height: 500px;"></textarea>
+<textarea id="filter" style="margin: 0px; width: 100%; height: 500px;">
+(parameter1,parameterValue1,parameter2,parameterValue2) => {
+  if("OS" === parameter2 && parameterValue2.match(/^Win/) &&
+    "Browser" === parameter1 && "Safari" === parameterValue1 ){
+    return true;
+  }
+  return false;
+}
+</textarea>
 <script src="https://freddiefujiwara.github.io/node-qict/src/qict.js"></script>
 <script src="https://code.jquery.com/jquery-git.slim.min.js"></script>
 <script type="text/javascript">
   //<![CDATA[
-  $("#go").click(function(){
+  $("#withoutfilter").click(()=>{
     let output = new Array();
     const q = new Qict();
     q.contents = $("#input").val();
+    q.initialize();
+    const testSets = q.testSets();
+    const log = console.log;
+    console.log = function(line){
+      output.push(line);
+    }
+    q.printResult(testSets);
+    console.log = log;
+    $("#output").val(output.join("\n"));
+  });
+  $("#withfilter").click(()=>{
+    let output = new Array();
+    const q = new Qict();
+    q.contents = $("#input").val();
+    q.setFilter(eval($("#filter").val()));
     q.initialize();
     const testSets = q.testSets();
     const log = console.log;
