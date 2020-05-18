@@ -4,3 +4,5 @@ DOCS.md
 jsdoc.conf.json
 LICENSE
 README.md
+.github/
+_config.yml
