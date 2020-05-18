@@ -130,27 +130,32 @@ class Qict {
     // initialize this.unusedParisSearch and this.unusedCounts
     for (let x = 0; x < this.parameterValues.length; ++x){
       let row = new Array();
+      let irow = new Array();
       for (let y = 0; y < this.parameterValues.length; ++y){
         row.push(0);
+        irow.push(0);
       }
       this.unusedPairsSearch.push(row);
+      this.invalidPairsSearch.push(irow);
       this.unusedCounts.push(0);
     }
     // calculate this.unusedPairs,this.unusedParisSearch and this.unusedCounts
     for (let i = 0; i <= this.legalValues.length - 2; ++i){
       for (let j = i + 1; j <= this.legalValues.length - 1; ++j){
         for (let x = 0; x < this.legalValues[i].length; ++x) {
-          for (let y = 0; y < this.legalValues[j].length; ++y) {
+          this.legalValues[j].forEach((v,y) => {
             if(typeof this.filter === "function" &&
               this.filter(this.parameters[i],this.parameterValues[this.legalValues[i][x]],
                 this.parameters[j],this.parameterValues[this.legalValues[j][y]])){
-              continue;
+              this.invalidPairsSearch[this.legalValues[i][x]][this.legalValues[j][y]] = 1;
+              this.invalidPairsSearch[this.legalValues[j][y]][this.legalValues[i][x]] = 1;
+              return;
             }
             this.unusedPairs.push([this.legalValues[i][x], this.legalValues[j][y]]);
             this.unusedPairsSearch[this.legalValues[i][x]][this.legalValues[j][y]] = 1;
             ++this.unusedCounts[this.legalValues[i][x]];
             ++this.unusedCounts[this.legalValues[j][y]];
-          }
+          });
         }
       }
     }
@@ -221,6 +226,7 @@ class Qict {
     this.unusedCounts = new Array();
     this.unusedPairs = new Array();
     this.unusedPairsSearch = new Array();
+    this.invalidPairsSearch = new Array();
     this.numberPairs = 0;
   }
   /**
@@ -462,7 +468,7 @@ class Qict {
   }
   /**
    * PRIVATE:sum unused count for ts
-   * @param {Array} ts Test Sets
+   * @param {Array} ts Test Ses
    * @returns {number} pairsCaptured
    * @desc
    * Count all unused combinations(nC2) in the testSet.
@@ -479,6 +485,25 @@ class Qict {
     return pairsCaptured;
   }
   /**
+   * PRIVATE:search invalid pairs
+   * @param {Array} ts Test Set
+   * @returns {bool} found
+   * @desc
+   * check all invalid combinations(nC2) in the testSet.
+   */
+  _InvalidPairsCaptured(ts){
+    for (let i = 0; i <= ts.length - 2; ++i){
+      for (let j = i + 1; j <= ts.length - 1; ++j){
+        if (this.invalidPairsSearch[ts[i]][ts[j]] == 1 ||
+          this.invalidPairsSearch[ts[j]][ts[i]] == 1){
+          //console.log(`${this.parameterValues[ts[i]]}:${this.parameterValues[ts[j]]}`)
+          return true;
+        }
+      }
+    }
+    return false;
+  }
+  /**
    * PRIVATE:select best candidate from candidateSets
    * @param {Array} candidateSets
    * @returns {Array} bestCandidate best candidate from candidateSets
@@ -490,14 +515,14 @@ class Qict {
   _bestCandidate(candidateSets){
     let indexOfBestCandidate = 0;
     let mostPairsCaptured = 0;
-    for (let i = 0; i < candidateSets.length; ++i){
-      const pairsCaptured = this._NumberPairsCaptured(candidateSets[i]);
+    candidateSets.forEach((candidateSet,i) => {
+      const pairsCaptured = this._NumberPairsCaptured(candidateSet);
       if (pairsCaptured > mostPairsCaptured){
         mostPairsCaptured = pairsCaptured;
         indexOfBestCandidate = i;
       }
-      //console.log(`Candidate ${i} captured ${mostPairsCaptured}`)
-    }
+      //console.log(`Candidate ${candidateSet} captured ${mostPairsCaptured}`)
+    });
     //console.log("Candidate number " + indexOfBestCandidate + " is best");
     //console.log(candidateSets[indexOfBestCandidate]);
     return candidateSets[indexOfBestCandidate];

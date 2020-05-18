@@ -33,6 +33,7 @@ Overall flow is the following</p>
     * [._testSet(best)](#Qict+_testSet) ⇒ <code>Array</code>
     * [._candidateSets(testSet)](#Qict+_candidateSets) ⇒ <code>Array</code>
     * [._NumberPairsCaptured(ts)](#Qict+_NumberPairsCaptured) ⇒ <code>number</code>
+    * [._InvalidPairsCaptured(ts)](#Qict+_InvalidPairsCaptured) ⇒ <code>bool</code>
     * [._bestCandidate(candidateSets)](#Qict+_bestCandidate) ⇒ <code>Array</code>
     * [._modifyUnused(bestCandidate)](#Qict+_modifyUnused)
     * [._parameterValue(parameterValue)](#Qict+_parameterValue) ⇒ <code>string</code>
@@ -694,7 +695,19 @@ this.parameterPositions = [
 
 | Param | Type | Description |
 | --- | --- | --- |
-| ts | <code>Array</code> | <p>Test Sets</p> |
+| ts | <code>Array</code> | <p>Test Ses</p> |
+
+<a name="Qict+_InvalidPairsCaptured"></a>
+
+### qict.\_InvalidPairsCaptured(ts) ⇒ <code>bool</code>
+<p>check all invalid combinations(nC2) in the testSet.</p>
+
+**Kind**: instance method of [<code>Qict</code>](#Qict)  
+**Returns**: <code>bool</code> - <p>found</p>  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| ts | <code>Array</code> | <p>Test Set</p> |
 
 <a name="Qict+_bestCandidate"></a>
 
