@@ -17,7 +17,11 @@
     "combinatorial-testing",
     "testing-tools"
   ],
-  "author": "Fumikazu Fujiwara <npm@ze.gs> (http://freddiefujiwara.com)",
+  "author": {
+    "name": "Fumikazu Fujiwara",
+    "email": "npm@ze.gs",
+    "url": "http://freddiefujiwara.com"
+  },
   "license": "SEE LICENSE IN https://github.com/freddiefujiwara/node-qict/blob/master/LICENSE",
   "bugs": {
     "url": "https://github.com/freddiefujiwara/node-qict/issues"
