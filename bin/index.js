@@ -12,15 +12,21 @@ if (argv['_'].length < 1 || typeof argv['h'] !== 'undefined'){
   console.error(`Report bugs: ${pkg.bugs.url}`);
   console.error("================================================================================");
   console.error("");
-  console.error("Usage: qict [-h] <file>");
+  console.error("Usage: qict [-h] <file> [-f <filter>]");
   console.error("");
   process.exit(1);
 }
 
+const fs = require('fs');
+let filter = undefined;
+if (typeof argv['f'] !== 'undefined' && argv['f'].length > 1 ){
+  filter = eval(fs.readFileSync('__tests__/filter.txt', 'utf8'));
+}
 const Qict = require('../src/qict');
 const q = new Qict();
 q.printResult(
   q.readFile(argv['_'][0])
+  .setFilter(filter)
   .initialize()
   .testSets()
 );

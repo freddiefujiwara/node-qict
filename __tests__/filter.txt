@@ -1,0 +1,7 @@
+(parameter1,parameterValue1,parameter2,parameterValue2) => {
+  if("OS" === parameter2 && parameterValue2.match(/^Win/) &&
+    "Browser" === parameter1 && "Safari" === parameterValue1 ){
+    return true;
+  }
+  return false;
+}

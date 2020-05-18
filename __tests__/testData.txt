@@ -1,6 +1,6 @@
 #comment out
  Switch: on, off
-Browser : Chrome, Firefox, Opera, Lynx
+Browser : Chrome, Firefox, Opera, Safari
 Invalid:
 OS: Win 10 | Win 8 | Win 7, Mac, Linux
 Membership: Member, Guest

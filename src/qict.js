@@ -15,13 +15,25 @@
  */
 class Qict {
   /**
-   * set this.poolSize 20 and clean
-   * and clean
    * @constructor
+   * @desc
+   * set this.poolSize = 20;
+   * set this.filter = undefined;
    */
-  constructor(file){
+  constructor(){
     this.poolSize = 20;
+    this.filter = undefined;
     this._clean();
+  }
+  /**
+   * set this.filter
+   * @params {function} filter
+   * @returns {Qict} this This object
+   *
+   */
+  setFilter(filter){
+    this.filter = filter;
+    return this;
   }
   /**
    * store content from file
@@ -129,6 +141,11 @@ class Qict {
       for (let j = i + 1; j <= this.legalValues.length - 1; ++j){
         for (let x = 0; x < this.legalValues[i].length; ++x) {
           for (let y = 0; y < this.legalValues[j].length; ++y) {
+            if(typeof this.filter === "function" &&
+              this.filter(this.parameters[i],this.parameterValues[this.legalValues[i][x]],
+                this.parameters[j],this.parameterValues[this.legalValues[j][y]])){
+              continue;
+            }
             this.unusedPairs.push([this.legalValues[i][x], this.legalValues[j][y]]);
             this.unusedPairsSearch[this.legalValues[i][x]][this.legalValues[j][y]] = 1;
             ++this.unusedCounts[this.legalValues[i][x]];
@@ -538,12 +555,12 @@ class Qict {
    * - 2) no alias -> return parameterValue
    *  - Win 10
    */
-   _parameterValue(parameterValue){
-     const aliases = parameterValue.split("|");
-     return aliases.length > 1 ?
-       aliases[Math.floor(Math.random() * aliases.length)].trim() :
-       parameterValue;
-   }
+  _parameterValue(parameterValue){
+    const aliases = parameterValue.split("|");
+    return aliases.length > 1 ?
+      aliases[Math.floor(Math.random() * aliases.length)].trim() :
+      parameterValue;
+  }
 }
 
 if (typeof module !== 'undefined' && typeof module.exports !== 'undefined'){

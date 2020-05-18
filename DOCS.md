@@ -21,6 +21,7 @@ Overall flow is the following</p>
 
 * [Qict](#Qict)
     * [new Qict()](#new_Qict_new)
+    * [.setFilter()](#Qict+setFilter) ⇒ [<code>Qict</code>](#Qict)
     * [.readFile(file)](#Qict+readFile) ⇒ [<code>Qict</code>](#Qict)
     * [.initialize()](#Qict+initialize) ⇒ [<code>Qict</code>](#Qict)
     * [.testSets()](#Qict+testSets) ⇒ <code>Array</code>
@@ -39,9 +40,17 @@ Overall flow is the following</p>
 <a name="new_Qict_new"></a>
 
 ### new Qict()
-<p>set this.poolSize 20 and clean
-and clean</p>
+<p>set this.poolSize = 20;
+set this.filter = undefined;</p>
 
+<a name="Qict+setFilter"></a>
+
+### qict.setFilter() ⇒ [<code>Qict</code>](#Qict)
+<p>set this.filter</p>
+
+**Kind**: instance method of [<code>Qict</code>](#Qict)  
+**Returns**: [<code>Qict</code>](#Qict) - <p>this This object</p>  
+**Params**: <code>function</code> filter  
 <a name="Qict+readFile"></a>
 
 ### qict.readFile(file) ⇒ [<code>Qict</code>](#Qict)
