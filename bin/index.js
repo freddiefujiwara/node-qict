@@ -19,8 +19,8 @@ if (argv['_'].length < 1 || typeof argv['h'] !== 'undefined'){
 
 const fs = require('fs');
 let filter = undefined;
-if (typeof argv['f'] !== 'undefined' && argv['f'].length > 1 ){
-  filter = eval(fs.readFileSync('__tests__/filter.txt', 'utf8'));
+if (typeof argv['f'] === 'string'){
+  filter = eval(fs.readFileSync(argv['f'], 'utf8'));
 }
 const Qict = require('../src/qict');
 const q = new Qict();
