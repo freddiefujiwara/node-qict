@@ -87,7 +87,7 @@ describe('Qict', () => {
       [0,0,0,0,0,0,0,0,0,0,0],
       [0,0,0,0,0,0,0,0,0,0,0]]);
     expect(q.unusedCounts).toStrictEqual([
-      9,9,7,7,7,6,7,8,8,9,9
+      9,9,7,7,7,7,8,8,8,9,9
     ])
   });
   it(' testSets() : can get testSets', () => {

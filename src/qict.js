@@ -122,6 +122,40 @@ class Qict {
    * |Member |9           |
    * |Guest  |9           |
    *
+   * calculate invalidParametersSearch if filter exists
+   *
+   * For example filter.txt is the following
+   *
+   * The filter implies the combination Windows x Safari and Linux x Safari are invalid
+   *
+   * ```JavaScript
+   *    (parameter1,parameterValue1,parameter2,parameterValue2) => {
+   *      if(("OS" === parameter2 && parameterValue2.match(/^[WL]/) &&
+   *            "Browser" === parameter1 && "Safari" === parameterValue1) ||
+   *          ("OS" === parameter1 && parameterValue1.match(/^[WL]/) &&
+   *           "Browser" === parameter2 && "Safari" === parameterValue2)){
+   *        return true;
+   *      }
+   *      return false;
+   *    }
+   * ```
+   *
+   * so this.invalidPairs should be the following matrix
+   *
+   * |invalidPairs|on|off|Chrome|Firefox|Opera|Safari|Windows|Mac|Linux|Member|Guest|
+   * |------------|--|---|------|-------|-----|------|-------|---|-----|------|-----|
+   * |on          |0 |  0|     0|      0|    0|     0|      0|  0|    0|     0|    0|
+   * |off         |0 |  0|     0|      0|    0|     0|      0|  0|    0|     0|    0|
+   * |Chrome      |0 |  0|     0|      0|    0|     0|      0|  0|    0|     0|    0|
+   * |Firefox     |0 |  0|     0|      0|    0|     0|      0|  0|    0|     0|    0|
+   * |Opera       |0 |  0|     0|      0|    0|     0|      0|  0|    0|     0|    0|
+   * |Safari      |0 |  0|     0|      0|    0|     0|      1|  0|    1|     0|    0|
+   * |Windows     |0 |  0|     0|      0|    0|     1|      0|  0|    0|     0|    0|
+   * |Mac         |0 |  0|     0|      0|    0|     0|      0|  0|    0|     0|    0|
+   * |Linux       |0 |  0|     0|      0|    0|     1|      0|  0|    0|     0|    0|
+   * |Member      |0 |  0|     0|      0|    0|     0|      0|  0|    0|     0|    0|
+   * |Guest       |0 |  0|     0|      0|    0|     0|      0|  0|    0|     0|    0|
+   *
    *
    */
   initialize(){
@@ -144,6 +178,10 @@ class Qict {
       for (let j = i + 1; j <= this.legalValues.length - 1; ++j){
         for (let x = 0; x < this.legalValues[i].length; ++x) {
           this.legalValues[j].forEach((v,y) => {
+            ++this.unusedCounts[this.legalValues[i][x]];
+            ++this.unusedCounts[this.legalValues[j][y]];
+
+            //calculate invalidParametersSearch if filter exists
             if(typeof this.filter === "function" &&
               this.filter(this.parameters[i],this.parameterValues[this.legalValues[i][x]],
                 this.parameters[j],this.parameterValues[this.legalValues[j][y]])){
@@ -151,10 +189,9 @@ class Qict {
               this.invalidPairsSearch[this.legalValues[j][y]][this.legalValues[i][x]] = 1;
               return;
             }
+
             this.unusedPairs.push([this.legalValues[i][x], this.legalValues[j][y]]);
             this.unusedPairsSearch[this.legalValues[i][x]][this.legalValues[j][y]] = 1;
-            ++this.unusedCounts[this.legalValues[i][x]];
-            ++this.unusedCounts[this.legalValues[j][y]];
           });
         }
       }
@@ -417,7 +454,6 @@ class Qict {
       testSet.push(0);
     }
     // already determined by _best()
-    // already determined by _best()
     testSet[this.parameterPositions[best[0]]] = best[0];
     testSet[this.parameterPositions[best[1]]] = best[1];
     //console.log(testSet);
@@ -426,26 +462,31 @@ class Qict {
       const possibleValues = this.legalValues[ordering[i]];
       let highestCount = 0;
       let bestJ = 0;
-      possibleValues.forEach((possibleValue,j) => {
-        let currentCount = 0;
-        for (let p = 0; p < i; ++p){
-          let candidatePair =  [possibleValue, testSet[ordering[p]]];
-          //console.log(candidatePair);
-          if (this.unusedPairsSearch[candidatePair[0]][candidatePair[1]] == 1 ||
-            this.unusedPairsSearch[candidatePair[1]][candidatePair[0]] == 1){
-            //console.log("Found " + candidatePair[0] + "," + candidatePair[1] + " in this.unusedPairs");
-            ++currentCount;
-          } else {
-            //console.log("Did NOT find " + candidatePair[0] + "," + candidatePair[1] + " in this.unusedPairs");
+      if(typeof this.filter !== "function"){ // no filter
+        possibleValues.forEach((possibleValue,j) => {
+          let currentCount = 0;
+          for (let p = 0; p < i; ++p){
+            let candidatePair =  [possibleValue, testSet[ordering[p]]];
+            //console.log(candidatePair);
+            if (this.unusedPairsSearch[candidatePair[0]][candidatePair[1]] == 1 ||
+              this.unusedPairsSearch[candidatePair[1]][candidatePair[0]] == 1){
+              //console.log("Found " + candidatePair[0] + "," + candidatePair[1] + " in this.unusedPairs");
+              ++currentCount;
+            } else {
+              //console.log("Did NOT find " + candidatePair[0] + "," + candidatePair[1] + " in this.unusedPairs");
+            }
           }
-        }
-        if (currentCount > highestCount){
-          highestCount = currentCount;
-          bestJ = j;
-        }
-      })
-      //console.log("The best value is " + possibleValues[bestJ] + " with count = " + highestCount);
-      testSet[ordering[i]] = possibleValues[bestJ];
+          if (currentCount > highestCount){
+            highestCount = currentCount;
+            bestJ = j;
+          }
+        })
+        //console.log("The best value is " + possibleValues[bestJ] + " with count = " + highestCount);
+        testSet[ordering[i]] = possibleValues[bestJ];
+      }else{
+        //random value -> less threats to choose a invalid combinaison than picking the best pair
+        testSet[ordering[i]] = possibleValues[Math.floor(Math.random() * possibleValues.length)];
+      }
     }
     return testSet;
   }
@@ -516,6 +557,9 @@ class Qict {
     let indexOfBestCandidate = 0;
     let mostPairsCaptured = 0;
     candidateSets.forEach((candidateSet,i) => {
+      if(this._InvalidPairsCaptured(candidateSet)){
+        return;
+      }
       const pairsCaptured = this._NumberPairsCaptured(candidateSet);
       if (pairsCaptured > mostPairsCaptured){
         mostPairsCaptured = pairsCaptured;
