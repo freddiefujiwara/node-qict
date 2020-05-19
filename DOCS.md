@@ -33,6 +33,7 @@ Overall flow is the following</p>
     * [._testSet(best)](#Qict+_testSet) ⇒ <code>Array</code>
     * [._candidateSets(testSet)](#Qict+_candidateSets) ⇒ <code>Array</code>
     * [._NumberPairsCaptured(ts)](#Qict+_NumberPairsCaptured) ⇒ <code>number</code>
+    * [._InvalidPairsCaptured(ts)](#Qict+_InvalidPairsCaptured) ⇒ <code>bool</code>
     * [._bestCandidate(candidateSets)](#Qict+_bestCandidate) ⇒ <code>Array</code>
     * [._modifyUnused(bestCandidate)](#Qict+_modifyUnused)
     * [._parameterValue(parameterValue)](#Qict+_parameterValue) ⇒ <code>string</code>
@@ -341,6 +342,194 @@ Membership: Member, Guest
 <tr>
 <td>Guest</td>
 <td>9</td>
+</tr>
+</tbody>
+</table>
+<p>calculate invalidParametersSearch if filter exists</p>
+<p>For example filter.txt is the following</p>
+<p>The filter implies the combination Windows x Safari and Linux x Safari are invalid</p>
+<pre class="prettyprint source lang-JavaScript"><code>   (parameter1,parameterValue1,parameter2,parameterValue2) => {
+     if((&quot;OS&quot; === parameter2 && parameterValue2.match(/^[WL]/) &&
+           &quot;Browser&quot; === parameter1 && &quot;Safari&quot; === parameterValue1) ||
+         (&quot;OS&quot; === parameter1 && parameterValue1.match(/^[WL]/) &&
+          &quot;Browser&quot; === parameter2 && &quot;Safari&quot; === parameterValue2)){
+       return true;
+     }
+     return false;
+   }
+</code></pre>
+<p>so this.invalidPairs should be the following matrix</p>
+<table>
+<thead>
+<tr>
+<th>invalidPairs</th>
+<th>on</th>
+<th>off</th>
+<th>Chrome</th>
+<th>Firefox</th>
+<th>Opera</th>
+<th>Safari</th>
+<th>Windows</th>
+<th>Mac</th>
+<th>Linux</th>
+<th>Member</th>
+<th>Guest</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>on</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+</tr>
+<tr>
+<td>off</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+</tr>
+<tr>
+<td>Chrome</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+</tr>
+<tr>
+<td>Firefox</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+</tr>
+<tr>
+<td>Opera</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+</tr>
+<tr>
+<td>Safari</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>1</td>
+<td>0</td>
+<td>1</td>
+<td>0</td>
+<td>0</td>
+</tr>
+<tr>
+<td>Windows</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>1</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+</tr>
+<tr>
+<td>Mac</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+</tr>
+<tr>
+<td>Linux</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>1</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+</tr>
+<tr>
+<td>Member</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+</tr>
+<tr>
+<td>Guest</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
 </tr>
 </tbody>
 </table>
@@ -694,7 +883,19 @@ this.parameterPositions = [
 
 | Param | Type | Description |
 | --- | --- | --- |
-| ts | <code>Array</code> | <p>Test Sets</p> |
+| ts | <code>Array</code> | <p>Test Ses</p> |
+
+<a name="Qict+_InvalidPairsCaptured"></a>
+
+### qict.\_InvalidPairsCaptured(ts) ⇒ <code>bool</code>
+<p>check all invalid combinations(nC2) in the testSet.</p>
+
+**Kind**: instance method of [<code>Qict</code>](#Qict)  
+**Returns**: <code>bool</code> - <p>found</p>  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| ts | <code>Array</code> | <p>Test Set</p> |
 
 <a name="Qict+_bestCandidate"></a>
 
