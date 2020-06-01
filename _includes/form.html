@@ -23,37 +23,73 @@ Membership: Member, Guest
 }
 </textarea>
 <script src="https://freddiefujiwara.github.io/node-qict/src/qict.js"></script>
-<script src="https://code.jquery.com/jquery-git.slim.min.js"></script>
+<script src="https://code.jquery.com/jquery-git.min.js"></script>
 <script type="text/javascript">
   //<![CDATA[
-  $("#withoutfilter").click(()=>{
+$("#withoutfilter").click(() => {
+    const inputscript = $("#input").val();
+    // url change
+
+    if (!(queries["g"] && queries["g"].length > 0)) {
+        window.history.pushState("", "", "https://freddiefujiwara.github.io/node-qict/?i=" + encodeURIComponent(inputscript) + "#input");
+    }
+
     let output = new Array();
     const q = new Qict();
-    q.contents = $("#input").val();
+    q.contents = inputscript;
     q.initialize();
     const testSets = q.testSets();
     const log = console.log;
-    console.log = function(line){
-      output.push(line);
+    console.log = function(line) {
+        output.push(line);
     }
     q.printResult(testSets);
     console.log = log;
     $("#output").val(output.join("\n"));
-  });
-  $("#withfilter").click(()=>{
+});
+$("#withfilter").click(() => {
+    const inputscript = $("#input").val();
+    // url change
+
+    if (!(queries["g"] && queries["g"].length > 0)) {
+        window.history.pushState("", "", "https://freddiefujiwara.github.io/node-qict/?i=" + encodeURIComponent(inputscript) + "#input");
+    }
     let output = new Array();
     const q = new Qict();
-    q.contents = $("#input").val();
+    q.contents = inputscript;
     q.setFilter(eval($("#filter").val()));
     q.initialize();
     const testSets = q.testSets();
     const log = console.log;
-    console.log = function(line){
-      output.push(line);
+    console.log = function(line) {
+        output.push(line);
     }
     q.printResult(testSets);
     console.log = log;
     $("#output").val(output.join("\n"));
-  });
+});
+// for default inputscript 
+// ex) https://freddiefujiwara.github.io/smtc/i=[url encoded inputscript]
+let queries = {};
+document.location.search.substr(1).split('&').forEach((q) => {
+    const i = q.split('=');
+    if (i.length > 1) {
+        queries[i[0].toString()] = decodeURIComponent(i[1].toString());
+    }
+});
+if (queries["i"] && queries["i"].length > 0) {
+    $("#input").val(queries["i"]);
+}
+if (queries["g"] && queries["g"].length > 0) {
+    $.ajax({
+        url: 'https://api.github.com/gists/' + queries["g"],
+        type: 'GET',
+        dataType: 'jsonp'
+    }).then((gistdata) => {
+        $("#input").val(gistdata.data.files[Object.keys(gistdata.data.files)[0]].content);
+    }, (e) => {
+        console.err(e);
+    });
+}
   //]]>
 </script>
