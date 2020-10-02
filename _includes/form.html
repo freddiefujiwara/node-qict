@@ -22,7 +22,7 @@ Membership: Member, Guest
   return false;
 }
 </textarea>
-<script src="https://freddiefujiwara.github.io/node-qict/src/qict.js"></script>
+<script src="/node-qict/src/qict.js"></script>
 <script src="https://code.jquery.com/jquery-git.min.js"></script>
 <script type="text/javascript">
   //<![CDATA[
@@ -31,7 +31,7 @@ $("#withoutfilter").click(() => {
     // url change
 
     if (!(queries["g"] && queries["g"].length > 0)) {
-        window.history.pushState("", "", "https://freddiefujiwara.github.io/node-qict/?i=" + encodeURIComponent(inputscript) + "#input");
+        window.history.pushState("", "", "/node-qict/?i=" + encodeURIComponent(inputscript) + "#input");
     }
 
     let output = new Array();
@@ -52,7 +52,7 @@ $("#withfilter").click(() => {
     // url change
 
     if (!(queries["g"] && queries["g"].length > 0)) {
-        window.history.pushState("", "", "https://freddiefujiwara.github.io/node-qict/?i=" + encodeURIComponent(inputscript) + "#input");
+        window.history.pushState("", "", "/node-qict/?i=" + encodeURIComponent(inputscript) + "#input");
     }
     let output = new Array();
     const q = new Qict();
